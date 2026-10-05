@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+  <defs>
+    <path id="star" d="M0,-1 L0.235,-0.324 L0.951,-0.309 L0.38,0.124 L0.588,0.809 L0,0.4 L-0.588,0.809 L-0.38,0.124 L-0.951,-0.309 L-0.235,-0.324 Z"/>
+    <path id="heart" d="M0,0.85 C-1.2,0 -0.9,-1 0,-0.45 C0.9,-1 1.2,0 0,0.85 Z"/>
+    <path id="spark" d="M0,-1 Q0.12,-0.12 1,0 Q0.12,0.12 0,1 Q-0.12,0.12 -1,0 Q-0.12,-0.12 0,-1 Z"/>
+    <radialGradient id="bg" cx="50%" cy="45%" r="70%"><stop offset="0" stop-color="#FFF6FA"/><stop offset="1" stop-color="#FFD6E7"/></radialGradient>
+    <linearGradient id="betun" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFC2DA"/><stop offset="1" stop-color="#FF8DB8"/></linearGradient>
+    <clipPath id="capacillo"><path d="M262,590 L738,590 L690,870 Q500,900 310,870 Z"/></clipPath>
+  </defs>
+  <rect width="1000" height="1000" fill="url(#bg)"/>
+  <!-- lunares de fondo -->
+  <g fill="#FFFFFF" opacity="0.8">
+    <circle cx="90" cy="90" r="14"/><circle cx="210" cy="60" r="9"/><circle cx="880" cy="110" r="12"/><circle cx="930" cy="260" r="8"/>
+    <circle cx="60" cy="420" r="10"/><circle cx="950" cy="520" r="13"/><circle cx="80" cy="760" r="12"/><circle cx="920" cy="820" r="9"/>
+    <circle cx="300" cy="950" r="11"/><circle cx="700" cy="955" r="14"/>
+  </g>
+  <use href="#star"  transform="translate(150,190) scale(40) rotate(10)"  fill="#FFD166"/>
+  <use href="#heart" transform="translate(840,200) scale(42) rotate(-14)" fill="#FF7FA3"/>
+  <use href="#spark" transform="translate(300,120) scale(26)"             fill="#B69CFF"/>
+  <use href="#star"  transform="translate(760,70) scale(24) rotate(-20)"  fill="#7FD4F5"/>
+  <use href="#heart" transform="translate(110,560) scale(30) rotate(18)"  fill="#B69CFF"/>
+  <use href="#spark" transform="translate(890,420) scale(34)"             fill="#FFD166"/>
+  <use href="#star"  transform="translate(120,880) scale(34) rotate(28)"  fill="#FF7FA3"/>
+  <use href="#heart" transform="translate(880,690) scale(32) rotate(8)"   fill="#7FD4F5"/>
+  <use href="#spark" transform="translate(220,700) scale(20)"             fill="#7FD4F5"/>
+  <use href="#star"  transform="translate(840,920) scale(30) rotate(-6)"  fill="#B69CFF"/>
+  <use href="#spark" transform="translate(500,955) scale(18)"             fill="#FF7FA3"/>
+
+  <!-- sombra -->
+  <ellipse cx="500" cy="885" rx="250" ry="28" fill="#F0A6C4" opacity="0.6"/>
+  <!-- capacillo -->
+  <path d="M262,590 L738,590 L690,870 Q500,900 310,870 Z" fill="#8FDCCB"/>
+  <g clip-path="url(#capacillo)" stroke="#5FBFAA" stroke-width="16">
+    <line x1="300" y1="590" x2="335" y2="900"/><line x1="370" y1="590" x2="390" y2="900"/><line x1="440" y1="590" x2="448" y2="900"/>
+    <line x1="510" y1="590" x2="505" y2="900"/><line x1="580" y1="590" x2="562" y2="900"/><line x1="650" y1="590" x2="618" y2="900"/>
+    <line x1="720" y1="590" x2="675" y2="900"/>
+  </g>
+  <path d="M262,590 L738,590 L690,870 Q500,900 310,870 Z" fill="none" stroke="#3FA48E" stroke-width="7" stroke-linejoin="round"/>
+  <!-- carita -->
+  <ellipse cx="430" cy="700" rx="24" ry="30" fill="#3B2A2F"/>
+  <ellipse cx="570" cy="700" rx="24" ry="30" fill="#3B2A2F"/>
+  <circle cx="439" cy="688" r="9" fill="#fff"/><circle cx="579" cy="688" r="9" fill="#fff"/>
+  <circle cx="424" cy="712" r="4" fill="#fff"/><circle cx="564" cy="712" r="4" fill="#fff"/>
+  <ellipse cx="372" cy="755" rx="36" ry="19" fill="#FF5C8D" opacity="0.5"/>
+  <ellipse cx="628" cy="755" rx="36" ry="19" fill="#FF5C8D" opacity="0.5"/>
+  <path d="M478,745 Q490,768 500,750 Q510,768 522,745" stroke="#3B2A2F" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- betún -->
+  <g stroke="#E0679A" stroke-width="7" fill="url(#betun)">
+    <path d="M230,600 C200,560 240,505 300,515 C320,470 400,470 430,500 C470,470 540,470 575,500 C610,470 690,475 705,520 C770,510 805,565 770,605 Q500,640 230,600 Z"/>
+    <path d="M300,515 C285,460 340,415 395,430 C420,390 500,380 535,415 C580,390 660,410 665,465 C700,470 715,505 700,520 Q500,545 300,515 Z"/>
+    <path d="M380,432 C375,380 430,345 480,360 C510,330 580,345 590,390 C620,400 630,425 615,440 Q500,455 380,432 Z"/>
+    <path d="M460,362 C455,320 500,290 540,310 C565,320 570,350 560,370 Q510,378 460,362 Z"/>
+  </g>
+  <!-- brillo del betún -->
+  <path d="M290,560 Q320,540 360,548" stroke="#FFE3EE" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <path d="M360,480 Q390,462 425,468" stroke="#FFE3EE" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <!-- chispas de colores -->
+  <g stroke-width="12" stroke-linecap="round">
+    <line x1="330" y1="575" x2="350" y2="560" stroke="#FFD166"/><line x1="420" y1="590" x2="445" y2="590" stroke="#7FD4F5"/>
+    <line x1="530" y1="580" x2="545" y2="565" stroke="#B69CFF"/><line x1="640" y1="585" x2="665" y2="578" stroke="#8EDB9C"/>
+    <line x1="700" y1="555" x2="712" y2="540" stroke="#FFD166"/><line x1="390" y1="510" x2="405" y2="495" stroke="#B69CFF"/>
+    <line x1="480" y1="500" x2="505" y2="505" stroke="#FFD166"/><line x1="600" y1="490" x2="612" y2="472" stroke="#7FD4F5"/>
+    <line x1="440" y1="420" x2="460" y2="410" stroke="#8EDB9C"/><line x1="550" y1="410" x2="560" y2="395" stroke="#FFD166"/>
+    <line x1="260" y1="580" x2="275" y2="590" stroke="#B69CFF"/><line x1="580" y1="540" x2="600" y2="540" stroke="#FF5C8D"/>
+  </g>
+  <!-- vela -->
+  <rect x="487" y="215" width="26" height="100" rx="6" fill="#FFF3B0" stroke="#E8B94A" stroke-width="5"/>
+  <path d="M487,240 L513,228 M487,270 L513,258 M487,300 L513,288" stroke="#FF7FA3" stroke-width="7"/>
+  <path d="M500,130 C530,165 525,200 500,208 C475,200 470,165 500,130 Z" fill="#FFB347" stroke="#F08A24" stroke-width="5"/>
+  <path d="M500,165 C512,182 510,196 500,200 C490,196 488,182 500,165 Z" fill="#FFF3B0"/>
+</svg>

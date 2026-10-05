@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+  <defs>
+    <radialGradient id="fondo" cx="50%" cy="40%" r="75%"><stop offset="0" stop-color="#F2FBF7"/><stop offset="1" stop-color="#C8EEDF"/></radialGradient>
+    <g id="huella" fill="#9ED9C3">
+      <ellipse cx="0" cy="10" rx="16" ry="13"/><circle cx="-16" cy="-8" r="6"/><circle cx="-6" cy="-16" r="6"/><circle cx="6" cy="-16" r="6"/><circle cx="16" cy="-8" r="6"/>
+    </g>
+  </defs>
+  <rect width="1000" height="1000" fill="url(#fondo)"/>
+  <!-- huellitas de fondo -->
+  <use href="#huella" transform="translate(90,110) rotate(-20) scale(1.3)"/>
+  <use href="#huella" transform="translate(160,200) rotate(-10)"/>
+  <use href="#huella" transform="translate(900,800) rotate(25) scale(1.2)"/>
+  <use href="#huella" transform="translate(820,900) rotate(15)"/>
+  <use href="#huella" transform="translate(70,640) rotate(-35) scale(0.9)"/>
+  <use href="#huella" transform="translate(940,420) rotate(30) scale(0.9)"/>
+  <!-- confeti -->
+  <g>
+    <rect x="300" y="70" width="18" height="30" rx="4" fill="#FFB347" transform="rotate(25 309 85)"/>
+    <rect x="700" y="90" width="18" height="30" rx="4" fill="#B69CFF" transform="rotate(-30 709 105)"/>
+    <rect x="860" y="230" width="18" height="30" rx="4" fill="#FF7FA3" transform="rotate(40 869 245)"/>
+    <rect x="120" y="400" width="18" height="30" rx="4" fill="#7FD4F5" transform="rotate(-20 129 415)"/>
+    <rect x="200" y="880" width="18" height="30" rx="4" fill="#FFD166" transform="rotate(15 209 895)"/>
+    <rect x="600" y="940" width="18" height="30" rx="4" fill="#FF7FA3" transform="rotate(-40 609 955)"/>
+    <circle cx="480" cy="60" r="10" fill="#7FD4F5"/><circle cx="930" cy="610" r="11" fill="#FFD166"/><circle cx="50" cy="820" r="10" fill="#B69CFF"/><circle cx="400" cy="950" r="9" fill="#7FD4F5"/>
+  </g>
+  <!-- globos -->
+  <g stroke="#7A8C99" stroke-width="3" fill="none"><path d="M500,560 C470,450 420,330 380,250"/><path d="M500,560 C510,420 520,300 520,200"/><path d="M500,560 C540,450 600,330 650,260"/></g>
+  <ellipse cx="380" cy="200" rx="62" ry="74" fill="#FF7FA3" stroke="#E0567F" stroke-width="5"/>
+  <ellipse cx="520" cy="150" rx="66" ry="78" fill="#FFD166" stroke="#E5AE3A" stroke-width="5"/>
+  <ellipse cx="655" cy="215" rx="60" ry="72" fill="#7FD4F5" stroke="#4FB2D9" stroke-width="5"/>
+  <g fill="#FFFFFF" opacity="0.65"><ellipse cx="358" cy="170" rx="14" ry="22"/><ellipse cx="498" cy="118" rx="14" ry="22"/><ellipse cx="635" cy="185" rx="13" ry="20"/></g>
+  <path d="M372,272 l8,12 l8,-12 Z M512,226 l8,12 l8,-12 Z M647,285 l8,12 l8,-12 Z" fill="#7A8C99"/>
+
+  <!-- piso -->
+  <ellipse cx="500" cy="880" rx="400" ry="45" fill="#A8E0CB"/>
+
+  <!-- perrito (izquierda) -->
+  <g transform="translate(320,690)">
+    <ellipse cx="0" cy="150" rx="120" ry="70" fill="#F2D3A7" stroke="#B98A57" stroke-width="6"/>
+    <ellipse cx="-60" cy="200" rx="34" ry="22" fill="#F2D3A7" stroke="#B98A57" stroke-width="6"/>
+    <ellipse cx="60" cy="200" rx="34" ry="22" fill="#F2D3A7" stroke="#B98A57" stroke-width="6"/>
+    <circle cx="0" cy="0" r="140" fill="#F2D3A7" stroke="#B98A57" stroke-width="6"/>
+    <!-- orejas -->
+    <path d="M-120,-60 C-190,-40 -190,80 -130,90 C-100,70 -100,0 -110,-50 Z" fill="#B98A57" stroke="#8C6237" stroke-width="6"/>
+    <path d="M120,-60 C190,-40 190,80 130,90 C100,70 100,0 110,-50 Z" fill="#B98A57" stroke="#8C6237" stroke-width="6"/>
+    <!-- mancha -->
+    <ellipse cx="55" cy="-40" rx="45" ry="38" fill="#E3B57F"/>
+    <!-- cara -->
+    <ellipse cx="-50" cy="0" rx="17" ry="21" fill="#3B2A2F"/><ellipse cx="50" cy="0" rx="17" ry="21" fill="#3B2A2F"/>
+    <circle cx="-44" cy="-8" r="6" fill="#fff"/><circle cx="56" cy="-8" r="6" fill="#fff"/>
+    <ellipse cx="0" cy="40" rx="20" ry="14" fill="#3B2A2F"/>
+    <path d="M0,54 Q-20,78 -36,60 M0,54 Q20,78 36,60" stroke="#3B2A2F" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <path d="M-8,70 Q0,100 10,70 Z" fill="#FF7FA3"/>
+    <ellipse cx="-85" cy="40" rx="22" ry="13" fill="#FF9BB5" opacity="0.6"/><ellipse cx="85" cy="40" rx="22" ry="13" fill="#FF9BB5" opacity="0.6"/>
+    <!-- gorrito -->
+    <g transform="translate(-30,-130) rotate(-14)">
+      <path d="M0,-130 L60,0 Q0,22 -60,0 Z" fill="#B69CFF" stroke="#8A6FE0" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M-30,-65 Q0,-55 30,-65 M-45,-32 Q0,-18 45,-32" stroke="#FFD166" stroke-width="10" fill="none"/>
+      <circle cx="0" cy="-135" r="18" fill="#FFD166" stroke="#E5AE3A" stroke-width="4"/>
+    </g>
+  </g>
+
+  <!-- gatito (derecha) -->
+  <g transform="translate(690,720)">
+    <ellipse cx="0" cy="125" rx="105" ry="62" fill="#FFB877" stroke="#D9803A" stroke-width="6"/>
+    <path d="M90,140 C170,130 170,40 140,20" stroke="#D9803A" stroke-width="30" fill="none" stroke-linecap="round"/>
+    <path d="M90,140 C170,130 170,40 140,20" stroke="#FFB877" stroke-width="18" fill="none" stroke-linecap="round"/>
+    <ellipse cx="-50" cy="175" rx="30" ry="20" fill="#FFF3E6" stroke="#D9803A" stroke-width="6"/>
+    <ellipse cx="50" cy="175" rx="30" ry="20" fill="#FFF3E6" stroke="#D9803A" stroke-width="6"/>
+    <!-- orejas -->
+    <path d="M-110,-40 L-100,-150 L-30,-100 Z" fill="#FFB877" stroke="#D9803A" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M110,-40 L100,-150 L30,-100 Z" fill="#FFB877" stroke="#D9803A" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M-92,-60 L-88,-120 L-50,-95 Z M92,-60 L88,-120 L50,-95 Z" fill="#FF9BB5"/>
+    <ellipse cx="0" cy="0" rx="125" ry="112" fill="#FFB877" stroke="#D9803A" stroke-width="6"/>
+    <!-- rayitas -->
+    <path d="M-20,-108 L-14,-80 M0,-112 L0,-82 M20,-108 L14,-80" stroke="#D9803A" stroke-width="7" stroke-linecap="round"/>
+    <ellipse cx="0" cy="45" rx="60" ry="40" fill="#FFF3E6"/>
+    <!-- ojos felices -->
+    <path d="M-62,0 Q-45,-22 -28,0" stroke="#3B2A2F" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <path d="M28,0 Q45,-22 62,0" stroke="#3B2A2F" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <path d="M-8,26 L8,26 L0,36 Z" fill="#FF7FA3"/>
+    <path d="M0,36 Q-12,52 -24,42 M0,36 Q12,52 24,42" stroke="#3B2A2F" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M-60,30 L-110,20 M-60,42 L-112,46 M60,30 L110,20 M60,42 L112,46" stroke="#3B2A2F" stroke-width="3" stroke-linecap="round"/>
+    <ellipse cx="-78" cy="30" rx="18" ry="11" fill="#FF7FA3" opacity="0.5"/><ellipse cx="78" cy="30" rx="18" ry="11" fill="#FF7FA3" opacity="0.5"/>
+    <!-- gorrito -->
+    <g transform="translate(15,-112) rotate(12)">
+      <path d="M0,-115 L52,0 Q0,18 -52,0 Z" fill="#7FD4F5" stroke="#4FB2D9" stroke-width="5" stroke-linejoin="round"/>
+      <g fill="#FFFFFF"><circle cx="-12" cy="-30" r="7"/><circle cx="16" cy="-55" r="6"/><circle cx="-2" cy="-80" r="5"/><circle cx="22" cy="-18" r="6"/></g>
+      <circle cx="0" cy="-120" r="16" fill="#FF7FA3" stroke="#E0567F" stroke-width="4"/>
+    </g>
+  </g>
+
+  <!-- pastelito entre los dos -->
+  <g transform="translate(505,840)">
+    <rect x="-55" y="-40" width="110" height="60" rx="10" fill="#FFF3E6" stroke="#D9803A" stroke-width="5"/>
+    <path d="M-55,-30 Q-40,-10 -25,-30 Q-10,-10 5,-30 Q20,-10 35,-30 Q48,-14 55,-30 L55,-40 L-55,-40 Z" fill="#FF7FA3"/>
+    <rect x="-4" y="-80" width="10" height="40" fill="#B69CFF"/>
+    <path d="M1,-100 q10,12 0,20 q-10,-8 0,-20Z" fill="#FFB347"/>
+  </g>
+</svg>

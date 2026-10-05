@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>¡Una sorpresa para ti!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link id="fuentes" rel="stylesheet">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+      "mindar-image-three": "https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-three.prod.js"
+    }
+  }
+  </script>
+  <style>
+    :root { --fondo: #FFE4EF; --tinta: #F2557A; --suave: #C2457A; }
+    html, body { margin: 0; height: 100%; overflow: hidden; background: var(--fondo); font-family: 'Baloo 2', sans-serif; }
+    /* z-index crea su propia capa: así el video de la cámara (z-index -2) no queda detrás del fondo */
+    #container { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
+    html:has(body.camara), body.camara { background: #000; }
+
+    #inicio {
+      position: fixed; inset: 0; z-index: 10; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 16px; padding: 24px; text-align: center; background: var(--fondo);
+    }
+    body.tarjeta #inicio, body.camara #inicio { display: none; }
+    #inicio img { width: min(52vw, 230px); border-radius: 24px; box-shadow: 0 12px 30px rgba(0, 0, 0, .18); animation: latido 1.6s ease-in-out infinite; }
+    #inicio h1 { margin: 0; color: var(--tinta); font-size: clamp(28px, 8vw, 48px); line-height: 1.05; }
+    #inicio p { margin: 0; color: var(--suave); font-size: 18px; max-width: 340px; }
+    #btn {
+      font: inherit; font-size: 24px; font-weight: 800; color: #fff; background: var(--tinta); border: 0;
+      border-radius: 999px; padding: 14px 34px; box-shadow: 0 6px 0 rgba(0, 0, 0, .2); cursor: pointer;
+    }
+    #btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0, 0, 0, .2); }
+    #error { color: #9b1c3c; font-size: 16px; max-width: 340px; }
+    #error:empty { display: none; }
+    #sin-camara { font: inherit; font-size: 17px; color: var(--suave); background: none; border: 0; text-decoration: underline; cursor: pointer; }
+    @keyframes latido { 0%, 100% { transform: scale(1) rotate(-2deg); } 50% { transform: scale(1.05) rotate(2deg); } }
+
+    #pista {
+      position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 5; display: none;
+      background: rgba(255, 255, 255, .92); color: var(--tinta); font-weight: 800; font-size: 19px;
+      padding: 8px 20px; border-radius: 999px; white-space: nowrap; box-shadow: 0 4px 16px rgba(0, 0, 0, .2);
+    }
+    body.camara:not(.encontrada) #pista { display: block; }
+
+    #escena { position: absolute; width: 1000px; height: 1000px; transform-origin: 0 0; display: none; cursor: pointer; }
+    body.tarjeta #escena { display: block; }
+    #escena img { position: absolute; inset: 0; width: 1000px; height: 1000px; border-radius: 40px; box-shadow: 0 30px 80px rgba(0, 0, 0, .25); animation: aparecer 1s cubic-bezier(.2, 1.4, .4, 1) both; }
+    @keyframes aparecer { from { transform: scale(.15) rotate(-14deg); opacity: 0; } to { transform: none; opacity: 1; } }
+    #repetir { position: fixed; left: 0; right: 0; bottom: 18px; text-align: center; color: var(--suave); font-size: 16px; font-weight: 600; display: none; }
+    body.tarjeta #repetir { display: block; }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+
+  <div id="inicio">
+    <img id="miniatura" alt="">
+    <h1 id="saludo">¡Una sorpresa para ti!</h1>
+    <p>Toca el botón, permite usar la cámara y apunta al dibujo de tu tarjeta 💖</p>
+    <button id="btn">¡Abrir sorpresa! ✨</button>
+    <p id="error"></p>
+    <button id="sin-camara">o verla sin cámara</button>
+  </div>
+
+  <div id="pista">Apunta la cámara al dibujo 🎀</div>
+  <div id="escena"></div>
+  <div id="repetir">Toca la tarjeta para repetir 🎶</div>
+
+  <script type="module">
+    import { porId, FUENTES_URL } from './js/disenos.js';
+    import { crearFiesta, reiniciar, crearCancion } from './js/fiesta.js';
+
+    const params = new URLSearchParams(location.search);
+    const diseno = porId(params.get('d'));
+    const nombre = (params.get('n') || '').slice(0, 24);
+
+    document.getElementById('fuentes').href = FUENTES_URL;
+    const raiz = document.documentElement.style;
+    raiz.setProperty('--fondo', diseno.fondo);
+    raiz.setProperty('--tinta', diseno.tinta);
+    raiz.setProperty('--suave', diseno.suave);
+    document.getElementById('miniatura').src = `disenos/${diseno.id}.png`;
+    if (nombre) {
+      document.getElementById('saludo').textContent = `¡Una sorpresa para ${nombre}!`;
+      document.title = `¡Feliz cumpleaños, ${nombre}!`;
+    }
+
+    const fiesta = crearFiesta(diseno, nombre);
+    let cantar = null;
+    const mostrar = () => { reiniciar(fiesta); cantar?.(); };
+
+    // Sin cámara: la tarjeta animada en la pantalla
+    const escena = document.getElementById('escena');
+    function ajustar() {
+      const alto = innerHeight - 60;
+      const s = Math.min(innerWidth / 1400, alto / 1500);
+      escena.style.transform = `scale(${s})`;
+      escena.style.top = `${(alto - 1400 * s) / 2 + 380 * s}px`;
+      escena.style.left = `${(innerWidth - 1000 * s) / 2}px`;
+    }
+    function abrirTarjeta() {
+      cantar ??= crearCancion();
+      escena.innerHTML = `<img src="disenos/${diseno.id}.png" alt="">`;
+      escena.appendChild(fiesta);
+      document.body.classList.add('tarjeta');
+      ajustar();
+      setTimeout(mostrar, 700);
+    }
+    addEventListener('resize', ajustar);
+    escena.addEventListener('click', mostrar);
+    document.getElementById('sin-camara').addEventListener('click', abrirTarjeta);
+    if (location.hash === '#demo') abrirTarjeta();
+
+    // Con cámara: al ver el dibujo impreso salen los globos y suena la canción
+    document.getElementById('btn').addEventListener('click', async () => {
+      const btn = document.getElementById('btn'), err = document.getElementById('error');
+      btn.disabled = true;
+      btn.textContent = 'Abriendo cámara… 🎀';
+      err.textContent = '';
+      cantar ??= crearCancion();
+      const aviso = setTimeout(() => {
+        err.textContent = '¿No se abre la cámara? Abre esta página en Chrome o Safari (menú ⋮ → "Abrir en el navegador") 🙏';
+      }, 12000);
+      try {
+        const { MindARThree } = await import('mindar-image-three');
+        const { CSS3DObject } = await import('three/addons/renderers/CSS3DRenderer.js');
+        const mindar = new MindARThree({
+          container: document.getElementById('container'),
+          imageTargetSrc: `disenos/${diseno.id}.mind`,
+          uiScanning: 'no',
+          filterMinCF: 0.0001,
+          filterBeta: 0.001,
+        });
+        const { renderer, cssRenderer, cssScene, camera } = mindar;
+        const anchor = mindar.addCSSAnchor(0);
+        anchor.group.add(new CSS3DObject(fiesta));
+        anchor.onTargetFound = () => { document.body.classList.add('encontrada'); mostrar(); };
+        anchor.onTargetLost = () => { document.body.classList.remove('encontrada'); fiesta.classList.remove('show'); };
+
+        await mindar.start();
+        clearTimeout(aviso);
+        document.body.classList.add('camara');
+        renderer.setAnimationLoop(() => cssRenderer.render(cssScene, camera));
+      } catch (e) {
+        console.error(e);
+        clearTimeout(aviso);
+        btn.disabled = false;
+        btn.textContent = 'Intentar de nuevo 🔄';
+        err.textContent = 'No se pudo abrir la cámara. Revisa que diste permiso, o ve la tarjeta sin cámara 👇';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+  <defs>
+    <pattern id="vichy" width="60" height="60" patternUnits="userSpaceOnUse">
+      <rect width="60" height="60" fill="#F4F1E1"/>
+      <rect width="30" height="60" fill="#B9CFA3" opacity="0.45"/>
+      <rect width="60" height="30" fill="#B9CFA3" opacity="0.45"/>
+    </pattern>
+    <g id="margarita">
+      <g fill="#FFFFFF" stroke="#D9D2BC" stroke-width="2">
+        <ellipse cx="0" cy="-22" rx="10" ry="20"/><ellipse cx="0" cy="22" rx="10" ry="20"/><ellipse cx="-22" cy="0" rx="20" ry="10"/><ellipse cx="22" cy="0" rx="20" ry="10"/>
+        <ellipse cx="-16" cy="-16" rx="9" ry="18" transform="rotate(-45 -16 -16)"/><ellipse cx="16" cy="16" rx="9" ry="18" transform="rotate(-45 16 16)"/>
+        <ellipse cx="16" cy="-16" rx="9" ry="18" transform="rotate(45 16 -16)"/><ellipse cx="-16" cy="16" rx="9" ry="18" transform="rotate(45 -16 16)"/>
+      </g>
+      <circle r="11" fill="#F2C14E" stroke="#D99A2B" stroke-width="2"/>
+    </g>
+    <g id="hongo">
+      <path d="M-14,0 C-16,30 -12,55 -18,70 L18,70 C12,55 16,30 14,0 Z" fill="#F7EBD3" stroke="#B89B72" stroke-width="3"/>
+      <path d="M-60,5 C-60,-50 60,-50 60,5 C30,15 -30,15 -60,5 Z" fill="#D9534F" stroke="#A33A36" stroke-width="3"/>
+      <g fill="#FFFFFF"><circle cx="-30" cy="-15" r="8"/><circle cx="5" cy="-30" r="7"/><circle cx="32" cy="-12" r="9"/><circle cx="-5" cy="-5" r="5"/></g>
+    </g>
+    <g id="fresa">
+      <path d="M0,-20 C25,-20 30,5 0,30 C-30,5 -25,-20 0,-20 Z" fill="#E0474C" stroke="#B5333A" stroke-width="2"/>
+      <path d="M-14,-20 L-6,-28 L0,-20 L6,-28 L14,-20 L0,-14 Z" fill="#6FA85A"/>
+      <g fill="#FFE8A3"><circle cx="-8" cy="-6" r="2"/><circle cx="6" cy="-4" r="2"/><circle cx="-2" cy="8" r="2"/><circle cx="8" cy="10" r="2"/><circle cx="-10" cy="6" r="2"/></g>
+    </g>
+    <g id="hoja"><path d="M0,0 C20,-20 50,-20 60,0 C50,20 20,20 0,0 Z" fill="#7DA86A"/><path d="M0,0 L55,0" stroke="#5C8A4E" stroke-width="2"/></g>
+  </defs>
+  <rect width="1000" height="1000" fill="url(#vichy)"/>
+
+  <!-- corona de hojas y flores -->
+  <g>
+    <use href="#hoja" transform="translate(60,120) rotate(-20)"/><use href="#hoja" transform="translate(150,60) rotate(10)"/>
+    <use href="#hoja" transform="translate(830,80) rotate(160)"/><use href="#hoja" transform="translate(930,170) rotate(120)"/>
+    <use href="#hoja" transform="translate(40,880) rotate(-60)"/><use href="#hoja" transform="translate(920,900) rotate(-130)"/>
+    <use href="#hoja" transform="translate(420,60) rotate(-10)"/><use href="#hoja" transform="translate(620,50) rotate(190)"/>
+  </g>
+  <use href="#margarita" transform="translate(110,100)"/>
+  <use href="#margarita" transform="translate(880,120) scale(1.2)"/>
+  <use href="#margarita" transform="translate(500,70) scale(0.8)"/>
+  <use href="#margarita" transform="translate(70,480) scale(0.9)"/>
+  <use href="#margarita" transform="translate(940,470)"/>
+  <use href="#margarita" transform="translate(860,880) scale(1.1)"/>
+  <g fill="#B69CFF"><circle cx="300" cy="90" r="9"/><circle cx="316" cy="100" r="9"/><circle cx="300" cy="110" r="9"/><circle cx="286" cy="100" r="9"/></g>
+  <g fill="#F2A1B5"><circle cx="720" cy="110" r="9"/><circle cx="736" cy="120" r="9"/><circle cx="720" cy="130" r="9"/><circle cx="706" cy="120" r="9"/></g>
+  <g fill="#9FC9EB"><circle cx="70" cy="300" r="8"/><circle cx="84" cy="310" r="8"/><circle cx="70" cy="320" r="8"/><circle cx="56" cy="310" r="8"/></g>
+  <g fill="#F2A1B5"><circle cx="930" cy="320" r="8"/><circle cx="944" cy="330" r="8"/><circle cx="930" cy="340" r="8"/><circle cx="916" cy="330" r="8"/></g>
+
+  <!-- base de madera -->
+  <ellipse cx="500" cy="760" rx="330" ry="70" fill="#C79A6B" stroke="#8C6A4A" stroke-width="5"/>
+  <ellipse cx="500" cy="745" rx="310" ry="58" fill="#DDB487"/>
+  <path d="M220,745 Q500,790 780,745" stroke="#C79A6B" stroke-width="4" fill="none"/>
+
+  <!-- pastel -->
+  <path d="M290,520 L290,700 C290,760 710,760 710,700 L710,520 Z" fill="#F7EBD3" stroke="#B89B72" stroke-width="6"/>
+  <!-- capa de mermelada -->
+  <path d="M290,610 C290,650 710,650 710,610 L710,635 C710,675 290,675 290,635 Z" fill="#E0474C" opacity="0.85"/>
+  <!-- crema escurriendo -->
+  <path d="M290,520 L290,560 Q310,600 330,560 Q350,620 375,565 Q400,590 425,568 Q450,610 480,570 Q510,595 535,570 Q565,615 590,568 Q615,590 640,565 Q665,605 690,560 Q700,580 710,560 L710,520 Z" fill="#FFFDF5" stroke="#E2D6BC" stroke-width="3"/>
+  <ellipse cx="500" cy="520" rx="210" ry="55" fill="#FFFDF5" stroke="#E2D6BC" stroke-width="5"/>
+  <!-- fresas encima -->
+  <use href="#fresa" transform="translate(390,505) scale(1.4) rotate(-15)"/>
+  <use href="#fresa" transform="translate(500,490) scale(1.5)"/>
+  <use href="#fresa" transform="translate(610,505) scale(1.4) rotate(15)"/>
+  <use href="#fresa" transform="translate(445,535) scale(1.1) rotate(-5)"/>
+  <use href="#fresa" transform="translate(555,535) scale(1.1) rotate(8)"/>
+  <!-- velitas -->
+  <rect x="440" y="380" width="16" height="80" rx="4" fill="#F2A1B5" stroke="#C9728A" stroke-width="3"/>
+  <rect x="544" y="380" width="16" height="80" rx="4" fill="#9FC9EB" stroke="#6F9FC4" stroke-width="3"/>
+  <path d="M448,340 q16,22 0,34 q-16,-12 0,-34Z M552,340 q16,22 0,34 q-16,-12 0,-34Z" fill="#F2C14E" stroke="#D99A2B" stroke-width="2"/>
+  <!-- banderín -->
+  <path d="M250,300 Q500,370 750,300" stroke="#8C6A4A" stroke-width="3" fill="none"/>
+  <g stroke="#8C6A4A" stroke-width="2">
+    <path d="M280,309 L330,322 L298,365 Z" fill="#E0474C"/><path d="M345,325 L395,336 L365,380 Z" fill="#F2C14E"/>
+    <path d="M410,338 L460,344 L433,390 Z" fill="#7DA86A"/><path d="M475,345 L525,345 L500,392 Z" fill="#9FC9EB"/>
+    <path d="M540,344 L590,338 L567,390 Z" fill="#F2A1B5"/><path d="M605,336 L655,325 L635,380 Z" fill="#E0474C"/>
+    <path d="M670,322 L720,309 L702,365 Z" fill="#F2C14E"/>
+  </g>
+
+  <!-- hongos -->
+  <use href="#hongo" transform="translate(170,760) scale(1.2)"/>
+  <use href="#hongo" transform="translate(250,800) scale(0.8)"/>
+  <use href="#hongo" transform="translate(830,780) scale(1.0)"/>
+
+  <!-- conejito asomándose -->
+  <g transform="translate(800,610)">
+    <ellipse cx="-25" cy="-75" rx="16" ry="48" fill="#FFFFFF" stroke="#C9B8A6" stroke-width="4" transform="rotate(-10 -25 -75)"/>
+    <ellipse cx="25" cy="-75" rx="16" ry="48" fill="#FFFFFF" stroke="#C9B8A6" stroke-width="4" transform="rotate(10 25 -75)"/>
+    <ellipse cx="-25" cy="-72" rx="7" ry="32" fill="#F7C6D0" transform="rotate(-10 -25 -72)"/>
+    <ellipse cx="25" cy="-72" rx="7" ry="32" fill="#F7C6D0" transform="rotate(10 25 -72)"/>
+    <ellipse cx="0" cy="0" rx="62" ry="54" fill="#FFFFFF" stroke="#C9B8A6" stroke-width="4"/>
+    <circle cx="-22" cy="-6" r="7" fill="#3B2A2F"/><circle cx="22" cy="-6" r="7" fill="#3B2A2F"/>
+    <ellipse cx="0" cy="10" rx="7" ry="5" fill="#F29BAE"/>
+    <ellipse cx="-36" cy="14" rx="11" ry="6" fill="#F7C6D0"/><ellipse cx="36" cy="14" rx="11" ry="6" fill="#F7C6D0"/>
+  </g>
+  <!-- abejita -->
+  <g transform="translate(180,330) rotate(-10)">
+    <ellipse cx="-6" cy="-18" rx="14" ry="10" fill="#E6F2FA" stroke="#9FC9EB" stroke-width="2"/><ellipse cx="10" cy="-18" rx="14" ry="10" fill="#E6F2FA" stroke="#9FC9EB" stroke-width="2"/>
+    <ellipse rx="26" ry="18" fill="#F2C14E" stroke="#3B2A2F" stroke-width="3"/>
+    <path d="M-6,-17 L-6,17 M8,-16 L8,16" stroke="#3B2A2F" stroke-width="6"/>
+    <circle cx="18" cy="-3" r="3" fill="#3B2A2F"/>
+  </g>
+  <path d="M200,345 q40,30 80,0 q30,-20 60,10" stroke="#8C6A4A" stroke-width="3" stroke-dasharray="6 8" fill="none"/>
+</svg>

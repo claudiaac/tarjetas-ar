@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+  <defs>
+    <pattern id="cuadros" width="80" height="80" patternUnits="userSpaceOnUse">
+      <rect width="80" height="80" fill="#FFF7F2"/>
+      <rect width="40" height="80" fill="#F9DDE3" opacity="0.55"/>
+      <rect width="80" height="40" fill="#F9DDE3" opacity="0.55"/>
+    </pattern>
+    <radialGradient id="perla" cx="35%" cy="35%" r="70%"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E9DCD6"/></radialGradient>
+    <linearGradient id="liston" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7B6C8"/><stop offset="1" stop-color="#E88AA6"/></linearGradient>
+    <g id="monito">
+      <path d="M0,0 C-30,-28 -55,-8 -45,14 C-38,28 -15,16 0,0 Z" fill="#F7B6C8" stroke="#D9728F" stroke-width="3"/>
+      <path d="M0,0 C30,-28 55,-8 45,14 C38,28 15,16 0,0 Z" fill="#F7B6C8" stroke="#D9728F" stroke-width="3"/>
+      <path d="M-4,4 L-18,40 L-6,34 Z M4,4 L18,40 L6,34 Z" fill="#E88AA6"/>
+      <circle r="8" fill="#E88AA6"/>
+    </g>
+    <path id="corazon" d="M0,0.85 C-1.2,0 -0.9,-1 0,-0.45 C0.9,-1 1.2,0 0,0.85 Z"/>
+  </defs>
+  <rect width="1000" height="1000" fill="url(#cuadros)"/>
+
+  <!-- marco de encaje -->
+  <g fill="#FFFFFF" stroke="#F0C3CF" stroke-width="3">
+    <rect x="40" y="40" width="920" height="920" rx="20" fill="none" stroke="#E88AA6" stroke-width="4" stroke-dasharray="14 10"/>
+  </g>
+  <g fill="#FFFFFF" stroke="#EBB3C2" stroke-width="3" id="encaje">
+    <circle cx="70" cy="25" r="25"/><circle cx="130" cy="25" r="25"/><circle cx="190" cy="25" r="25"/><circle cx="250" cy="25" r="25"/><circle cx="310" cy="25" r="25"/><circle cx="370" cy="25" r="25"/><circle cx="430" cy="25" r="25"/><circle cx="490" cy="25" r="25"/><circle cx="550" cy="25" r="25"/><circle cx="610" cy="25" r="25"/><circle cx="670" cy="25" r="25"/><circle cx="730" cy="25" r="25"/><circle cx="790" cy="25" r="25"/><circle cx="850" cy="25" r="25"/><circle cx="910" cy="25" r="25"/>
+    <circle cx="70" cy="975" r="25"/><circle cx="130" cy="975" r="25"/><circle cx="190" cy="975" r="25"/><circle cx="250" cy="975" r="25"/><circle cx="310" cy="975" r="25"/><circle cx="370" cy="975" r="25"/><circle cx="430" cy="975" r="25"/><circle cx="490" cy="975" r="25"/><circle cx="550" cy="975" r="25"/><circle cx="610" cy="975" r="25"/><circle cx="670" cy="975" r="25"/><circle cx="730" cy="975" r="25"/><circle cx="790" cy="975" r="25"/><circle cx="850" cy="975" r="25"/><circle cx="910" cy="975" r="25"/>
+  </g>
+  <g fill="#F0C3CF"><circle cx="70" cy="25" r="7"/><circle cx="190" cy="25" r="7"/><circle cx="310" cy="25" r="7"/><circle cx="430" cy="25" r="7"/><circle cx="550" cy="25" r="7"/><circle cx="670" cy="25" r="7"/><circle cx="790" cy="25" r="7"/><circle cx="910" cy="25" r="7"/>
+    <circle cx="130" cy="975" r="7"/><circle cx="250" cy="975" r="7"/><circle cx="370" cy="975" r="7"/><circle cx="490" cy="975" r="7"/><circle cx="610" cy="975" r="7"/><circle cx="730" cy="975" r="7"/><circle cx="850" cy="975" r="7"/></g>
+
+  <!-- monitos en las esquinas -->
+  <use href="#monito" transform="translate(120,130) rotate(-12) scale(1.3)"/>
+  <use href="#monito" transform="translate(880,140) rotate(14) scale(1.1)"/>
+  <use href="#monito" transform="translate(110,850) rotate(10) scale(1.0)"/>
+  <use href="#monito" transform="translate(890,860) rotate(-10) scale(1.25)"/>
+  <!-- corazoncitos -->
+  <use href="#corazon" transform="translate(250,260) scale(22) rotate(-15)" fill="#E88AA6"/>
+  <use href="#corazon" transform="translate(770,280) scale(18) rotate(12)" fill="#F7B6C8"/>
+  <use href="#corazon" transform="translate(180,560) scale(16)" fill="#F7B6C8"/>
+  <use href="#corazon" transform="translate(830,600) scale(24) rotate(-8)" fill="#E88AA6"/>
+  <use href="#corazon" transform="translate(300,900) scale(14)" fill="#E88AA6"/>
+  <use href="#corazon" transform="translate(690,910) scale(18) rotate(10)" fill="#F7B6C8"/>
+
+  <!-- plato -->
+  <ellipse cx="500" cy="810" rx="300" ry="55" fill="#FFFFFF" stroke="#E7D3CF" stroke-width="5"/>
+  <ellipse cx="500" cy="800" rx="250" ry="38" fill="#FBF3F1"/>
+  <!-- pastel en forma de corazón: cuerpo -->
+  <path d="M260,560 L260,740 C260,790 740,790 740,740 L740,560 Z" fill="#FADCE3" stroke="#E88AA6" stroke-width="6"/>
+  <!-- betún de encaje en la base -->
+  <g fill="#FFFFFF" stroke="#F0C3CF" stroke-width="3">
+    <circle cx="275" cy="748" r="18"/><circle cx="310" cy="760" r="18"/><circle cx="345" cy="768" r="18"/><circle cx="380" cy="773" r="18"/><circle cx="415" cy="777" r="18"/><circle cx="450" cy="779" r="18"/><circle cx="485" cy="780" r="18"/><circle cx="520" cy="780" r="18"/><circle cx="555" cy="779" r="18"/><circle cx="590" cy="777" r="18"/><circle cx="625" cy="773" r="18"/><circle cx="660" cy="768" r="18"/><circle cx="695" cy="760" r="18"/><circle cx="728" cy="748" r="18"/>
+  </g>
+  <!-- guirnalda de betún -->
+  <path d="M265,610 Q305,660 345,615 Q385,665 425,620 Q465,668 500,622 Q535,668 575,620 Q615,665 655,615 Q695,660 735,610" fill="none" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round"/>
+  <g fill="url(#perla)" stroke="#D8C4BE" stroke-width="2"><circle cx="305" cy="652" r="9"/><circle cx="385" cy="657" r="9"/><circle cx="465" cy="660" r="9"/><circle cx="535" cy="660" r="9"/><circle cx="615" cy="657" r="9"/><circle cx="695" cy="652" r="9"/></g>
+  <!-- tapa del pastel -->
+  <ellipse cx="500" cy="560" rx="240" ry="62" fill="#FFF1F4" stroke="#E88AA6" stroke-width="6"/>
+  <!-- borde de betún arriba -->
+  <g fill="#FFFFFF" stroke="#F0C3CF" stroke-width="3">
+    <circle cx="275" cy="560" r="16"/><circle cx="300" cy="530" r="16"/><circle cx="340" cy="512" r="16"/><circle cx="385" cy="502" r="16"/><circle cx="430" cy="498" r="16"/><circle cx="475" cy="497" r="16"/><circle cx="525" cy="497" r="16"/><circle cx="570" cy="498" r="16"/><circle cx="615" cy="502" r="16"/><circle cx="660" cy="512" r="16"/><circle cx="700" cy="530" r="16"/><circle cx="725" cy="560" r="16"/>
+  </g>
+  <!-- cerezas -->
+  <g>
+    <path d="M430,560 C430,500 470,460 500,450 M570,560 C570,500 530,460 500,450" stroke="#6E8B3D" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <path d="M500,450 C520,430 555,432 565,445 C545,455 520,455 500,450 Z" fill="#8EC07C"/>
+    <circle cx="430" cy="572" r="34" fill="#D7263D"/><circle cx="570" cy="572" r="34" fill="#D7263D"/>
+    <circle cx="418" cy="560" r="9" fill="#FFFFFF" opacity="0.7"/><circle cx="558" cy="560" r="9" fill="#FFFFFF" opacity="0.7"/>
+  </g>
+  <!-- moño grande arriba -->
+  <g transform="translate(500,250)">
+    <path d="M0,0 C-90,-110 -230,-60 -200,30 C-180,95 -70,70 0,0 Z" fill="url(#liston)" stroke="#D9728F" stroke-width="6"/>
+    <path d="M0,0 C90,-110 230,-60 200,30 C180,95 70,70 0,0 Z" fill="url(#liston)" stroke="#D9728F" stroke-width="6"/>
+    <path d="M-60,-40 C-100,-60 -150,-50 -165,-10" stroke="#FCE3EA" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <path d="M60,-40 C100,-60 150,-50 165,-10" stroke="#FCE3EA" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <path d="M-15,10 L-80,170 L-48,150 L-30,185 L5,20 Z" fill="#E88AA6" stroke="#D9728F" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M15,10 L80,170 L48,150 L30,185 L-5,20 Z" fill="#E88AA6" stroke="#D9728F" stroke-width="5" stroke-linejoin="round"/>
+    <ellipse rx="34" ry="40" fill="#F7B6C8" stroke="#D9728F" stroke-width="6"/>
+  </g>
+  <!-- collar de perlas -->
+  <path d="M190,400 Q500,470 810,400" fill="none" stroke="#E7D3CF" stroke-width="2"/>
+  <g fill="url(#perla)" stroke="#D8C4BE" stroke-width="2">
+    <circle cx="190" cy="400" r="12"/><circle cx="225" cy="410" r="12"/><circle cx="260" cy="419" r="12"/><circle cx="295" cy="427" r="12"/><circle cx="330" cy="433" r="12"/><circle cx="365" cy="438" r="12"/><circle cx="400" cy="442" r="12"/>
+    <circle cx="600" cy="442" r="12"/><circle cx="635" cy="438" r="12"/><circle cx="670" cy="433" r="12"/><circle cx="705" cy="427" r="12"/><circle cx="740" cy="419" r="12"/><circle cx="775" cy="410" r="12"/><circle cx="810" cy="400" r="12"/>
+  </g>
+</svg>

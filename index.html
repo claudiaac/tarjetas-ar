@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tarjetas Sorpresa</title>
+  <meta name="description" content="Tarjetas de cumpleaños imprimibles con realidad aumentada: apuntas el celular y salen globos, confeti y la canción.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link id="fuentes" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    :root {
+      --fondo: #FFF8F3; --tarjeta: #FFFFFF; --texto: #3B2A35; --suave: #7A6672; --borde: #F0DCE3;
+      --acento: #F2557A; --acento-osc: #C2457A; --sombra: 0 10px 30px rgba(194, 69, 122, .12);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--fondo); color: var(--texto); font-family: 'Baloo 2', system-ui, sans-serif; font-size: 18px; line-height: 1.45; }
+    a { color: var(--acento-osc); }
+    .envoltura { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+
+    header { padding: 18px 0; }
+    header .envoltura { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .marca { font-weight: 800; font-size: 24px; color: var(--acento); text-decoration: none; }
+    header nav a { font-weight: 600; text-decoration: none; margin-left: 14px; }
+
+    .hero { text-align: center; padding: 28px 0 8px; }
+    .hero h1 { font-size: clamp(32px, 6vw, 56px); line-height: 1.05; margin: 0 0 12px; }
+    .hero h1 span { color: var(--acento); }
+    .hero p { color: var(--suave); max-width: 640px; margin: 0 auto 20px; font-size: 20px; }
+    .pasos-mini { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 0; padding: 0; list-style: none; }
+    .pasos-mini li { background: #fff; border: 2px solid var(--borde); border-radius: 999px; padding: 6px 16px; font-weight: 600; }
+
+    section.paso { background: var(--tarjeta); border-radius: 28px; box-shadow: var(--sombra); padding: 28px 24px; margin: 28px 0; }
+    .paso h2 { margin: 0 0 4px; font-size: 30px; display: flex; align-items: center; gap: 12px; }
+    .paso h2 .num { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--acento); color: #fff; font-size: 24px; flex: none; }
+    .paso .ayuda { color: var(--suave); margin: 0 0 18px; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+    .chip { font: inherit; font-weight: 600; font-size: 16px; border: 2px solid var(--borde); background: #fff; color: var(--texto); border-radius: 999px; padding: 4px 16px; cursor: pointer; }
+    .chip[aria-pressed="true"] { background: var(--acento); border-color: var(--acento); color: #fff; }
+
+    .rejilla { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
+    .diseno { font: inherit; text-align: left; border: 3px solid transparent; background: #fff; border-radius: 22px; padding: 10px; cursor: pointer; box-shadow: 0 4px 14px rgba(0, 0, 0, .06); transition: transform .15s, border-color .15s; color: inherit; }
+    .diseno:hover { transform: translateY(-3px); }
+    .diseno[aria-pressed="true"] { border-color: var(--acento); }
+    .diseno img { width: 100%; aspect-ratio: 1; border-radius: 14px; display: block; }
+    .diseno strong { display: block; margin-top: 8px; font-size: 19px; }
+    .diseno small { color: var(--suave); font-size: 15px; }
+    .diseno .elegido { display: none; color: var(--acento); font-weight: 800; font-size: 15px; }
+    .diseno[aria-pressed="true"] .elegido { display: inline; }
+
+    .personaliza { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+    label { display: block; font-weight: 700; margin: 0 0 4px; }
+    .campo { margin-bottom: 16px; }
+    input, textarea { width: 100%; font: inherit; font-size: 18px; border: 2px solid var(--borde); border-radius: 14px; padding: 10px 14px; background: #fff; color: var(--texto); }
+    input:focus, textarea:focus { outline: none; border-color: var(--acento); }
+    textarea { min-height: 120px; resize: vertical; }
+    .contador { float: right; font-weight: 500; color: var(--suave); font-size: 14px; }
+    .vista { background: #F7EEF1; border-radius: 22px; padding: 16px; text-align: center; }
+    .vista canvas { width: 100%; max-width: 340px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, .15); background: #fff; }
+    .lados { display: inline-flex; background: #fff; border-radius: 999px; padding: 4px; margin-bottom: 12px; }
+    .lados button { font: inherit; font-weight: 700; font-size: 15px; border: 0; background: none; padding: 4px 16px; border-radius: 999px; cursor: pointer; color: var(--suave); }
+    .lados button[aria-pressed="true"] { background: var(--acento); color: #fff; }
+
+    .resumen { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between; }
+    .resumen .precio { font-size: 40px; font-weight: 800; color: var(--acento); line-height: 1; }
+    .resumen .precio small { font-size: 18px; color: var(--suave); font-weight: 600; }
+    .acciones { display: flex; flex-wrap: wrap; gap: 12px; }
+    .boton { font: inherit; font-weight: 800; font-size: 20px; border: 0; border-radius: 999px; padding: 12px 28px; cursor: pointer; text-decoration: none; display: inline-block; }
+    .boton.principal { background: var(--acento); color: #fff; box-shadow: 0 5px 0 var(--acento-osc); }
+    .boton.principal:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--acento-osc); }
+    .boton.principal:disabled { opacity: .6; cursor: wait; }
+    .boton.secundario { background: #fff; color: var(--acento-osc); border: 3px solid var(--acento); }
+    .nota { color: var(--suave); font-size: 15px; margin: 14px 0 0; }
+
+    footer { text-align: center; color: var(--suave); padding: 10px 16px 40px; font-size: 15px; }
+
+    @media (max-width: 760px) {
+      .personaliza { grid-template-columns: 1fr; }
+      section.paso { padding: 22px 16px; border-radius: 22px; }
+      .rejilla { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .diseno strong { font-size: 16px; }
+      header nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="envoltura">
+      <a class="marca" href="#">🎈 Tarjetas Sorpresa</a>
+      <nav><a href="#paso1">Diseños</a><a href="#paso3">Personaliza</a><a href="#paso4">Descarga</a></nav>
+    </div>
+  </header>
+
+  <main class="envoltura">
+    <div class="hero">
+      <h1>Tarjetas de cumpleaños que <span>cobran vida</span> ✨</h1>
+      <p>Imprime tu tarjeta, apunta el celular al dibujo y salen globos, confeti, un pastel y la canción de cumpleaños. Sin apps.</p>
+      <ul class="pasos-mini"><li>1 · Elige tu diseño</li><li>2 · Personaliza</li><li>3 · Descarga en PDF</li></ul>
+    </div>
+
+    <section class="paso" id="paso1">
+      <h2><span class="num">1</span> Elige tu diseño</h2>
+      <p class="ayuda">Filtra por tipo y toca el que más te guste.</p>
+      <div class="chips" id="tipos" role="group" aria-label="Tipos de tarjeta"></div>
+      <div class="rejilla" id="rejilla"></div>
+    </section>
+
+    <section class="paso" id="paso3">
+      <h2><span class="num">2</span> Personaliza</h2>
+      <p class="ayuda">Así se verá tu tarjeta. El nombre va al frente; el mensaje y el código QR, atrás.</p>
+      <div class="personaliza">
+        <form id="form" autocomplete="off">
+          <div class="campo">
+            <label for="nombre">Nombre de quien cumple años <span class="contador" id="c-nombre"></span></label>
+            <input id="nombre" maxlength="24" placeholder="Ej. Miss Lulú" required>
+          </div>
+          <div class="campo">
+            <label for="mensaje">Mensaje <span class="contador" id="c-mensaje"></span></label>
+            <textarea id="mensaje" maxlength="180" placeholder="Ej. Gracias por enseñarnos con tanto cariño. ¡Que tengas un día increíble!"></textarea>
+          </div>
+          <div class="campo">
+            <label for="de">De parte de (opcional) <span class="contador" id="c-de"></span></label>
+            <input id="de" maxlength="30" placeholder="Ej. Tus alumnos de 3.º B">
+          </div>
+        </form>
+        <div class="vista">
+          <div class="lados" role="group" aria-label="Lado de la tarjeta">
+            <button type="button" data-lado="frente" aria-pressed="true">Frente</button>
+            <button type="button" data-lado="reverso" aria-pressed="false">Atrás</button>
+          </div>
+          <canvas id="vista" aria-label="Vista previa de la tarjeta"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section class="paso" id="paso4">
+      <h2><span class="num">3</span> Descarga en PDF</h2>
+      <p class="ayuda">Una hoja carta lista para imprimir, recortar y doblar.</p>
+      <div class="resumen">
+        <div>
+          <div id="resumen-diseno" style="font-weight:700"></div>
+          <div class="precio" id="precio"></div>
+        </div>
+        <div class="acciones">
+          <a class="boton secundario" id="demo" target="_blank" rel="noopener">👀 Ver la sorpresa</a>
+          <button class="boton principal" id="descargar">Descargar PDF</button>
+        </div>
+      </div>
+      <p class="nota">💳 Pago con Mercado Pago: próximamente. Por ahora la descarga es libre para probar.</p>
+      <p class="nota" id="error" role="alert"></p>
+    </section>
+  </main>
+
+  <footer>Imprime en papel mate al 100 %. La sorpresa funciona en Chrome (Android) y Safari (iPhone).</footer>
+
+  <script type="module">
+    import { DISENOS, TIPOS, PRECIO_MXN, FUENTES_URL, porId } from './js/disenos.js';
+    import { dibujarFrente, dibujarReverso, descargarPDF } from './js/tarjeta.js';
+
+    document.getElementById('fuentes').href = FUENTES_URL;
+    const $ = (id) => document.getElementById(id);
+    const estado = { tipo: 'todos', diseno: DISENOS[0].id, lado: 'frente' };
+
+    // Paso 1 y 2: tipos y diseños
+    const tipos = [['todos', 'Todos'], ...Object.entries(TIPOS)];
+    $('tipos').innerHTML = tipos.map(([id, nombre]) =>
+      `<button type="button" class="chip" data-tipo="${id}" aria-pressed="${id === 'todos'}">${nombre}</button>`).join('');
+    $('tipos').addEventListener('click', (e) => {
+      const b = e.target.closest('.chip');
+      if (!b) return;
+      estado.tipo = b.dataset.tipo;
+      document.querySelectorAll('.chip').forEach((c) => c.setAttribute('aria-pressed', c === b));
+      pintarRejilla();
+    });
+
+    function pintarRejilla() {
+      const lista = DISENOS.filter((d) => estado.tipo === 'todos' || d.tipo === estado.tipo);
+      $('rejilla').innerHTML = lista.map((d) => `
+        <button type="button" class="diseno" data-id="${d.id}" aria-pressed="${d.id === estado.diseno}">
+          <img src="disenos/${d.id}.png" alt="" loading="lazy">
+          <strong>${d.nombre}</strong>
+          <small>${TIPOS[d.tipo]} · $${PRECIO_MXN} MXN</small> <span class="elegido">✓ Elegido</span>
+        </button>`).join('');
+    }
+    $('rejilla').addEventListener('click', (e) => {
+      const b = e.target.closest('.diseno');
+      if (!b) return;
+      estado.diseno = b.dataset.id;
+      pintarRejilla();
+      actualizar();
+      $('paso3').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Paso 3: personaliza
+    const campos = ['nombre', 'mensaje', 'de'];
+    const datos = () => {
+      const nombre = $('nombre').value.trim();
+      const url = new URL('ver.html', location.href);
+      url.searchParams.set('d', estado.diseno);
+      if (nombre) url.searchParams.set('n', nombre);
+      return { nombre, mensaje: $('mensaje').value.trim(), de: $('de').value.trim(), url: url.href };
+    };
+    let pendiente;
+    campos.forEach((c) => $(c).addEventListener('input', () => {
+      clearTimeout(pendiente);
+      pendiente = setTimeout(actualizar, 200);
+    }));
+    document.querySelector('.lados').addEventListener('click', (e) => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      estado.lado = b.dataset.lado;
+      document.querySelectorAll('.lados button').forEach((x) => x.setAttribute('aria-pressed', x === b));
+      actualizar();
+    });
+
+    async function actualizar() {
+      const d = porId(estado.diseno), info = datos();
+      campos.forEach((c) => ($('c-' + c).textContent = `${$(c).value.length}/${$(c).maxLength}`));
+      if (estado.lado === 'frente') await dibujarFrente($('vista'), d, info.nombre);
+      else await dibujarReverso($('vista'), d, info);
+      $('resumen-diseno').textContent = `${d.nombre} · ${TIPOS[d.tipo]}`;
+      $('precio').innerHTML = `$${PRECIO_MXN} <small>MXN</small>`;
+      $('demo').href = info.url + '#demo';
+    }
+
+    // Paso 4: descarga
+    $('descargar').addEventListener('click', async () => {
+      if (!$('nombre').value.trim()) {
+        $('nombre').focus();
+        $('error').textContent = 'Escribe el nombre de quien cumple años 🎂';
+        $('paso3').scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+      $('error').textContent = '';
+      const b = $('descargar');
+      b.disabled = true;
+      b.textContent = 'Preparando… 🎀';
+      try {
+        await descargarPDF(porId(estado.diseno), datos());
+      } catch (e) {
+        console.error(e);
+        $('error').textContent = 'No se pudo crear el PDF. Intenta de nuevo.';
+      } finally {
+        b.disabled = false;
+        b.textContent = 'Descargar PDF';
+      }
+    });
+
+    pintarRejilla();
+    document.fonts.ready.then(actualizar);
+    actualizar();
+  </script>
+</body>
+</html>

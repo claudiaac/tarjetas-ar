@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Compilar diseños</title></head>
+<body>
+<pre id="log">Compilando…</pre>
+<script type="module">
+  // Usa ?d=kawaii,pixel para compilar solo algunos diseños.
+  const TODOS = ['kawaii', 'acuarela', 'coquette', 'cottagecore', 'pixel', 'mascotas'];
+  const pedidos = new URLSearchParams(location.search).get('d');
+  const nombres = pedidos ? pedidos.split(',') : TODOS;
+  const log = document.getElementById('log');
+  const escribir = (m) => (log.textContent += '\n' + m);
+
+  const { Compiler } = await import('https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image.prod.js');
+  for (const n of nombres) {
+    try {
+      const img = new Image();
+      img.src = `../disenos/${n}.png?t=${Date.now()}`;
+      await img.decode();
+      const compiler = new Compiler();
+      await compiler.compileImageTargets([img], () => {});
+      const datos = await compiler.exportData();
+      const r = await fetch(`/guardar?n=${n}`, { method: 'POST', body: datos });
+      escribir('OK ' + (await r.text()));
+    } catch (e) {
+      escribir('ERROR ' + n + ': ' + e);
+    }
+  }
+  escribir('LISTO');
+</script>
+</body>
+</html>
