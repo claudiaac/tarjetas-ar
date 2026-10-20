@@ -1,5 +1,7 @@
-// Dibuja el frente y el reverso de la tarjeta en canvas (125 x 175 mm a ~300 dpi)
+// Dibuja el frente y el reverso de la tarjeta o invitación en canvas (125 x 175 mm a ~300 dpi)
 // y arma el PDF carta horizontal para imprimir y doblar.
+// `datos` = { nombre, mensaje, de, url, inv } — `inv` solo existe en las invitaciones.
+import { fechaTexto, horaTexto } from './invitacion.js';
 
 export const ANCHO = 1476, ALTO = 2067;
 const ESCALA_FUENTE = { 'Press Start 2P': 0.5, 'Great Vibes': 1.2, 'Amatic SC': 1.3 };
@@ -51,12 +53,29 @@ function partirTexto(ctx, texto, max) {
   return lineas;
 }
 
+function dibujarQR(ctx, url, y0, caja) {
+  const qr = qrcode(0, 'M');
+  qr.addData(url);
+  qr.make();
+  const n = qr.getModuleCount(), x0 = (ANCHO - caja) / 2;
+  ctx.fillStyle = '#FFFFFF';
+  rectRedondo(ctx, x0, y0, caja, caja, 36);
+  ctx.fill();
+  const margen = caja / 14, celda = (caja - margen * 2) / n;
+  ctx.fillStyle = '#2B1B24';
+  for (let r = 0; r < n; r++) {
+    for (let c = 0; c < n; c++) {
+      if (qr.isDark(r, c)) ctx.fillRect(x0 + margen + c * celda, y0 + margen + r * celda, Math.ceil(celda), Math.ceil(celda));
+    }
+  }
+}
+
 function rectRedondo(ctx, x, y, w, h, r) {
   ctx.beginPath();
   ctx.roundRect(x, y, w, h, r);
 }
 
-export async function dibujarFrente(canvas, d, nombre) {
+export async function dibujarFrente(canvas, d, { nombre, inv }) {
   await cargarFuente(d);
   const img = await cargarImagen(`disenos/${d.id}.png`);
   canvas.width = ANCHO;
@@ -75,7 +94,9 @@ export async function dibujarFrente(canvas, d, nombre) {
   ctx.textAlign = 'center';
   ctx.textBaseline = 'alphabetic';
   ctx.fillStyle = d.suave;
-  lineaAjustada(ctx, d, '¡Feliz cumpleaños!', 1580, 96, 1300);
+  const arriba = !inv ? '¡Feliz cumpleaños!'
+    : inv.edad ? `Ven a celebrar los ${inv.edad} años de` : 'Ven a la fiesta de';
+  lineaAjustada(ctx, d, arriba, 1580, 96, 1300);
   ctx.fillStyle = d.tinta;
   lineaAjustada(ctx, d, nombre || 'Tu nombre', 1830, 230, 1320);
   ctx.fillStyle = d.suave;
@@ -85,7 +106,9 @@ export async function dibujarFrente(canvas, d, nombre) {
   ctx.globalAlpha = 1;
 }
 
-export async function dibujarReverso(canvas, d, { nombre, mensaje, de, url }) {
+export async function dibujarReverso(canvas, d, datos) {
+  if (datos.inv) return dibujarReversoInvitacion(canvas, d, datos);
+  const { nombre, mensaje, de, url } = datos;
   await cargarFuente(d);
   canvas.width = ANCHO;
   canvas.height = ALTO;
@@ -97,21 +120,7 @@ export async function dibujarReverso(canvas, d, { nombre, mensaje, de, url }) {
   ctx.fillStyle = d.tinta;
   lineaAjustada(ctx, d, '¡Escanéame!', 230, 120, 1200);
 
-  // código QR
-  const qr = qrcode(0, 'M');
-  qr.addData(url);
-  qr.make();
-  const n = qr.getModuleCount(), caja = 700, x0 = (ANCHO - caja) / 2, y0 = 300;
-  ctx.fillStyle = '#FFFFFF';
-  rectRedondo(ctx, x0, y0, caja, caja, 36);
-  ctx.fill();
-  const margen = 50, celda = (caja - margen * 2) / n;
-  ctx.fillStyle = '#2B1B24';
-  for (let r = 0; r < n; r++) {
-    for (let c = 0; c < n; c++) {
-      if (qr.isDark(r, c)) ctx.fillRect(x0 + margen + c * celda, y0 + margen + r * celda, Math.ceil(celda), Math.ceil(celda));
-    }
-  }
+  dibujarQR(ctx, url, 300, 700);
 
   // mensaje
   ctx.fillStyle = d.tinta;
@@ -133,10 +142,58 @@ export async function dibujarReverso(canvas, d, { nombre, mensaje, de, url }) {
   ctx.fillText('3. Apunta la cámara al dibujo del frente   🔊 sube el volumen', ANCHO / 2, 1955);
 }
 
+async function dibujarReversoInvitacion(canvas, d, { mensaje, url, inv }) {
+  await cargarFuente(d);
+  canvas.width = ANCHO;
+  canvas.height = ALTO;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = d.fondo;
+  ctx.fillRect(0, 0, ANCHO, ALTO);
+  ctx.textAlign = 'center';
+
+  ctx.fillStyle = d.tinta;
+  lineaAjustada(ctx, d, '¡Escanéame!', 190, 100, 1200);
+  dibujarQR(ctx, url, 240, 540);
+
+  // cuándo y dónde
+  const linea = (texto, y, peso, px, color) => {
+    if (!texto) return;
+    ctx.fillStyle = color;
+    let tam = px;
+    do { ctx.font = `${peso} ${tam}px "Baloo 2", sans-serif`; tam -= 4; }
+    while (ctx.measureText(texto).width > 1300 && tam > 30);
+    ctx.fillText(texto, ANCHO / 2, y);
+  };
+  const fecha = fechaTexto(inv);
+  linea(fecha && `📅 ${fecha.charAt(0).toUpperCase()}${fecha.slice(1)}`, 900, 800, 76, d.tinta);
+  linea(inv.hora && `🕔 ${horaTexto(inv)}`, 990, 800, 68, d.tinta);
+  linea(inv.lugar && `📍 ${inv.lugar}`, 1100, 700, 68, d.tinta);
+  ctx.font = `500 48px "Baloo 2", sans-serif`;
+  let y = 1170;
+  for (const l of partirTexto(ctx, inv.direccion || '', 1200).slice(0, 2)) {
+    linea(l, y, 500, 48, d.suave);
+    y += 60;
+  }
+
+  // nota (ropa, regalo, etc.)
+  if (mensaje) {
+    ctx.fillStyle = d.tinta;
+    ctx.font = `500 54px "Baloo 2", sans-serif`;
+    y = Math.max(y + 50, 1330);
+    for (const l of partirTexto(ctx, mensaje, 1200).slice(0, 3)) { ctx.fillText(l, ANCHO / 2, y); y += 70; }
+  }
+
+  // instrucciones
+  ctx.fillStyle = d.suave;
+  ctx.font = `600 38px "Baloo 2", sans-serif`;
+  ctx.fillText('Escanea el código para ver la sorpresa, el mapa' + (inv.whatsapp ? ' y confirmar' : ''), ANCHO / 2, 1900);
+  ctx.fillText('Luego apunta la cámara al dibujo del frente   🔊 sube el volumen', ANCHO / 2, 1955);
+}
+
 export async function descargarPDF(d, datos) {
   const frente = document.createElement('canvas');
   const reverso = document.createElement('canvas');
-  await dibujarFrente(frente, d, datos.nombre);
+  await dibujarFrente(frente, d, datos);
   await dibujarReverso(reverso, d, datos);
 
   const { jsPDF } = window.jspdf;
@@ -153,6 +210,6 @@ export async function descargarPDF(d, datos) {
   pdf.setTextColor(150, 150, 150);
   pdf.text('doblar aquí', x + w, y - 8, { align: 'center' });
   pdf.text('Recorta por la orilla gris e imprime al 100 % (sin "ajustar a la página").', 279.4 / 2, y + h + 10, { align: 'center' });
-  const archivo = `tarjeta-${d.id}-${(datos.nombre || 'cumple').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w]+/g, '-').replace(/^-|-$/g, '').toLowerCase()}.pdf`;
+  const archivo = `${datos.inv ? 'invitacion' : 'tarjeta'}-${d.id}-${(datos.nombre || 'cumple').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w]+/g, '-').replace(/^-|-$/g, '').toLowerCase()}.pdf`;
   pdf.save(archivo);
 }

@@ -1,17 +1,19 @@
 # 🎈 Tarjetas Sorpresa
 
-Tienda de tarjetas de cumpleaños imprimibles con realidad aumentada: el cliente elige un diseño, escribe el nombre y el mensaje, y descarga un PDF. Quien recibe la tarjeta escanea el QR, apunta el celular al dibujo y salen globos, confeti, un pastel y la canción de cumpleaños.
+Tienda de tarjetas de cumpleaños e **invitaciones a fiesta** imprimibles con realidad aumentada: el cliente elige tarjeta o invitación, un diseño, escribe el nombre y el mensaje, y descarga un PDF. Quien recibe la tarjeta escanea el QR, apunta el celular al dibujo y salen globos, confeti, un pastel y la canción de cumpleaños.
 
 - **Tienda:** https://claudiaac.github.io/tarjetas-ar/
+- **Invitaciones:** https://claudiaac.github.io/tarjetas-ar/#invitacion
 - **Ejemplo de sorpresa:** https://claudiaac.github.io/tarjetas-ar/ver.html?d=kawaii&n=Ana#demo
 
 ## Cómo funciona
 | Archivo | Para qué sirve |
 |---|---|
 | `index.html` | La tienda: 1) elige diseño, 2) personaliza, 3) descarga en PDF |
-| `ver.html` | Lo que abre el QR. Lee `?d=<diseño>&n=<nombre>` y muestra la sorpresa con la cámara (o `#demo` sin cámara) |
+| `ver.html` | Lo que abre el QR. Lee `?d=<diseño>&n=<nombre>` y muestra la sorpresa con la cámara (o `#demo` sin cámara). En invitaciones (`t=inv`) también muestra fecha, lugar y botones de mapa, calendario y confirmar por WhatsApp |
 | `js/disenos.js` | Catálogo: nombre, tipo, colores, letra y **precio** (`PRECIO_MXN`) |
-| `js/tarjeta.js` | Dibuja el frente y el reverso y arma el PDF |
+| `js/tarjeta.js` | Dibuja el frente y el reverso (de tarjeta o invitación) y arma el PDF |
+| `js/invitacion.js` | Datos de la invitación en la URL del QR y ligas de mapa, calendario y WhatsApp |
 | `js/fiesta.js` | Globos, confeti, pastel y canción |
 | `disenos/<id>.svg/.png/.mind` | El dibujo, su imagen y el archivo con el que la cámara lo reconoce |
 

@@ -51,6 +51,25 @@
     body.tarjeta #escena { display: block; }
     #escena img { position: absolute; inset: 0; width: 1000px; height: 1000px; border-radius: 40px; box-shadow: 0 30px 80px rgba(0, 0, 0, .25); animation: aparecer 1s cubic-bezier(.2, 1.4, .4, 1) both; }
     @keyframes aparecer { from { transform: scale(.15) rotate(-14deg); opacity: 0; } to { transform: none; opacity: 1; } }
+    /* invitaciones: cuándo, dónde y botones */
+    #info {
+      position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 11; display: none;
+      width: min(94vw, 440px); background: rgba(255, 255, 255, .95); border-radius: 22px; padding: 10px 12px 12px;
+      text-align: center; box-shadow: 0 6px 24px rgba(0, 0, 0, .18); color: var(--tinta);
+    }
+    body.invitacion #info { display: block; }
+    body.invitacion #inicio { padding-bottom: 170px; }
+    #info .cuando { font-weight: 800; font-size: 18px; line-height: 1.2; }
+    #info .donde { color: var(--suave); font-size: 15px; line-height: 1.25; margin-top: 2px; }
+    #info .botones { display: flex; gap: 8px; justify-content: center; margin-top: 10px; }
+    #info a {
+      flex: 1; font-weight: 800; font-size: 15px; text-decoration: none; color: var(--tinta); background: #fff;
+      border: 2px solid var(--tinta); border-radius: 999px; padding: 6px 4px; white-space: nowrap;
+    }
+    #info a.confirmar { background: var(--tinta); color: #fff; }
+    #info a[hidden] { display: none; }
+    body.invitacion #repetir { bottom: 160px; }
+
     #repetir { position: fixed; left: 0; right: 0; bottom: 18px; text-align: center; color: var(--suave); font-size: 16px; font-weight: 600; display: none; }
     body.tarjeta #repetir { display: block; }
   </style>
@@ -61,7 +80,7 @@
   <div id="inicio">
     <img id="miniatura" alt="">
     <h1 id="saludo">¡Una sorpresa para ti!</h1>
-    <p>Toca el botón, permite usar la cámara y apunta al dibujo de tu tarjeta 💖</p>
+    <p id="instrucciones">Toca el botón, permite usar la cámara y apunta al dibujo de tu tarjeta 💖</p>
     <button id="btn">¡Abrir sorpresa! ✨</button>
     <p id="error"></p>
     <button id="sin-camara">o verla sin cámara</button>
@@ -71,13 +90,25 @@
   <div id="escena"></div>
   <div id="repetir">Toca la tarjeta para repetir 🎶</div>
 
+  <div id="info">
+    <div class="cuando" id="cuando"></div>
+    <div class="donde" id="donde"></div>
+    <div class="botones">
+      <a id="mapa" target="_blank" rel="noopener">📍 Cómo llegar</a>
+      <a id="agendar" target="_blank" rel="noopener">📅 Agendar</a>
+      <a id="confirmar" class="confirmar" target="_blank" rel="noopener">💌 Confirmar</a>
+    </div>
+  </div>
+
   <script type="module">
     import { porId, FUENTES_URL } from './js/disenos.js';
     import { crearFiesta, reiniciar, crearCancion } from './js/fiesta.js';
+    import { deParametros, fechaTexto, horaTexto, ligaMapa, ligaCalendario, ligaConfirmar } from './js/invitacion.js';
 
     const params = new URLSearchParams(location.search);
     const diseno = porId(params.get('d'));
     const nombre = (params.get('n') || '').slice(0, 24);
+    const inv = deParametros(params);
 
     document.getElementById('fuentes').href = FUENTES_URL;
     const raiz = document.documentElement.style;
@@ -85,19 +116,35 @@
     raiz.setProperty('--tinta', diseno.tinta);
     raiz.setProperty('--suave', diseno.suave);
     document.getElementById('miniatura').src = `disenos/${diseno.id}.png`;
-    if (nombre) {
+    if (inv) {
+      const saludo = nombre ? `¡${nombre} te invita a su fiesta!` : '¡Estás invitado a una fiesta!';
+      document.getElementById('saludo').textContent = saludo;
+      document.title = saludo;
+      document.body.classList.add('invitacion');
+      document.getElementById('instrucciones').textContent = 'Toca el botón, permite usar la cámara y apunta al dibujo de tu invitación 💖';
+      const $ = (id) => document.getElementById(id);
+      $('cuando').textContent = [fechaTexto(inv), horaTexto(inv)].filter(Boolean).join(' · ');
+      $('donde').textContent = [inv.lugar, inv.direccion].filter(Boolean).join(' · ');
+      $('mapa').href = ligaMapa(inv);
+      $('mapa').hidden = !inv.lugar && !inv.direccion;
+      $('agendar').href = ligaCalendario(inv);
+      $('agendar').hidden = !inv.fecha;
+      $('confirmar').href = ligaConfirmar(inv);
+      $('confirmar').hidden = !inv.whatsapp;
+    } else if (nombre) {
       document.getElementById('saludo').textContent = `¡Una sorpresa para ${nombre}!`;
       document.title = `¡Feliz cumpleaños, ${nombre}!`;
     }
 
-    const fiesta = crearFiesta(diseno, nombre);
+    const titulo = inv && (nombre ? `¡Ven a la fiesta de ${nombre}!` : '¡Ven a mi fiesta!');
+    const fiesta = crearFiesta(diseno, nombre, titulo);
     let cantar = null;
     const mostrar = () => { reiniciar(fiesta); cantar?.(); };
 
     // Sin cámara: la tarjeta animada en la pantalla
     const escena = document.getElementById('escena');
     function ajustar() {
-      const alto = innerHeight - 60;
+      const alto = innerHeight - (inv ? 180 : 60);
       const s = Math.min(innerWidth / 1400, alto / 1500);
       escena.style.transform = `scale(${s})`;
       escena.style.top = `${(alto - 1400 * s) / 2 + 380 * s}px`;

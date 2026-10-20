@@ -31,7 +31,7 @@ const ESTILOS = `
   }
 `;
 
-export function crearFiesta(diseno, nombre) {
+export function crearFiesta(diseno, nombre, texto) {
   if (!document.getElementById('estilos-fiesta')) {
     const st = document.createElement('style');
     st.id = 'estilos-fiesta';
@@ -47,7 +47,7 @@ export function crearFiesta(diseno, nombre) {
   titulo.style.fontFamily = `'${diseno.fuente}', sans-serif`;
   titulo.style.fontWeight = diseno.peso;
   if (diseno.fuente === 'Press Start 2P') titulo.style.fontSize = '80px';
-  titulo.textContent = nombre ? `¡Feliz cumpleaños, ${nombre}!` : '¡Feliz cumpleaños!';
+  titulo.textContent = texto || (nombre ? `¡Feliz cumpleaños, ${nombre}!` : '¡Feliz cumpleaños!');
   el.appendChild(titulo);
 
   const pastel = document.createElement('div');
