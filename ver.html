@@ -58,9 +58,11 @@
       text-align: center; box-shadow: 0 6px 24px rgba(0, 0, 0, .18); color: var(--tinta);
     }
     body.invitacion #info { display: block; }
-    body.invitacion #inicio { padding-bottom: 170px; }
+    body.invitacion #inicio { padding-bottom: calc(var(--alto-info, 150px) + 20px); }
     #info .cuando { font-weight: 800; font-size: 18px; line-height: 1.2; }
     #info .donde { color: var(--suave); font-size: 15px; line-height: 1.25; margin-top: 2px; }
+    #info .nota { color: var(--tinta); font-size: 15px; line-height: 1.25; margin-top: 4px; }
+    #info .nota:empty { display: none; }
     #info .botones { display: flex; gap: 8px; justify-content: center; margin-top: 10px; }
     #info a {
       flex: 1; font-weight: 800; font-size: 15px; text-decoration: none; color: var(--tinta); background: #fff;
@@ -68,7 +70,7 @@
     }
     #info a.confirmar { background: var(--tinta); color: #fff; }
     #info a[hidden] { display: none; }
-    body.invitacion #repetir { bottom: 160px; }
+    body.invitacion #repetir { bottom: calc(var(--alto-info, 150px) + 10px); }
 
     #repetir { position: fixed; left: 0; right: 0; bottom: 18px; text-align: center; color: var(--suave); font-size: 16px; font-weight: 600; display: none; }
     body.tarjeta #repetir { display: block; }
@@ -93,6 +95,7 @@
   <div id="info">
     <div class="cuando" id="cuando"></div>
     <div class="donde" id="donde"></div>
+    <div class="nota" id="nota"></div>
     <div class="botones">
       <a id="mapa" target="_blank" rel="noopener">📍 Cómo llegar</a>
       <a id="agendar" target="_blank" rel="noopener">📅 Agendar</a>
@@ -125,6 +128,7 @@
       const $ = (id) => document.getElementById(id);
       $('cuando').textContent = [fechaTexto(inv), horaTexto(inv)].filter(Boolean).join(' · ');
       $('donde').textContent = [inv.lugar, inv.direccion].filter(Boolean).join(' · ');
+      $('nota').textContent = inv.nota ? `📝 ${inv.nota}` : '';
       $('mapa').href = ligaMapa(inv);
       $('mapa').hidden = !inv.lugar && !inv.direccion;
       $('agendar').href = ligaCalendario(inv);
@@ -144,7 +148,10 @@
     // Sin cámara: la tarjeta animada en la pantalla
     const escena = document.getElementById('escena');
     function ajustar() {
-      const alto = innerHeight - (inv ? 180 : 60);
+      // la caja de la invitación cambia de alto según la nota y el ancho de la pantalla
+      const altoInfo = inv ? document.getElementById('info').offsetHeight : 0;
+      raiz.setProperty('--alto-info', `${altoInfo}px`);
+      const alto = innerHeight - (inv ? altoInfo + 30 : 60);
       const s = Math.min(innerWidth / 1400, alto / 1500);
       escena.style.transform = `scale(${s})`;
       escena.style.top = `${(alto - 1400 * s) / 2 + 380 * s}px`;
@@ -159,6 +166,8 @@
       setTimeout(mostrar, 700);
     }
     addEventListener('resize', ajustar);
+    ajustar();
+    document.fonts.ready.then(ajustar);
     escena.addEventListener('click', mostrar);
     document.getElementById('sin-camara').addEventListener('click', abrirTarjeta);
     if (location.hash === '#demo') abrirTarjeta();

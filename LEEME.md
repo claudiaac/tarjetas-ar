@@ -10,7 +10,7 @@ Tienda de tarjetas de cumpleaños e **invitaciones a fiesta** imprimibles con re
 | Archivo | Para qué sirve |
 |---|---|
 | `index.html` | La tienda: 1) elige diseño, 2) personaliza, 3) descarga en PDF |
-| `ver.html` | Lo que abre el QR. Lee `?d=<diseño>&n=<nombre>` y muestra la sorpresa con la cámara (o `#demo` sin cámara). En invitaciones (`t=inv`) también muestra fecha, lugar y botones de mapa, calendario y confirmar por WhatsApp |
+| `ver.html` | Lo que abre el QR. Lee `?d=<diseño>&n=<nombre>` y muestra la sorpresa con la cámara (o `#demo` sin cámara). En invitaciones (`t=inv`) también muestra fecha, lugar, nota y botones de mapa, calendario y confirmar por WhatsApp |
 | `js/disenos.js` | Catálogo: nombre, tipo, colores, letra y **precio** (`PRECIO_MXN`) |
 | `js/tarjeta.js` | Dibuja el frente y el reverso (de tarjeta o invitación) y arma el PDF |
 | `js/invitacion.js` | Datos de la invitación en la URL del QR y ligas de mapa, calendario y WhatsApp |
