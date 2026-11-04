@@ -69,6 +69,8 @@ export const DISENOS = [
     mensaje: '01010011 01100001 01101100 01101101 01101111 00100000 00110010 00110000 00111010 00110101',
     descripcion: 'Una laptop que dice "Happy Birthday" en código binario, sobre fondo negro.',
     fondo: '#000000', tinta: '#FFFFFF', suave: '#B5B5B5',
+    // contorno del título de la sorpresa: blanco sobre letra blanca rellenaba los huecos de la "m"
+    contorno: '#000000',
     fuente: 'Share Tech Mono', peso: 400, confeti: ['#FFFFFF', '#39FF14', '#00E5FF', '#B5B5B5', '#7CFC00'],
   },
   {
