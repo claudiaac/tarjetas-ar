@@ -125,7 +125,7 @@ export async function dibujarReverso(canvas, d, datos) {
   // mensaje
   ctx.fillStyle = d.tinta;
   ctx.font = `500 60px "Baloo 2", sans-serif`;
-  const texto = mensaje || `Que este día esté lleno de alegría, ${nombre || 'amiga'}. 💖`;
+  const texto = mensaje || d.mensaje || `Que este día esté lleno de alegría, ${nombre || 'amiga'}. 💖`;
   const lineas = partirTexto(ctx, texto, 1200).slice(0, 6);
   let y = 1140;
   for (const l of lineas) { ctx.fillText(l, ANCHO / 2, y); y += 78; }
