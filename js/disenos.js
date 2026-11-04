@@ -11,6 +11,7 @@ export const TIPOS = {
   cottagecore: 'Cottagecore',
   pixel: 'Pixel art',
   mascotas: 'Mascotas chibi',
+  geek: 'Geek',
 };
 
 export const DISENOS = [
@@ -50,11 +51,23 @@ export const DISENOS = [
     fondo: '#E6F7F0', tinta: '#3FA48E', suave: '#5E8C7E',
     fuente: 'Fredoka', peso: 600, confeti: ['#FF7FA3', '#FFD166', '#7FD4F5', '#B69CFF', '#FFB347'],
   },
+  {
+    id: 'geek-oscuro', tipo: 'geek', nombre: 'Laptop binaria (oscura)',
+    descripcion: 'Una laptop que dice "Happy Birthday" en código binario, sobre fondo negro.',
+    fondo: '#000000', tinta: '#FFFFFF', suave: '#B5B5B5',
+    fuente: 'Share Tech Mono', peso: 400, confeti: ['#FFFFFF', '#39FF14', '#00E5FF', '#B5B5B5', '#7CFC00'],
+  },
+  {
+    id: 'geek-claro', tipo: 'geek', nombre: 'Laptop binaria (clara)',
+    descripcion: 'Una laptop que dice "Happy Birthday" en código binario, sobre fondo blanco.',
+    fondo: '#FFFFFF', tinta: '#000000', suave: '#555555',
+    fuente: 'Share Tech Mono', peso: 400, confeti: ['#000000', '#1DB954', '#0091EA', '#888888', '#39FF14'],
+  },
 ];
 
 export const FUENTES_URL =
   'https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Baloo+2:wght@600;800' +
-  '&family=Fredoka:wght@500;600&family=Great+Vibes&family=Press+Start+2P' +
+  '&family=Fredoka:wght@500;600&family=Great+Vibes&family=Press+Start+2P&family=Share+Tech+Mono' +
   '&family=Zen+Maru+Gothic:wght@500;700&display=swap';
 
 export const porId = (id) => DISENOS.find((d) => d.id === id) || DISENOS[0];
