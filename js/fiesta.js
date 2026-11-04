@@ -46,6 +46,7 @@ export function crearFiesta(diseno, nombre, texto) {
   titulo.style.color = diseno.tinta;
   titulo.style.fontFamily = `'${diseno.fuente}', sans-serif`;
   titulo.style.fontWeight = diseno.peso;
+  if (diseno.contorno) titulo.style.webkitTextStroke = `16px ${diseno.contorno}`;
   if (diseno.fuente === 'Press Start 2P') titulo.style.fontSize = '80px';
   titulo.textContent = texto || (nombre ? `¡Feliz cumpleaños, ${nombre}!` : '¡Feliz cumpleaños!');
   el.appendChild(titulo);
