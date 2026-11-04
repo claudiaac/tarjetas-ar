@@ -67,6 +67,9 @@ export const DISENOS = [
     id: 'geek-oscuro', tipo: 'geek', nombre: 'Laptop binaria (oscura)',
     // mensaje del reverso si el cliente no escribe uno: "Salmo 20:5" en binario
     mensaje: '01010011 01100001 01101100 01101101 01101111 00100000 00110010 00110000 00111010 00110101',
+    // la sorpresa traduce el binario de la pantalla: cada texto aparece primero en binario
+    descifrar: ['Happy Birthday', 'Salmo 20:5'],
+    versiculo: 'Nosotros nos alegraremos en tu salvación, y alzaremos pendón en el nombre de nuestro Dios; conceda Jehová todas tus peticiones.',
     descripcion: 'Una laptop que dice "Happy Birthday" en código binario, sobre fondo negro.',
     fondo: '#000000', tinta: '#FFFFFF', suave: '#B5B5B5',
     fuente: 'Share Tech Mono', peso: 400, confeti: ['#FFFFFF', '#39FF14', '#00E5FF', '#B5B5B5', '#7CFC00'],
@@ -75,6 +78,8 @@ export const DISENOS = [
     id: 'geek-claro', tipo: 'geek', nombre: 'Laptop binaria (clara)',
     // mensaje del reverso si el cliente no escribe uno: "Psalm 20:5" en binario
     mensaje: '01010000 01110011 01100001 01101100 01101101 00100000 00110010 00110000 00111010 00110101',
+    descifrar: ['Happy Birthday', 'Psalm 20:5'],
+    versiculo: 'We will rejoice in thy salvation, and in the name of our God we will set up our banners: the Lord fulfil all thy petitions.',
     descripcion: 'Una laptop que dice "Happy Birthday" en código binario, sobre fondo blanco.',
     fondo: '#FFFFFF', tinta: '#000000', suave: '#555555',
     fuente: 'Share Tech Mono', peso: 400, confeti: ['#000000', '#1DB954', '#0091EA', '#888888', '#39FF14'],
