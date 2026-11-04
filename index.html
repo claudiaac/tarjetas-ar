@@ -275,6 +275,7 @@
         inv = {
           nombre, edad: $('edad').value.replace(/\D/g, ''), fecha: $('fecha').value, hora: $('hora').value,
           lugar: $('lugar').value.trim(), direccion: $('direccion').value.trim(), whatsapp,
+          nota: $('mensaje').value.trim(),
         };
         aParametros(url, inv);
       } else if (nombre) {
@@ -316,6 +317,12 @@
         $('paso3').scrollIntoView({ behavior: 'smooth' });
         return;
       }
+      if (esInvitacion() && $('fecha').value < hoy()) {
+        $('fecha').focus();
+        $('error').textContent = 'La fecha de la fiesta ya pasó, elige otra 📅';
+        $('paso3').scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
       $('error').textContent = '';
       const b = $('descargar');
       b.disabled = true;
@@ -330,6 +337,13 @@
         b.textContent = 'Descargar PDF';
       }
     });
+
+    // AAAA-MM-DD de hoy en la hora local (toISOString daría la fecha en UTC)
+    const hoy = () => {
+      const d = new Date(), p = (x) => String(x).padStart(2, '0');
+      return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+    };
+    $('fecha').min = hoy();
 
     pintarRejilla();
     document.fonts.ready.then(actualizar);
