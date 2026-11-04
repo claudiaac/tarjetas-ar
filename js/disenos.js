@@ -28,6 +28,18 @@ export const DISENOS = [
     fuente: 'Zen Maru Gothic', peso: 700, confeti: ['#F28C8C', '#F7D37A', '#8EC5F0', '#9ACB7A', '#FFFFFF'],
   },
   {
+    id: 'picnic-cachorro', tipo: 'acuarela', nombre: 'Picnic en la colina: cachorro',
+    descripcion: 'Un cachorro con paliacate de picnic en la colina, con fresas, sándwiches y limonada.',
+    fondo: '#F7EFE3', tinta: '#3D5A80', suave: '#6F8BA8',
+    fuente: 'Zen Maru Gothic', peso: 700, confeti: ['#F28C8C', '#F7D37A', '#8EC5F0', '#9ACB7A', '#FFFFFF'],
+  },
+  {
+    id: 'picnic-gato', tipo: 'acuarela', nombre: 'Picnic en la colina: gatito',
+    descripcion: 'Un gatito calicó con paliacate de picnic en la colina, con fresas, sándwiches y limonada.',
+    fondo: '#F7EFE3', tinta: '#3D5A80', suave: '#6F8BA8',
+    fuente: 'Zen Maru Gothic', peso: 700, confeti: ['#F28C8C', '#F7D37A', '#8EC5F0', '#9ACB7A', '#FFFFFF'],
+  },
+  {
     id: 'coquette', tipo: 'coquette', nombre: 'Moño y cerezas',
     descripcion: 'Pastel con cerezas, perlas, encaje y un gran moño rosa.',
     fondo: '#FFF7F2', tinta: '#D9728F', suave: '#B5768A',

@@ -5,7 +5,7 @@
 <pre id="log">Compilando…</pre>
 <script type="module">
   // Usa ?d=kawaii,pixel para compilar solo algunos diseños.
-  const TODOS = ['kawaii', 'acuarela', 'coquette', 'cottagecore', 'pixel', 'mascotas', 'geek-oscuro', 'geek-claro'];
+  const TODOS = ['kawaii', 'acuarela', 'coquette', 'cottagecore', 'pixel', 'mascotas', 'picnic-cachorro', 'picnic-gato', 'geek-oscuro', 'geek-claro'];
   const pedidos = new URLSearchParams(location.search).get('d');
   const nombres = pedidos ? pedidos.split(',') : TODOS;
   const log = document.getElementById('log');

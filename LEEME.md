@@ -10,7 +10,7 @@ Tienda de tarjetas de cumpleaños e **invitaciones a fiesta** imprimibles con re
 | Archivo | Para qué sirve |
 |---|---|
 | `index.html` | La tienda: 1) elige diseño, 2) personaliza, 3) descarga en PDF |
-| `ver.html` | Lo que abre el QR. Lee `?d=<diseño>&n=<nombre>` y muestra la sorpresa con la cámara (o `#demo` sin cámara). En invitaciones (`t=inv`) también muestra fecha, lugar y botones de mapa, calendario y confirmar por WhatsApp |
+| `ver.html` | Lo que abre el QR. Lee `?d=<diseño>&n=<nombre>` y muestra la sorpresa con la cámara (o `#demo` sin cámara). En invitaciones (`t=inv`) también muestra fecha, lugar, nota y botones de mapa, calendario y confirmar por WhatsApp |
 | `js/disenos.js` | Catálogo: nombre, tipo, colores, letra y **precio** (`PRECIO_MXN`) |
 | `js/tarjeta.js` | Dibuja el frente y el reverso (de tarjeta o invitación) y arma el PDF |
 | `js/invitacion.js` | Datos de la invitación en la URL del QR y ligas de mapa, calendario y WhatsApp |
@@ -21,7 +21,7 @@ La cámara reconoce **solo el dibujo** (la parte cuadrada de arriba). El nombre 
 
 ## Agregar un diseño nuevo
 1. Dibuja `disenos/<id>.svg` de 1000 × 1000 con mucho detalle y contraste (a la cámara le cuesta reconocer zonas lisas).
-2. `powershell -File herramientas\render.ps1 <id>` → genera `disenos/<id>.png`.
+2. `powershell -File herramientas\render.ps1 <id>` → genera `disenos/<id>.png`. Si el dibujo ya es una imagen (como `picnic-cachorro` y `picnic-gato`), basta con guardarla como `disenos/<id>.png` cuadrada de 1000 × 1000.
 3. `python herramientas/servidor.py` y abre `http://127.0.0.1:8766/herramientas/compilar.html?d=<id>` → genera `disenos/<id>.mind`.
 4. Agrégalo en `js/disenos.js`.
 
