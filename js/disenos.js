@@ -72,6 +72,8 @@ export const DISENOS = [
     versiculo: 'Nosotros nos alegraremos en tu salvación, y alzaremos pendón en el nombre de nuestro Dios; conceda Jehová todas tus peticiones.',
     descripcion: 'Una laptop que dice "Happy Birthday" en código binario, sobre fondo negro.',
     fondo: '#000000', tinta: '#FFFFFF', suave: '#B5B5B5',
+    // contorno del título de la sorpresa: blanco sobre letra blanca rellenaba los huecos de la "m"
+    contorno: '#000000',
     fuente: 'Share Tech Mono', peso: 400, confeti: ['#FFFFFF', '#39FF14', '#00E5FF', '#B5B5B5', '#7CFC00'],
   },
   {
