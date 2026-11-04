@@ -15,6 +15,7 @@ Tienda de tarjetas de cumpleaños e **invitaciones a fiesta** imprimibles con re
 | `js/tarjeta.js` | Dibuja el frente y el reverso (de tarjeta o invitación) y arma el PDF |
 | `js/invitacion.js` | Datos de la invitación en la URL del QR y ligas de mapa, calendario y WhatsApp |
 | `js/fiesta.js` | Globos, confeti, pastel y canción |
+| `js/idioma.js` | Español e inglés: textos de la tienda, de la tarjeta y de la sorpresa, y los nombres de los diseños en inglés |
 | `disenos/<id>.svg/.png/.mind` | El dibujo, su imagen y el archivo con el que la cámara lo reconoce |
 
 La cámara reconoce **solo el dibujo** (la parte cuadrada de arriba). El nombre se imprime debajo y el mensaje va atrás, por eso cada diseño necesita un solo archivo `.mind`, sin importar cuántas tarjetas se vendan.
@@ -24,6 +25,10 @@ La cámara reconoce **solo el dibujo** (la parte cuadrada de arriba). El nombre 
 2. `powershell -File herramientas\render.ps1 <id>` → genera `disenos/<id>.png`. Si el dibujo ya es una imagen (como `picnic-cachorro` y `picnic-gato`), basta con guardarla como `disenos/<id>.png` cuadrada de 1000 × 1000.
 3. `python herramientas/servidor.py` y abre `http://127.0.0.1:8766/herramientas/compilar.html?d=<id>` → genera `disenos/<id>.mind`.
 4. Agrégalo en `js/disenos.js`.
+5. Ponle su nombre y descripción en inglés en `DISENOS_EN` de `js/idioma.js` (si falta, en inglés sale el nombre en español).
+
+## Inglés
+El botón **ES / EN** de la tienda cambia el idioma; la primera vez se elige según el idioma del navegador. Liga directa a la tienda en inglés: `?lang=en`. Las tarjetas hechas en inglés llevan `lang=en` en el QR, así la sorpresa, el calendario y el WhatsApp de confirmar salen en inglés. En inglés, un WhatsApp de 10 dígitos sin lada se toma como de EE. UU. o Canadá (+1), y el calendario usa la zona horaria de quien compra.
 
 ## Pendiente
 - **Cobro con Mercado Pago.** Para que nadie descargue sin pagar hace falta un servidor pequeño que confirme el pago (por ejemplo, una función en Netlify o Vercel). GitHub Pages solo sirve páginas estáticas.
