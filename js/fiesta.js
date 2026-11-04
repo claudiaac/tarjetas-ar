@@ -26,10 +26,21 @@ const ESTILOS = `
   .fiesta .pantalla .linea { font-size: 64px; line-height: 1.1; word-break: break-word; }
   .fiesta .pantalla .linea.binario { font-size: 36px; line-height: 1.35; }
   .fiesta .pantalla .linea b { color: #1DB954; font-weight: 400; }
-  .fiesta .pantalla .verso { font-size: 36px; line-height: 1.3; }
-  .fiesta .pantalla .cursor { animation: f-parpadeo .8s steps(1) infinite; }
+  /* lluvia estilo Matrix: columnas de 0 y 1 que caen */
+  .fiesta .lluvia {
+    position: absolute; overflow: hidden; opacity: 0;
+    -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent); mask-image: linear-gradient(to bottom, #000 80%, transparent);
+  }
+  .fiesta.show .lluvia { animation: f-aparecer .6s ease-out both; }
+  .fiesta .columna {
+    position: absolute; top: 0; width: 44px; text-align: center; font: 40px/44px 'Share Tech Mono', monospace;
+    color: var(--lluvia); text-shadow: 0 0 8px var(--lluvia); white-space: pre; transform: translateY(-100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 75%); mask-image: linear-gradient(to bottom, transparent, #000 75%);
+  }
+  .fiesta .columna::after { content: attr(data-punta); display: block; filter: brightness(1.6); }
+  .fiesta.show .columna { animation: f-caer var(--dur) linear var(--delay) infinite; }
+  @keyframes f-caer { from { transform: translateY(-100%); } to { transform: translateY(var(--alto)); } }
   @keyframes f-aparecer { from { opacity: 0; } to { opacity: 1; } }
-  @keyframes f-parpadeo { 50% { opacity: 0; } }
   @keyframes f-pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
   @keyframes f-menear { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
   @keyframes f-brinco { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-24px); } }
@@ -54,6 +65,13 @@ export function crearFiesta(diseno, nombre, texto) {
   }
   const el = document.createElement('div');
   el.className = 'fiesta';
+
+  if (diseno.lluvia) {
+    // a los lados y arriba de la laptop, para no tapar el dibujo
+    for (const [x, y, ancho, alto] of [[-310, -420, 300, 1500], [1010, -420, 300, 1500], [-10, -420, 1020, 410]]) {
+      el.appendChild(crearLluvia(el, diseno.lluvia, x, y, ancho, alto));
+    }
+  }
 
   const titulo = document.createElement('div');
   titulo.className = 'titulo';
@@ -105,11 +123,46 @@ export function reiniciar(el) {
   el.alMostrar?.();
 }
 
+const bit = () => (Math.random() < 0.5 ? '0' : '1');
+
+// Columnas de 0 y 1 cayendo; mientras se ve la sorpresa, algunos dígitos cambian solos.
+function crearLluvia(el, color, x0, y0, ancho, alto) {
+  const lluvia = document.createElement('div');
+  lluvia.className = 'lluvia';
+  Object.assign(lluvia.style, { left: x0 + 'px', top: y0 + 'px', width: ancho + 'px', height: alto + 'px' });
+  lluvia.style.setProperty('--lluvia', color);
+  lluvia.style.setProperty('--alto', alto + 'px');
+  const columnas = [];
+  for (let x = 2; x + 44 <= ancho; x += 48) {
+    const c = document.createElement('div');
+    c.className = 'columna';
+    c.style.left = x + 'px';
+    const largo = 8 + Math.floor(Math.random() * 14);
+    c.textContent = Array.from({ length: largo }, bit).join('\n');
+    c.dataset.punta = bit();
+    c.style.setProperty('--dur', ((alto / 1500) * (3 + Math.random() * 4) + 1).toFixed(1) + 's');
+    c.style.setProperty('--delay', (-Math.random() * 6).toFixed(1) + 's');
+    columnas.push(c);
+    lluvia.appendChild(c);
+  }
+  setInterval(() => {
+    if (!el.classList.contains('show') || document.hidden) return;
+    for (let i = 0; i < 6; i++) {
+      const c = columnas[Math.floor(Math.random() * columnas.length)];
+      const d = c.textContent.split('\n');
+      d[Math.floor(Math.random() * d.length)] = bit();
+      c.textContent = d.join('\n');
+      c.dataset.punta = bit();
+    }
+  }, 120);
+  return lluvia;
+}
+
 const binario = (texto) => [...texto].map((c) => c.charCodeAt(0).toString(2).padStart(8, '0'));
 const esperar = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // Pantalla de la laptop: cada texto de diseno.descifrar se muestra en binario y se traduce
-// byte por byte; al final aparece el versículo tecleado.
+// byte por byte.
 function crearPantalla(diseno, el) {
   const pantalla = document.createElement('div');
   pantalla.className = 'pantalla';
@@ -136,21 +189,6 @@ function crearPantalla(diseno, el) {
     return true;
   }
 
-  async function teclear(texto, yo) {
-    const verso = document.createElement('div');
-    verso.className = 'verso';
-    const cursor = document.createElement('span');
-    cursor.className = 'cursor';
-    cursor.textContent = '▌';
-    pantalla.appendChild(verso);
-    for (let i = 1; i <= texto.length; i++) {
-      if (yo !== turno) return;
-      verso.textContent = texto.slice(0, i);
-      verso.appendChild(cursor);
-      await esperar(35);
-    }
-  }
-
   el.alMostrar = async () => {
     const yo = ++turno;
     pantalla.textContent = '';
@@ -163,7 +201,6 @@ function crearPantalla(diseno, el) {
       pantalla.textContent = '';
       if (!(await traducir(texto, yo))) return;
     }
-    if (diseno.versiculo) await teclear(diseno.versiculo, yo);
   };
   return pantalla;
 }
