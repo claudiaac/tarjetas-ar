@@ -213,9 +213,10 @@
 
   <script type="module">
     import { DISENOS, TIPOS, PRECIO_MXN, FUENTES_URL, porId } from './js/disenos.js';
+    import { dibujo } from './js/idioma.js';
     import { dibujarFrente, dibujarReverso, descargarPDF } from './js/tarjeta.js';
     import { aParametros } from './js/invitacion.js';
-    import { IDIOMAS, idiomaInicial, guardarIdioma, textos, nombreDiseno, nombreTipo, dibujo, TIENDA_EN } from './js/idioma.js';
+    import { IDIOMAS, idiomaInicial, guardarIdioma, textos, nombreDiseno, nombreTipo, TIENDA_EN } from './js/idioma.js';
 
     document.getElementById('fuentes').href = FUENTES_URL;
     const $ = (id) => document.getElementById(id);

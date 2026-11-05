@@ -105,9 +105,10 @@
 
   <script type="module">
     import { porId, FUENTES_URL } from './js/disenos.js';
+    import { dibujo } from './js/idioma.js';
     import { crearFiesta, reiniciar, crearCancion } from './js/fiesta.js';
     import { deParametros, fechaTexto, horaTexto, ligaMapa, ligaCalendario, ligaConfirmar } from './js/invitacion.js';
-    import { textos, dibujo } from './js/idioma.js';
+    import { textos } from './js/idioma.js';
 
     const params = new URLSearchParams(location.search);
     // la sorpresa sale en el idioma en que se compró la tarjeta (lang=en en el QR)
