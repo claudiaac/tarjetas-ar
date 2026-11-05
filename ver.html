@@ -107,8 +107,18 @@
     import { porId, FUENTES_URL } from './js/disenos.js';
     import { crearFiesta, reiniciar, crearCancion } from './js/fiesta.js';
     import { deParametros, fechaTexto, horaTexto, ligaMapa, ligaCalendario, ligaConfirmar } from './js/invitacion.js';
+    import { textos } from './js/idioma.js';
 
     const params = new URLSearchParams(location.search);
+    // la sorpresa sale en el idioma en que se compró la tarjeta (lang=en en el QR)
+    const lang = params.get('lang') === 'en' ? 'en' : 'es';
+    const T = textos(lang);
+    document.documentElement.lang = lang;
+    document.title = T.sorpresa;
+    for (const [id, clave] of [['saludo', 'sorpresa'], ['instrucciones', 'instrucciones'], ['btn', 'abrir'], ['sin-camara', 'sinCamara'],
+      ['pista', 'pista'], ['repetir', 'repetir'], ['mapa', 'comoLlegar'], ['agendar', 'agendar'], ['confirmar', 'confirmar']]) {
+      document.getElementById(id).textContent = T[clave];
+    }
     const diseno = porId(params.get('d'));
     const nombre = (params.get('n') || '').slice(0, 24);
     const inv = deParametros(params);
@@ -120,27 +130,27 @@
     raiz.setProperty('--suave', diseno.suave);
     document.getElementById('miniatura').src = `disenos/${diseno.id}.png`;
     if (inv) {
-      const saludo = nombre ? `¡${nombre} te invita a su fiesta!` : '¡Estás invitado a una fiesta!';
+      const saludo = nombre ? T.teInvita(nombre) : T.invitado;
       document.getElementById('saludo').textContent = saludo;
       document.title = saludo;
       document.body.classList.add('invitacion');
-      document.getElementById('instrucciones').textContent = 'Toca el botón, permite usar la cámara y apunta al dibujo de tu invitación 💖';
+      document.getElementById('instrucciones').textContent = T.instruccionesInv;
       const $ = (id) => document.getElementById(id);
-      $('cuando').textContent = [fechaTexto(inv), horaTexto(inv)].filter(Boolean).join(' · ');
+      $('cuando').textContent = [fechaTexto(inv, lang), horaTexto(inv, lang)].filter(Boolean).join(' · ');
       $('donde').textContent = [inv.lugar, inv.direccion].filter(Boolean).join(' · ');
       $('nota').textContent = inv.nota ? `📝 ${inv.nota}` : '';
       $('mapa').href = ligaMapa(inv);
       $('mapa').hidden = !inv.lugar && !inv.direccion;
-      $('agendar').href = ligaCalendario(inv);
+      $('agendar').href = ligaCalendario(inv, lang);
       $('agendar').hidden = !inv.fecha;
-      $('confirmar').href = ligaConfirmar(inv);
+      $('confirmar').href = ligaConfirmar(inv, lang);
       $('confirmar').hidden = !inv.whatsapp;
     } else if (nombre) {
-      document.getElementById('saludo').textContent = `¡Una sorpresa para ${nombre}!`;
-      document.title = `¡Feliz cumpleaños, ${nombre}!`;
+      document.getElementById('saludo').textContent = T.sorpresaPara(nombre);
+      document.title = T.tituloCumple(nombre);
     }
 
-    const titulo = inv && (nombre ? `¡Ven a la fiesta de ${nombre}!` : '¡Ven a mi fiesta!');
+    const titulo = inv ? T.venFiestaDe(nombre) : T.tituloCumple(nombre);
     const fiesta = crearFiesta(diseno, nombre, titulo);
     let cantar = null;
     const mostrar = () => { reiniciar(fiesta); cantar?.(); };
@@ -176,11 +186,11 @@
     document.getElementById('btn').addEventListener('click', async () => {
       const btn = document.getElementById('btn'), err = document.getElementById('error');
       btn.disabled = true;
-      btn.textContent = 'Abriendo cámara… 🎀';
+      btn.textContent = T.abriendo;
       err.textContent = '';
       cantar ??= crearCancion();
       const aviso = setTimeout(() => {
-        err.textContent = '¿No se abre la cámara? Abre esta página en Chrome o Safari (menú ⋮ → "Abrir en el navegador") 🙏';
+        err.textContent = T.noAbre;
       }, 12000);
       try {
         const { MindARThree } = await import('mindar-image-three');
@@ -206,8 +216,8 @@
         console.error(e);
         clearTimeout(aviso);
         btn.disabled = false;
-        btn.textContent = 'Intentar de nuevo 🔄';
-        err.textContent = 'No se pudo abrir la cámara. Revisa que diste permiso, o ve la tarjeta sin cámara 👇';
+        btn.textContent = T.reintentar;
+        err.textContent = T.errorCamara;
       }
     });
   </script>

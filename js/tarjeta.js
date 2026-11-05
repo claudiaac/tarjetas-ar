@@ -2,6 +2,7 @@
 // y arma el PDF carta horizontal para imprimir y doblar.
 // `datos` = { nombre, mensaje, de, url, inv } — `inv` solo existe en las invitaciones.
 import { fechaTexto, horaTexto } from './invitacion.js';
+import { textos } from './idioma.js';
 
 export const ANCHO = 1476, ALTO = 2067;
 const ESCALA_FUENTE = { 'Press Start 2P': 0.5, 'Great Vibes': 1.2, 'Amatic SC': 1.3 };
@@ -75,7 +76,8 @@ function rectRedondo(ctx, x, y, w, h, r) {
   ctx.roundRect(x, y, w, h, r);
 }
 
-export async function dibujarFrente(canvas, d, { nombre, inv }) {
+export async function dibujarFrente(canvas, d, { nombre, inv, lang }) {
+  const T = textos(lang);
   await cargarFuente(d);
   const img = await cargarImagen(`disenos/${d.id}.png`);
   canvas.width = ANCHO;
@@ -94,21 +96,21 @@ export async function dibujarFrente(canvas, d, { nombre, inv }) {
   ctx.textAlign = 'center';
   ctx.textBaseline = 'alphabetic';
   ctx.fillStyle = d.suave;
-  const arriba = !inv ? '¡Feliz cumpleaños!'
-    : inv.edad ? `Ven a celebrar los ${inv.edad} años de` : 'Ven a la fiesta de';
+  const arriba = !inv ? T.felizCumple : inv.edad ? T.venAños(inv.edad) : T.venFiesta;
   lineaAjustada(ctx, d, arriba, 1580, 96, 1300);
   ctx.fillStyle = d.tinta;
-  lineaAjustada(ctx, d, nombre || 'Tu nombre', 1830, 230, 1320);
+  lineaAjustada(ctx, d, nombre || T.tuNombre, 1830, 230, 1320);
   ctx.fillStyle = d.suave;
   ctx.globalAlpha = 0.8;
   ctx.font = `600 40px "Baloo 2", sans-serif`;
-  ctx.fillText('✨ apunta la cámara al dibujo ✨', ANCHO / 2, 1985);
+  ctx.fillText(T.apunta, ANCHO / 2, 1985);
   ctx.globalAlpha = 1;
 }
 
 export async function dibujarReverso(canvas, d, datos) {
   if (datos.inv) return dibujarReversoInvitacion(canvas, d, datos);
   const { nombre, mensaje, de, url } = datos;
+  const T = textos(datos.lang);
   await cargarFuente(d);
   canvas.width = ANCHO;
   canvas.height = ALTO;
@@ -118,31 +120,32 @@ export async function dibujarReverso(canvas, d, datos) {
   ctx.textAlign = 'center';
 
   ctx.fillStyle = d.tinta;
-  lineaAjustada(ctx, d, '¡Escanéame!', 230, 120, 1200);
+  lineaAjustada(ctx, d, T.escaneame, 230, 120, 1200);
 
   dibujarQR(ctx, url, 300, 700);
 
   // mensaje
   ctx.fillStyle = d.tinta;
   ctx.font = `500 60px "Baloo 2", sans-serif`;
-  const texto = mensaje || d.mensaje || `Que este día esté lleno de alegría, ${nombre || 'amiga'}. 💖`;
+  const texto = mensaje || d.mensaje || T.mensajeDefault(nombre);
   const lineas = partirTexto(ctx, texto, 1200).slice(0, 6);
   let y = 1140;
   for (const l of lineas) { ctx.fillText(l, ANCHO / 2, y); y += 78; }
   if (de) {
     ctx.fillStyle = d.suave;
     ctx.font = `600 56px "Baloo 2", sans-serif`;
-    ctx.fillText(`Con cariño, ${de}`, ANCHO / 2, y + 40);
+    ctx.fillText(T.conCarino(de), ANCHO / 2, y + 40);
   }
 
   // instrucciones
   ctx.fillStyle = d.suave;
   ctx.font = `600 38px "Baloo 2", sans-serif`;
-  ctx.fillText('1. Escanea el código   2. Toca «¡Abrir sorpresa!»', ANCHO / 2, 1900);
-  ctx.fillText('3. Apunta la cámara al dibujo del frente   🔊 sube el volumen', ANCHO / 2, 1955);
+  ctx.fillText(T.pasos1, ANCHO / 2, 1900);
+  ctx.fillText(T.pasos2, ANCHO / 2, 1955);
 }
 
-async function dibujarReversoInvitacion(canvas, d, { mensaje, url, inv }) {
+async function dibujarReversoInvitacion(canvas, d, { mensaje, url, inv, lang }) {
+  const T = textos(lang);
   await cargarFuente(d);
   canvas.width = ANCHO;
   canvas.height = ALTO;
@@ -152,7 +155,7 @@ async function dibujarReversoInvitacion(canvas, d, { mensaje, url, inv }) {
   ctx.textAlign = 'center';
 
   ctx.fillStyle = d.tinta;
-  lineaAjustada(ctx, d, '¡Escanéame!', 190, 100, 1200);
+  lineaAjustada(ctx, d, T.escaneame, 190, 100, 1200);
   dibujarQR(ctx, url, 240, 540);
 
   // cuándo y dónde
@@ -164,9 +167,9 @@ async function dibujarReversoInvitacion(canvas, d, { mensaje, url, inv }) {
     while (ctx.measureText(texto).width > 1300 && tam > 30);
     ctx.fillText(texto, ANCHO / 2, y);
   };
-  const fecha = fechaTexto(inv);
+  const fecha = fechaTexto(inv, lang);
   linea(fecha && `📅 ${fecha.charAt(0).toUpperCase()}${fecha.slice(1)}`, 900, 800, 76, d.tinta);
-  linea(inv.hora && `🕔 ${horaTexto(inv)}`, 990, 800, 68, d.tinta);
+  linea(inv.hora && `🕔 ${horaTexto(inv, lang)}`, 990, 800, 68, d.tinta);
   linea(inv.lugar && `📍 ${inv.lugar}`, 1100, 700, 68, d.tinta);
   ctx.font = `500 48px "Baloo 2", sans-serif`;
   let y = 1170;
@@ -186,8 +189,8 @@ async function dibujarReversoInvitacion(canvas, d, { mensaje, url, inv }) {
   // instrucciones
   ctx.fillStyle = d.suave;
   ctx.font = `600 38px "Baloo 2", sans-serif`;
-  ctx.fillText('Escanea el código para ver la sorpresa, el mapa' + (inv.whatsapp ? ' y confirmar' : ''), ANCHO / 2, 1900);
-  ctx.fillText('Luego apunta la cámara al dibujo del frente   🔊 sube el volumen', ANCHO / 2, 1955);
+  ctx.fillText(T.invPasos1(!!inv.whatsapp), ANCHO / 2, 1900);
+  ctx.fillText(T.invPasos2, ANCHO / 2, 1955);
 }
 
 export async function descargarPDF(d, datos) {
@@ -208,8 +211,9 @@ export async function descargarPDF(d, datos) {
   pdf.line(x + w, y - 6, x + w, y + h + 6);
   pdf.setFontSize(8);
   pdf.setTextColor(150, 150, 150);
-  pdf.text('doblar aquí', x + w, y - 8, { align: 'center' });
-  pdf.text('Recorta por la orilla gris e imprime al 100 % (sin "ajustar a la página").', 279.4 / 2, y + h + 10, { align: 'center' });
-  const archivo = `${datos.inv ? 'invitacion' : 'tarjeta'}-${d.id}-${(datos.nombre || 'cumple').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w]+/g, '-').replace(/^-|-$/g, '').toLowerCase()}.pdf`;
+  const T = textos(datos.lang);
+  pdf.text(T.doblar, x + w, y - 8, { align: 'center' });
+  pdf.text(T.imprimir, 279.4 / 2, y + h + 10, { align: 'center' });
+  const archivo = `${datos.inv ? T.archivo.invitacion : T.archivo.tarjeta}-${d.id}-${(datos.nombre || T.archivo.cumple).normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w]+/g, '-').replace(/^-|-$/g, '').toLowerCase()}.pdf`;
   pdf.save(archivo);
 }

@@ -24,6 +24,11 @@
     header .envoltura { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     .marca { font-weight: 800; font-size: 24px; color: var(--acento); text-decoration: none; }
     header nav a { font-weight: 600; text-decoration: none; margin-left: 14px; }
+    header .derecha { display: flex; align-items: center; gap: 16px; }
+    .idioma { display: inline-flex; background: #fff; border: 2px solid var(--borde); border-radius: 999px; padding: 3px; flex: none; }
+    .idioma button { font: inherit; font-weight: 700; font-size: 15px; border: 0; background: none; padding: 2px 12px; border-radius: 999px; cursor: pointer; color: var(--suave); }
+    .idioma button[aria-pressed="true"] { background: var(--acento); color: #fff; }
+
 
     .hero { text-align: center; padding: 28px 0 8px; }
     .hero h1 { font-size: clamp(32px, 6vw, 56px); line-height: 1.05; margin: 0 0 12px; }
@@ -99,26 +104,32 @@
 <body data-producto="tarjeta">
   <header>
     <div class="envoltura">
-      <a class="marca" href="#">🎈 Tarjetas Sorpresa</a>
-      <nav><a href="#paso1">Diseños</a><a href="#paso3">Personaliza</a><a href="#paso4">Descarga</a></nav>
+      <a class="marca" href="#" data-t="marca">🎈 Tarjetas Sorpresa</a>
+      <div class="derecha">
+        <nav><a href="#paso1" data-t="nav-disenos">Diseños</a><a href="#paso3" data-t="nav-personaliza">Personaliza</a><a href="#paso4" data-t="nav-descarga">Descarga</a></nav>
+        <div class="idioma" id="idioma" role="group" aria-label="Idioma / Language">
+          <button type="button" data-idioma="es" lang="es" title="Español" aria-pressed="true">ES</button>
+          <button type="button" data-idioma="en" lang="en" title="English" aria-pressed="false">EN</button>
+        </div>
+      </div>
     </div>
   </header>
 
   <main class="envoltura">
     <div class="hero">
-      <h1>Tarjetas e invitaciones que <span>cobran vida</span> ✨</h1>
-      <p>Imprime tu tarjeta o invitación, apunta el celular al dibujo y salen globos, confeti, un pastel y la canción de cumpleaños. Sin apps.</p>
-      <ul class="pasos-mini"><li>1 · Elige tu diseño</li><li>2 · Personaliza</li><li>3 · Descarga en PDF</li></ul>
+      <h1 data-t="hero-titulo">Tarjetas e invitaciones que <span>cobran vida</span> ✨</h1>
+      <p data-t="hero-texto">Imprime tu tarjeta o invitación, apunta el celular al dibujo y salen globos, confeti, un pastel y la canción de cumpleaños. Sin apps.</p>
+      <ul class="pasos-mini"><li data-t="mini-1">1 · Elige tu diseño</li><li data-t="mini-2">2 · Personaliza</li><li data-t="mini-3">3 · Descarga en PDF</li></ul>
     </div>
 
     <section class="paso" id="paso1">
-      <h2><span class="num">1</span> Elige tu diseño</h2>
-      <p class="ayuda">¿Tarjeta o invitación? Luego filtra por tipo y toca el diseño que más te guste.</p>
+      <h2 data-t="paso1-titulo"><span class="num">1</span> Elige tu diseño</h2>
+      <p class="ayuda" data-t="paso1-ayuda">¿Tarjeta o invitación? Luego filtra por tipo y toca el diseño que más te guste.</p>
       <div class="productos" id="productos" role="group" aria-label="Producto">
-        <button type="button" class="producto" data-producto="tarjeta" aria-pressed="true">
+        <button type="button" class="producto" data-producto="tarjeta" aria-pressed="true" data-t="producto-tarjeta">
           <strong>🎂 Tarjeta de cumpleaños</strong><small>Para regalar, con tu mensaje atrás.</small>
         </button>
-        <button type="button" class="producto" data-producto="invitacion" aria-pressed="false">
+        <button type="button" class="producto" data-producto="invitacion" aria-pressed="false" data-t="producto-invitacion">
           <strong>💌 Invitación a fiesta</strong><small>Con fecha, lugar, mapa y confirmación por WhatsApp.</small>
         </button>
       </div>
@@ -127,37 +138,37 @@
     </section>
 
     <section class="paso" id="paso3">
-      <h2><span class="num">2</span> Personaliza</h2>
-      <p class="ayuda" data-solo="tarjeta">Así se verá tu tarjeta. El nombre va al frente; el mensaje y el código QR, atrás.</p>
-      <p class="ayuda" data-solo="invitacion">Así se verá tu invitación. El nombre va al frente; los datos de la fiesta y el código QR, atrás.</p>
+      <h2 data-t="paso2-titulo"><span class="num">2</span> Personaliza</h2>
+      <p class="ayuda" data-solo="tarjeta" data-t="paso2-ayuda-tarjeta">Así se verá tu tarjeta. El nombre va al frente; el mensaje y el código QR, atrás.</p>
+      <p class="ayuda" data-solo="invitacion" data-t="paso2-ayuda-invitacion">Así se verá tu invitación. El nombre va al frente; los datos de la fiesta y el código QR, atrás.</p>
       <div class="personaliza">
         <form id="form" autocomplete="off">
           <div class="campo">
-            <label for="nombre">Nombre de quien cumple años <span class="contador" id="c-nombre"></span></label>
-            <input id="nombre" maxlength="24" placeholder="Ej. Miss Lulú" required>
+            <label for="nombre"><span data-t="l-nombre">Nombre de quien cumple años</span> <span class="contador" id="c-nombre"></span></label>
+            <input id="nombre" maxlength="24" placeholder="Ej. Miss Lulú" data-t-ph="ph-nombre" required>
           </div>
           <div data-solo="invitacion">
             <div class="campo">
-              <label for="edad">Años que cumple (opcional)</label>
-              <input id="edad" inputmode="numeric" maxlength="3" placeholder="Ej. 7">
+              <label for="edad" data-t="l-edad">Años que cumple (opcional)</label>
+              <input id="edad" inputmode="numeric" maxlength="3" placeholder="Ej. 7" data-t-ph="ph-edad">
             </div>
             <div class="campo dos">
-              <div><label for="fecha">Fecha</label><input id="fecha" type="date"></div>
-              <div><label for="hora">Hora</label><input id="hora" type="time" value="17:00"></div>
+              <div><label for="fecha" data-t="l-fecha">Fecha</label><input id="fecha" type="date"></div>
+              <div><label for="hora" data-t="l-hora">Hora</label><input id="hora" type="time" value="17:00"></div>
             </div>
             <div class="campo">
-              <label for="lugar">Lugar <span class="contador" id="c-lugar"></span></label>
-              <input id="lugar" maxlength="40" placeholder="Ej. Salón Mi Pequeño Mundo">
+              <label for="lugar"><span data-t="l-lugar">Lugar</span> <span class="contador" id="c-lugar"></span></label>
+              <input id="lugar" maxlength="40" placeholder="Ej. Salón Mi Pequeño Mundo" data-t-ph="ph-lugar">
             </div>
             <div class="campo">
-              <label for="direccion">Dirección (opcional) <span class="contador" id="c-direccion"></span></label>
-              <input id="direccion" maxlength="80" placeholder="Ej. Av. Juárez 120, Col. Centro, Puebla">
-              <div class="pista">Con la dirección, el QR abre el mapa para llegar.</div>
+              <label for="direccion"><span data-t="l-direccion">Dirección (opcional)</span> <span class="contador" id="c-direccion"></span></label>
+              <input id="direccion" maxlength="80" placeholder="Ej. Av. Juárez 120, Col. Centro, Puebla" data-t-ph="ph-direccion">
+              <div class="pista" data-t="pista-direccion">Con la dirección, el QR abre el mapa para llegar.</div>
             </div>
             <div class="campo">
-              <label for="whatsapp">WhatsApp para confirmar (opcional)</label>
-              <input id="whatsapp" type="tel" maxlength="16" placeholder="Ej. 55 1234 5678">
-              <div class="pista">Los invitados confirman con un toque desde el QR.</div>
+              <label for="whatsapp" data-t="l-whatsapp">WhatsApp para confirmar (opcional)</label>
+              <input id="whatsapp" type="tel" maxlength="18" placeholder="Ej. 55 1234 5678" data-t-ph="ph-whatsapp">
+              <div class="pista" data-t="pista-whatsapp">Los invitados confirman con un toque desde el QR.</div>
             </div>
           </div>
           <div class="campo">
@@ -165,14 +176,14 @@
             <textarea id="mensaje" maxlength="180" placeholder="Ej. Gracias por enseñarnos con tanto cariño. ¡Que tengas un día increíble!"></textarea>
           </div>
           <div class="campo" data-solo="tarjeta">
-            <label for="de">De parte de (opcional) <span class="contador" id="c-de"></span></label>
-            <input id="de" maxlength="30" placeholder="Ej. Tus alumnos de 3.º B">
+            <label for="de"><span data-t="l-de">De parte de (opcional)</span> <span class="contador" id="c-de"></span></label>
+            <input id="de" maxlength="30" placeholder="Ej. Tus alumnos de 3.º B" data-t-ph="ph-de">
           </div>
         </form>
         <div class="vista">
           <div class="lados" role="group" aria-label="Lado de la tarjeta">
-            <button type="button" data-lado="frente" aria-pressed="true">Frente</button>
-            <button type="button" data-lado="reverso" aria-pressed="false">Atrás</button>
+            <button type="button" data-lado="frente" aria-pressed="true" data-t="lado-frente">Frente</button>
+            <button type="button" data-lado="reverso" aria-pressed="false" data-t="lado-reverso">Atrás</button>
           </div>
           <canvas id="vista" aria-label="Vista previa de la tarjeta"></canvas>
         </div>
@@ -180,50 +191,79 @@
     </section>
 
     <section class="paso" id="paso4">
-      <h2><span class="num">3</span> Descarga en PDF</h2>
-      <p class="ayuda">Una hoja carta lista para imprimir, recortar y doblar.</p>
+      <h2 data-t="paso3-titulo"><span class="num">3</span> Descarga en PDF</h2>
+      <p class="ayuda" data-t="paso3-ayuda">Una hoja carta lista para imprimir, recortar y doblar.</p>
       <div class="resumen">
         <div>
           <div id="resumen-diseno" style="font-weight:700"></div>
           <div class="precio" id="precio"></div>
         </div>
         <div class="acciones">
-          <a class="boton secundario" id="demo" target="_blank" rel="noopener">👀 Ver la sorpresa</a>
+          <a class="boton secundario" id="demo" target="_blank" rel="noopener" data-t="demo">👀 Ver la sorpresa</a>
           <button class="boton principal" id="descargar">Descargar PDF</button>
         </div>
       </div>
-      <p class="nota" data-solo="invitacion">🖨️ Imprime cuantas copias necesites del mismo PDF: todas llevan el mismo QR.</p>
-      <p class="nota">💳 Pago con Mercado Pago: próximamente. Por ahora la descarga es libre para probar.</p>
+      <p class="nota" data-solo="invitacion" data-t="nota-copias">🖨️ Imprime cuantas copias necesites del mismo PDF: todas llevan el mismo QR.</p>
+      <p class="nota" data-t="nota-pago">💳 Pago con Mercado Pago: próximamente. Por ahora la descarga es libre para probar.</p>
       <p class="nota" id="error" role="alert"></p>
     </section>
   </main>
 
-  <footer>Imprime en papel mate al 100 %. La sorpresa funciona en Chrome (Android) y Safari (iPhone).</footer>
+  <footer data-t="pie">Imprime en papel mate al 100 %. La sorpresa funciona en Chrome (Android) y Safari (iPhone).</footer>
 
   <script type="module">
     import { DISENOS, TIPOS, PRECIO_MXN, FUENTES_URL, porId } from './js/disenos.js';
     import { dibujarFrente, dibujarReverso, descargarPDF } from './js/tarjeta.js';
     import { aParametros } from './js/invitacion.js';
+    import { IDIOMAS, idiomaInicial, guardarIdioma, textos, nombreDiseno, nombreTipo, TIENDA_EN } from './js/idioma.js';
 
     document.getElementById('fuentes').href = FUENTES_URL;
     const $ = (id) => document.getElementById(id);
-    const estado = { producto: 'tarjeta', tipo: 'todos', diseno: DISENOS[0].id, lado: 'frente' };
+    const estado = { producto: 'tarjeta', tipo: 'todos', diseno: DISENOS[0].id, lado: 'frente', lang: idiomaInicial() };
     const esInvitacion = () => estado.producto === 'invitacion';
+    const T = () => textos(estado.lang);
+
+    // Idioma: los textos fijos llevan data-t (o data-t-ph para el placeholder); el español queda en el HTML
+    const ES = { titulo: document.title, descripcion: document.querySelector('meta[name="description"]').content };
+    document.querySelectorAll('[data-t]').forEach((el) => (ES[el.dataset.t] = el.innerHTML));
+    document.querySelectorAll('[data-t-ph]').forEach((el) => (ES[el.dataset.tPh] = el.placeholder));
+    function aplicarIdioma(l) {
+      estado.lang = l in IDIOMAS ? l : 'es';
+      const dic = estado.lang === 'en' ? { ...ES, ...TIENDA_EN } : ES;
+      document.documentElement.lang = estado.lang;
+      document.title = dic.titulo;
+      document.querySelector('meta[name="description"]').content = dic.descripcion;
+      document.querySelectorAll('[data-t]').forEach((el) => (el.innerHTML = dic[el.dataset.t]));
+      document.querySelectorAll('[data-t-ph]').forEach((el) => (el.placeholder = dic[el.dataset.tPh]));
+      document.querySelectorAll('#idioma button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.idioma === estado.lang));
+      // la liga de la página conserva el idioma (para compartirla)
+      const url = new URL(location.href);
+      if (estado.lang === 'en') url.searchParams.set('lang', 'en'); else url.searchParams.delete('lang');
+      history.replaceState(null, '', url);
+      $('descargar').textContent = T().descargar;
+      $('error').textContent = '';
+    }
+    $('idioma').addEventListener('click', (e) => {
+      const b = e.target.closest('button');
+      if (!b || b.dataset.idioma === estado.lang) return;
+      guardarIdioma(b.dataset.idioma);
+      aplicarIdioma(b.dataset.idioma);
+      pintarTipos();
+      pintarRejilla();
+      elegirProducto(estado.producto);
+    });
 
     // Paso 1: tarjeta o invitación
-    const TEXTOS = {
-      tarjeta: { mensaje: 'Mensaje', max: 180, ejemplo: 'Ej. Gracias por enseñarnos con tanto cariño. ¡Que tengas un día increíble!' },
-      invitacion: { mensaje: 'Nota (opcional)', max: 110, ejemplo: 'Ej. Trae traje de baño 🩱 ¡Habrá alberca!' },
-    };
+    const MAX_MENSAJE = { tarjeta: 180, invitacion: 110 };
     function elegirProducto(p) {
       estado.producto = p;
       document.body.dataset.producto = p;
       document.querySelectorAll('.producto').forEach((b) => b.setAttribute('aria-pressed', b.dataset.producto === p));
-      const t = TEXTOS[p];
-      $('l-mensaje').textContent = t.mensaje;
-      $('mensaje').maxLength = t.max;
-      $('mensaje').placeholder = t.ejemplo;
-      $('mensaje').value = $('mensaje').value.slice(0, t.max);
+      const max = MAX_MENSAJE[p];
+      $('l-mensaje').textContent = T().mensaje[p];
+      $('mensaje').maxLength = max;
+      $('mensaje').placeholder = T().ejemploMensaje[p];
+      $('mensaje').value = $('mensaje').value.slice(0, max);
       $('error').textContent = '';
       actualizar();
     }
@@ -233,9 +273,11 @@
     });
 
     // Paso 1 y 2: tipos y diseños
-    const tipos = [['todos', 'Todos'], ...Object.entries(TIPOS)];
-    $('tipos').innerHTML = tipos.map(([id, nombre]) =>
-      `<button type="button" class="chip" data-tipo="${id}" aria-pressed="${id === 'todos'}">${nombre}</button>`).join('');
+    function pintarTipos() {
+      const tipos = [['todos', T().todos], ...Object.keys(TIPOS).map((id) => [id, nombreTipo(id, TIPOS, estado.lang)])];
+      $('tipos').innerHTML = tipos.map(([id, nombre]) =>
+        `<button type="button" class="chip" data-tipo="${id}" aria-pressed="${id === estado.tipo}">${nombre}</button>`).join('');
+    }
     $('tipos').addEventListener('click', (e) => {
       const b = e.target.closest('.chip');
       if (!b) return;
@@ -249,8 +291,8 @@
       $('rejilla').innerHTML = lista.map((d) => `
         <button type="button" class="diseno" data-id="${d.id}" aria-pressed="${d.id === estado.diseno}">
           <img src="disenos/${d.id}.png" alt="" loading="lazy">
-          <strong>${d.nombre}</strong>
-          <small>${TIPOS[d.tipo]} · $${PRECIO_MXN} MXN</small> <span class="elegido">✓ Elegido</span>
+          <strong>${nombreDiseno(d, estado.lang)}</strong>
+          <small>${nombreTipo(d.tipo, TIPOS, estado.lang)} · $${PRECIO_MXN} MXN</small> <span class="elegido">${T().elegido}</span>
         </button>`).join('');
     }
     $('rejilla').addEventListener('click', (e) => {
@@ -268,20 +310,25 @@
       const nombre = $('nombre').value.trim();
       const url = new URL('ver.html', location.href);
       url.searchParams.set('d', estado.diseno);
+      const ingles = estado.lang === 'en';
+      if (ingles) url.searchParams.set('lang', 'en'); // la sorpresa sale en el idioma de la tarjeta
       let inv = null;
       if (esInvitacion()) {
         let whatsapp = $('whatsapp').value.replace(/\D/g, '');
-        if (whatsapp.length === 10) whatsapp = '52' + whatsapp; // número de México sin lada de país
+        // número de 10 dígitos sin lada de país: México en español, EE. UU./Canadá en inglés
+        if (whatsapp.length === 10) whatsapp = (ingles ? '1' : '52') + whatsapp;
         inv = {
           nombre, edad: $('edad').value.replace(/\D/g, ''), fecha: $('fecha').value, hora: $('hora').value,
           lugar: $('lugar').value.trim(), direccion: $('direccion').value.trim(), whatsapp,
           nota: $('mensaje').value.trim(),
+          // en inglés la fiesta puede ser fuera de México: el calendario usa la zona de quien la compra
+          zona: ingles ? Intl.DateTimeFormat().resolvedOptions().timeZone : '',
         };
         aParametros(url, inv);
       } else if (nombre) {
         url.searchParams.set('n', nombre);
       }
-      return { nombre, mensaje: $('mensaje').value.trim(), de: inv ? '' : $('de').value.trim(), url: url.href, inv };
+      return { nombre, mensaje: $('mensaje').value.trim(), de: inv ? '' : $('de').value.trim(), url: url.href, inv, lang: estado.lang };
     };
     let pendiente;
     campos.forEach((c) => $(c).addEventListener('input', () => {
@@ -301,40 +348,39 @@
       campos.forEach((c) => $('c-' + c) && ($('c-' + c).textContent = `${$(c).value.length}/${$(c).maxLength}`));
       if (estado.lado === 'frente') await dibujarFrente($('vista'), d, info);
       else await dibujarReverso($('vista'), d, info);
-      $('resumen-diseno').textContent = `${esInvitacion() ? 'Invitación' : 'Tarjeta'} · ${d.nombre} · ${TIPOS[d.tipo]}`;
+      $('resumen-diseno').textContent = `${esInvitacion() ? T().invitacion : T().tarjeta} · ${nombreDiseno(d, estado.lang)} · ${nombreTipo(d.tipo, TIPOS, estado.lang)}`;
       $('precio').innerHTML = `$${PRECIO_MXN} <small>MXN</small>`;
       $('demo').href = info.url + '#demo';
     }
 
     // Paso 4: descarga
     $('descargar').addEventListener('click', async () => {
-      const faltan = [['nombre', 'el nombre de quien cumple años']];
-      if (esInvitacion()) faltan.push(['fecha', 'la fecha de la fiesta'], ['hora', 'la hora'], ['lugar', 'el lugar']);
-      const falta = faltan.find(([id]) => !$(id).value.trim());
+      const faltan = esInvitacion() ? ['nombre', 'fecha', 'hora', 'lugar'] : ['nombre'];
+      const falta = faltan.find((id) => !$(id).value.trim());
       if (falta) {
-        $(falta[0]).focus();
-        $('error').textContent = `Escribe ${falta[1]} 🎂`;
+        $(falta).focus();
+        $('error').textContent = T().escribe(T().falta[falta]);
         $('paso3').scrollIntoView({ behavior: 'smooth' });
         return;
       }
       if (esInvitacion() && $('fecha').value < hoy()) {
         $('fecha').focus();
-        $('error').textContent = 'La fecha de la fiesta ya pasó, elige otra 📅';
+        $('error').textContent = T().fechaPasada;
         $('paso3').scrollIntoView({ behavior: 'smooth' });
         return;
       }
       $('error').textContent = '';
       const b = $('descargar');
       b.disabled = true;
-      b.textContent = 'Preparando… 🎀';
+      b.textContent = T().preparando;
       try {
         await descargarPDF(porId(estado.diseno), datos());
       } catch (e) {
         console.error(e);
-        $('error').textContent = 'No se pudo crear el PDF. Intenta de nuevo.';
+        $('error').textContent = T().errorPDF;
       } finally {
         b.disabled = false;
-        b.textContent = 'Descargar PDF';
+        b.textContent = T().descargar;
       }
     });
 
@@ -345,10 +391,11 @@
     };
     $('fecha').min = hoy();
 
+    aplicarIdioma(estado.lang);
+    pintarTipos();
     pintarRejilla();
     document.fonts.ready.then(actualizar);
-    if (location.hash === '#invitacion') elegirProducto('invitacion');
-    else actualizar();
+    elegirProducto(location.hash === '#invitacion' ? 'invitacion' : 'tarjeta');
   </script>
 </body>
 </html>
