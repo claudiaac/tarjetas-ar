@@ -26,6 +26,8 @@ const ESTILOS = `
   .fiesta .pantalla .linea { font-size: 64px; line-height: 1.1; word-break: break-word; }
   .fiesta .pantalla .linea.binario { font-size: 36px; line-height: 1.35; }
   .fiesta .pantalla .linea b { color: #1DB954; font-weight: 400; }
+  .fiesta .pantalla .verso { font-size: 36px; line-height: 1.3; }
+  .fiesta .pantalla .cursor { animation: f-parpadeo .8s steps(1) infinite; }
   /* lluvia estilo Matrix: columnas de 0 y 1 que caen */
   .fiesta .lluvia {
     position: absolute; overflow: hidden; opacity: 0;
@@ -40,6 +42,7 @@ const ESTILOS = `
   .fiesta .columna::after { content: attr(data-punta); display: block; filter: brightness(1.6); }
   .fiesta.show .columna { animation: f-caer var(--dur) linear var(--delay) infinite; }
   @keyframes f-caer { from { transform: translateY(-100%); } to { transform: translateY(var(--alto)); } }
+  @keyframes f-parpadeo { 50% { opacity: 0; } }
   @keyframes f-aparecer { from { opacity: 0; } to { opacity: 1; } }
   @keyframes f-pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
   @keyframes f-menear { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
@@ -162,7 +165,7 @@ const binario = (texto) => [...texto].map((c) => c.charCodeAt(0).toString(2).pad
 const esperar = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // Pantalla de la laptop: cada texto de diseno.descifrar se muestra en binario y se traduce
-// byte por byte.
+// byte por byte; si el diseño tiene versículo, al final aparece tecleado.
 function crearPantalla(diseno, el) {
   const pantalla = document.createElement('div');
   pantalla.className = 'pantalla';
@@ -189,6 +192,21 @@ function crearPantalla(diseno, el) {
     return true;
   }
 
+  async function teclear(texto, yo) {
+    const verso = document.createElement('div');
+    verso.className = 'verso';
+    const cursor = document.createElement('span');
+    cursor.className = 'cursor';
+    cursor.textContent = '▌';
+    pantalla.appendChild(verso);
+    for (let i = 1; i <= texto.length; i++) {
+      if (yo !== turno) return;
+      verso.textContent = texto.slice(0, i);
+      verso.appendChild(cursor);
+      await esperar(35);
+    }
+  }
+
   el.alMostrar = async () => {
     const yo = ++turno;
     pantalla.textContent = '';
@@ -201,6 +219,7 @@ function crearPantalla(diseno, el) {
       pantalla.textContent = '';
       if (!(await traducir(texto, yo))) return;
     }
+    if (diseno.versiculo && yo === turno) await teclear(diseno.versiculo, yo);
   };
   return pantalla;
 }
