@@ -105,6 +105,7 @@
 
   <script type="module">
     import { porId, FUENTES_URL } from './js/disenos.js';
+    import { dibujo } from './js/idioma.js';
     import { crearFiesta, reiniciar, crearCancion } from './js/fiesta.js';
     import { deParametros, fechaTexto, horaTexto, ligaMapa, ligaCalendario, ligaConfirmar } from './js/invitacion.js';
     import { textos } from './js/idioma.js';
@@ -128,7 +129,8 @@
     raiz.setProperty('--fondo', diseno.fondo);
     raiz.setProperty('--tinta', diseno.tinta);
     raiz.setProperty('--suave', diseno.suave);
-    document.getElementById('miniatura').src = `disenos/${diseno.id}.png`;
+    const archivo = dibujo(diseno, lang); // el dibujo con texto en inglés si la tarjeta es en inglés
+    document.getElementById('miniatura').src = `disenos/${archivo}.png`;
     if (inv) {
       const saludo = nombre ? T.teInvita(nombre) : T.invitado;
       document.getElementById('saludo').textContent = saludo;
@@ -169,7 +171,7 @@
     }
     function abrirTarjeta() {
       cantar ??= crearCancion();
-      escena.innerHTML = `<img src="disenos/${diseno.id}.png" alt="">`;
+      escena.innerHTML = `<img src="disenos/${archivo}.png" alt="">`;
       escena.appendChild(fiesta);
       document.body.classList.add('tarjeta');
       ajustar();
@@ -197,7 +199,7 @@
         const { CSS3DObject } = await import('three/addons/renderers/CSS3DRenderer.js');
         const mindar = new MindARThree({
           container: document.getElementById('container'),
-          imageTargetSrc: `disenos/${diseno.id}.mind`,
+          imageTargetSrc: `disenos/${archivo}.mind`,
           uiScanning: 'no',
           filterMinCF: 0.0001,
           filterBeta: 0.001,

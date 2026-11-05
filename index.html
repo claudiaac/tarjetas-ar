@@ -213,6 +213,7 @@
 
   <script type="module">
     import { DISENOS, TIPOS, PRECIO_MXN, FUENTES_URL, porId } from './js/disenos.js';
+    import { dibujo } from './js/idioma.js';
     import { dibujarFrente, dibujarReverso, descargarPDF } from './js/tarjeta.js';
     import { aParametros } from './js/invitacion.js';
     import { IDIOMAS, idiomaInicial, guardarIdioma, textos, nombreDiseno, nombreTipo, TIENDA_EN } from './js/idioma.js';
@@ -290,7 +291,7 @@
       const lista = DISENOS.filter((d) => estado.tipo === 'todos' || d.tipo === estado.tipo);
       $('rejilla').innerHTML = lista.map((d) => `
         <button type="button" class="diseno" data-id="${d.id}" aria-pressed="${d.id === estado.diseno}">
-          <img src="disenos/${d.id}.png" alt="" loading="lazy">
+          <img src="disenos/${dibujo(d, estado.lang)}.png" alt="" loading="lazy">
           <strong>${nombreDiseno(d, estado.lang)}</strong>
           <small>${nombreTipo(d.tipo, TIPOS, estado.lang)} · $${PRECIO_MXN} MXN</small> <span class="elegido">${T().elegido}</span>
         </button>`).join('');

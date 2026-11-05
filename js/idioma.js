@@ -24,6 +24,7 @@ export function guardarIdioma(l) {
 // Nombres de diseños y tipos en inglés (en español se usan los de disenos.js)
 const DISENOS_EN = {
   kawaii: ['Kawaii cupcake', 'A cupcake with a smiley face, sprinkles and pastel stars.'],
+  'kawaii-azul': ['Blue kawaii cupcake', 'The smiley cupcake in navy blue, gray and green, with sprinkles, stars and lightning bolts.'],
   acuarela: ['Hillside picnic', 'Anime-style watercolor landscape: clouds, a cottage and a cake under a tree.'],
   'picnic-cachorro': ['Hillside picnic: puppy', 'A puppy in a bandana having a picnic on the hill, with strawberries, sandwiches and lemonade.'],
   'picnic-gato': ['Hillside picnic: kitten', 'A calico kitten in a bandana having a picnic on the hill, with strawberries, sandwiches and lemonade.'],
@@ -32,12 +33,17 @@ const DISENOS_EN = {
   pixel: ['Level up', 'An 8-bit cake with hearts, coins and retro video game mushrooms.'],
   mascotas: ['Puppy & kitten', 'A chibi puppy and kitten with party hats and balloons.'],
   'geek-oscuro': ['Binary laptop (dark)', 'A laptop that says "Happy Birthday" in binary code, on a black background.'],
+  'oso-fiestero': ['Party bear', 'A bear in sunglasses and a party hat raising his beer mug at a party in the woods.'],
   'geek-claro': ['Binary laptop (light)', 'A laptop that says "Happy Birthday" in binary code, on a white background.'],
 };
 const TIPOS_EN = {
   kawaii: 'Kawaii', acuarela: 'Anime watercolor', coquette: 'Coquette', cottagecore: 'Cottagecore',
-  pixel: 'Pixel art', mascotas: 'Chibi pets', geek: 'Geek',
+  pixel: 'Pixel art', mascotas: 'Chibi pets', geek: 'Geek', oso: 'Party bear',
 };
+
+// Diseños cuyo dibujo trae texto: en inglés usan disenos/<id>-en.png y su propio <id>-en.mind
+const DIBUJO_EN = new Set(['oso-fiestero']);
+export const dibujo = (d, l) => (l === 'en' && DIBUJO_EN.has(d.id) ? `${d.id}-en` : d.id);
 
 export const nombreDiseno = (d, l) => (l === 'en' && DISENOS_EN[d.id]?.[0]) || d.nombre;
 export const descripcionDiseno = (d, l) => (l === 'en' && DISENOS_EN[d.id]?.[1]) || d.descripcion;
