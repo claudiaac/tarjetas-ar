@@ -1,5 +1,6 @@
 // Animación de cumpleaños que aparece sobre la tarjeta (1000x1000 = tamaño del dibujo)
 // y la canción "Happy Birthday" con notitas (Web Audio).
+import { agregarVoladores } from './voladores.js';
 
 const ESTILOS = `
   .fiesta { position: relative; width: 1000px; height: 1000px; pointer-events: none; visibility: hidden; }
@@ -95,6 +96,7 @@ export function crearFiesta(diseno, nombre, texto) {
     c.style.setProperty('--delay', (Math.random() * 0.4).toFixed(2) + 's');
     el.appendChild(c);
   }
+  if (diseno.voladores) agregarVoladores(el, diseno.voladores);
   return el;
 }
 

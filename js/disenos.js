@@ -12,6 +12,7 @@ export const TIPOS = {
   pixel: 'Pixel art',
   mascotas: 'Mascotas chibi',
   geek: 'Geek',
+  oso: 'Oso fiestero',
 };
 
 export const DISENOS = [
@@ -85,6 +86,13 @@ export const DISENOS = [
     descripcion: 'Una laptop que dice "Happy Birthday" en código binario, sobre fondo blanco.',
     fondo: '#FFFFFF', tinta: '#000000', suave: '#555555',
     fuente: 'Share Tech Mono', peso: 400, confeti: ['#000000', '#1DB954', '#0091EA', '#888888', '#39FF14'],
+  },
+  {
+    id: 'oso-fiestero', tipo: 'oso', nombre: 'Oso fiestero',
+    descripcion: 'Un oso con lentes oscuros y gorrito brindando con su tarro de cerveza en una fiesta en el bosque.',
+    voladores: ['🍺', '🍻', '🍺'], // en la sorpresa salen cervezas volando y un brindis 🍻
+    fondo: '#FBF0D5', tinta: '#C8641A', suave: '#7A4A26',
+    fuente: 'Baloo 2', peso: 800, confeti: ['#F5B700', '#FFFFFF', '#3FA9F5', '#E5484D', '#7DBA5A'],
   },
 ];
 
