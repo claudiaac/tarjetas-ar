@@ -2,7 +2,7 @@
 // 1. Dibuja disenos/<id>.svg (1000x1000) y genera el PNG con herramientas/render.ps1
 // 2. Genera disenos/<id>.mind con herramientas/servidor.py + compilar.html
 // 3. Agrégalo aquí.
-export const PRECIO_MXN = 49;
+export const PRECIO_MXN = 120;
 
 export const TIPOS = {
   kawaii: 'Kawaii',

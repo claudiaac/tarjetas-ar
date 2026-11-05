@@ -62,6 +62,14 @@ const TEXTOS = {
     preparando: 'Preparando… 🎀',
     descargar: 'Descargar PDF',
     errorPDF: 'No se pudo crear el PDF. Intenta de nuevo.',
+    abriendoPago: 'Abriendo Mercado Pago… 💳',
+    errorPago: 'No se pudo abrir el pago. Intenta de nuevo.',
+    pagoIncompleto: 'El pago no se completó. Puedes intentarlo de nuevo cuando quieras.',
+    confirmando: 'Confirmando tu pago… ⏳',
+    pagoAprobado: '¡Pago recibido! 🎉 Toca “Descargar PDF”.',
+    pagoPendiente: 'Tu pago está pendiente (por ejemplo, en OXXO). Cuando se acredite, abre otra vez esta página en este mismo celular o compu y podrás descargar.',
+    pagoRechazado: 'El pago no se aprobó. Puedes intentarlo de nuevo.',
+    pagoSinConfirmar: 'No pudimos confirmar tu pago. Recarga la página en un momento.',
 
     // tarjeta impresa
     felizCumple: '¡Feliz cumpleaños!',
@@ -120,6 +128,14 @@ const TEXTOS = {
     preparando: 'Getting it ready… 🎀',
     descargar: 'Download PDF',
     errorPDF: 'We couldn’t create the PDF. Please try again.',
+    abriendoPago: 'Opening Mercado Pago… 💳',
+    errorPago: 'We couldn’t open the payment. Please try again.',
+    pagoIncompleto: 'The payment wasn’t completed. You can try again whenever you like.',
+    confirmando: 'Confirming your payment… ⏳',
+    pagoAprobado: 'Payment received! 🎉 Tap “Download PDF”.',
+    pagoPendiente: 'Your payment is pending (for example, at OXXO). Once it clears, open this page again on the same phone or computer to download.',
+    pagoRechazado: 'The payment wasn’t approved. You can try again.',
+    pagoSinConfirmar: 'We couldn’t confirm your payment. Please reload the page in a moment.',
 
     felizCumple: 'Happy Birthday!',
     venAños: (edad) => `Come celebrate the ${ordinal(edad)} birthday of`,
@@ -212,6 +228,6 @@ export const TIENDA_EN = {
   'paso3-ayuda': 'A letter-size sheet ready to print, cut and fold.',
   demo: '👀 See the surprise',
   'nota-copias': '🖨️ Print as many copies as you need from the same PDF: they all share the same QR code.',
-  'nota-pago': '💳 Mercado Pago checkout: coming soon. For now downloads are free so you can try it.',
+  'nota-pago': '💳 Pay with Mercado Pago (card, OXXO or balance), then come back to download your PDF.',
   pie: 'Print on matte paper at 100%. The surprise works in Chrome (Android) and Safari (iPhone).',
 };

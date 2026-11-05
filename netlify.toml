@@ -1,0 +1,24 @@
+# Configuración para publicar el sitio en Netlify.
+# Es un sitio estático: no hay paso de compilación, se publica la carpeta raíz tal cual.
+# Netlify sirve todo con HTTPS, que la cámara necesita para la realidad aumentada.
+
+[build]
+  publish = "."
+  command = ""
+
+# Los dibujos y sus archivos .mind casi nunca cambian: el celular puede guardarlos un día.
+[[headers]]
+  for = "/disenos/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+# Permite usar la cámara en la página de la sorpresa.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Permissions-Policy = "camera=(self)"
+
+# Funciones del servidor para cobrar con Mercado Pago (netlify/functions).
+# Necesitan la variable MP_ACCESS_TOKEN en Site configuration → Environment variables.
+[functions]
+  directory = "netlify/functions"

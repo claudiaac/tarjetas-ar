@@ -204,7 +204,8 @@
         </div>
       </div>
       <p class="nota" data-solo="invitacion" data-t="nota-copias">🖨️ Imprime cuantas copias necesites del mismo PDF: todas llevan el mismo QR.</p>
-      <p class="nota" data-t="nota-pago">💳 Pago con Mercado Pago: próximamente. Por ahora la descarga es libre para probar.</p>
+      <p class="nota" data-t="nota-pago">💳 Pagas con Mercado Pago (tarjeta, OXXO o saldo) y al regresar descargas tu PDF.</p>
+      <p class="nota" id="aviso" role="status"></p>
       <p class="nota" id="error" role="alert"></p>
     </section>
   </main>
@@ -353,6 +354,76 @@
       $('demo').href = info.url + '#demo';
     }
 
+    // Cobro con Mercado Pago. En tu compu (localhost) la descarga es libre para probar.
+    const COBRO = !['localhost', '127.0.0.1'].includes(location.hostname);
+    const PEDIDO = 'pedido-tarjeta';
+    const leerPedido = () => { try { return JSON.parse(localStorage.getItem(PEDIDO)); } catch { return null; } };
+    const guardarPedido = (p) => { try { localStorage.setItem(PEDIDO, JSON.stringify(p)); } catch { /* modo privado */ } };
+    // Lo que se pagó: si cambian el diseño o el texto, es otra tarjeta y se cobra de nuevo
+    const firma = () => JSON.stringify([estado.producto, estado.diseno, campos.map((c) => $(c).value)]);
+    const pagada = () => { const p = leerPedido(); return !!(p && p.pagado && p.firma === firma()); };
+    const avisar = (texto) => { $('aviso').textContent = texto; };
+
+    async function irAPagar() {
+      const d = porId(estado.diseno);
+      const titulo = `${esInvitacion() ? 'Invitación' : 'Tarjeta'} ${d.nombre} para ${$('nombre').value.trim()}`; // lo ve el comprador en Mercado Pago
+      const r = await fetch('/.netlify/functions/crear-pago', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ titulo }),
+      });
+      if (!r.ok) throw new Error('crear-pago ' + r.status);
+      const { liga, referencia } = await r.json();
+      guardarPedido({
+        referencia, firma: firma(), producto: estado.producto, diseno: estado.diseno,
+        valores: Object.fromEntries(campos.map((c) => [c, $(c).value])),
+      });
+      location.href = liga;
+    }
+
+    // Al regresar de Mercado Pago: recupera la tarjeta y confirma el pago
+    async function regresoDePago() {
+      const q = new URLSearchParams(location.search);
+      const p = leerPedido();
+      if (q.has('pago')) { // quita los datos del pago de la liga y deja el idioma
+        const url = new URL(location.href);
+        [...url.searchParams.keys()].filter((k) => k !== 'lang').forEach((k) => url.searchParams.delete(k));
+        history.replaceState(null, '', url);
+      }
+      if (!p || p.pagado || !(q.has('pago') || p.pagoId)) return;
+      elegirProducto(p.producto);
+      estado.diseno = p.diseno;
+      for (const [c, v] of Object.entries(p.valores)) if ($(c)) $(c).value = v;
+      pintarRejilla();
+      await actualizar();
+      $('paso4').scrollIntoView({ behavior: 'smooth' });
+
+      const id = q.get('payment_id') || q.get('collection_id') || p.pagoId;
+      if (!id || id === 'null') {
+        avisar(T().pagoIncompleto);
+        return;
+      }
+      p.pagoId = id;
+      guardarPedido(p);
+      avisar(T().confirmando);
+      try {
+        const r = await fetch(`/.netlify/functions/verificar-pago?id=${encodeURIComponent(id)}&ref=${encodeURIComponent(p.referencia)}`);
+        const { estado: e } = await r.json();
+        if (e === 'aprobado') {
+          p.pagado = true;
+          guardarPedido(p);
+          avisar(T().pagoAprobado);
+        } else if (e === 'pendiente') {
+          avisar(T().pagoPendiente);
+        } else {
+          delete p.pagoId;
+          guardarPedido(p);
+          avisar(T().pagoRechazado);
+        }
+      } catch (e) {
+        console.error(e);
+        avisar(T().pagoSinConfirmar);
+      }
+    }
+
     // Paso 4: descarga
     $('descargar').addEventListener('click', async () => {
       const faltan = esInvitacion() ? ['nombre', 'fecha', 'hora', 'lugar'] : ['nombre'];
@@ -372,6 +443,18 @@
       $('error').textContent = '';
       const b = $('descargar');
       b.disabled = true;
+      if (COBRO && !pagada()) {
+        b.textContent = T().abriendoPago;
+        try {
+          await irAPagar();
+        } catch (e) {
+          console.error(e);
+          $('error').textContent = T().errorPago;
+          b.disabled = false;
+          b.textContent = T().descargar;
+        }
+        return;
+      }
       b.textContent = T().preparando;
       try {
         await descargarPDF(porId(estado.diseno), datos());
@@ -396,6 +479,11 @@
     pintarRejilla();
     document.fonts.ready.then(actualizar);
     elegirProducto(location.hash === '#invitacion' ? 'invitacion' : 'tarjeta');
+    if (COBRO) regresoDePago();
+    // Si regresan con "atrás" desde Mercado Pago, el botón vuelve a funcionar
+    window.addEventListener('pageshow', (e) => {
+      if (e.persisted) { $('descargar').disabled = false; $('descargar').textContent = T().descargar; }
+    });
   </script>
 </body>
 </html>
