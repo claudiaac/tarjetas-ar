@@ -6,6 +6,11 @@ Tienda de tarjetas de cumpleaños e **invitaciones a fiesta** imprimibles con re
 - **Invitaciones:** https://claudiaac.github.io/tarjetas-ar/#invitacion
 - **Ejemplo de sorpresa:** https://claudiaac.github.io/tarjetas-ar/ver.html?d=kawaii&n=Ana#demo
 
+## Publicar en Netlify
+El sitio también se puede alojar en Netlify (HTTPS incluido, que la cámara necesita). `netlify.toml` ya trae la configuración: no hay compilación y se publica la carpeta raíz. En Netlify: **Add new site → Import an existing project → GitHub → `tarjetas-ar`**, rama `main`, y **Deploy**. Cada cambio que llegue a `main` se publica solo.
+
+Los QR toman la dirección de la página donde se generó la tarjeta, así que las tarjetas hechas desde Netlify apuntan a Netlify y las que ya se imprimieron desde GitHub Pages siguen apuntando a GitHub Pages. Por eso conviene dejar GitHub Pages encendido.
+
 ## Cómo funciona
 | Archivo | Para qué sirve |
 |---|---|
