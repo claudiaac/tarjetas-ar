@@ -64,7 +64,7 @@ El panel no aparece en ningún menú y los buscadores no lo indexan, pero lo que
 
 | Archivo | Para qué sirve |
 |---|---|
-| `admin/index.html` | El panel. El logo es `admin/logo-fiatcrafthaus.png` |
+| `admin/index.html` | El panel. El logo es `admin/logo-fiatcrafthaus.svg` (vector, fondo transparente; también hay `.png`) |
 | `netlify/functions/admin.mjs` | Revisa la contraseña y junta visitas, mensajes y pedidos de Mercado Pago |
 | `netlify/functions/visita.mjs` | Suma una visita por día (tienda o sorpresa). No guarda IP ni cookies |
 | `netlify/functions/contacto.mjs` | Guarda los mensajes del formulario de contacto |
