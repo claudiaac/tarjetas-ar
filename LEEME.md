@@ -30,6 +30,22 @@ La cámara reconoce **solo el dibujo** (la parte cuadrada de arriba). El nombre 
 3. `python herramientas/servidor.py` y abre `http://127.0.0.1:8766/herramientas/compilar.html?d=<id>` → genera `disenos/<id>.mind`.
 4. Agrégalo en `js/disenos.js`.
 
+## Cobro con Mercado Pago
+Al tocar **Descargar PDF**, la tienda guarda la tarjeta en el navegador y manda al cliente a Mercado Pago (tarjeta, OXXO, SPEI o saldo). Al regresar, una función en Netlify le pregunta a Mercado Pago si el pago está aprobado y, si sí, se desbloquea la descarga. Si el cliente cambia el diseño o el texto, es otra tarjeta y se cobra de nuevo.
+
+| Archivo | Para qué sirve |
+|---|---|
+| `netlify/functions/crear-pago.mjs` | Crea el pago por `PRECIO_MXN` (el precio lo pone el servidor, no el navegador) |
+| `netlify/functions/verificar-pago.mjs` | Confirma que el pago es de ese pedido, por el precio completo y está aprobado |
+
+Para activarlo:
+1. Crea tu cuenta en [Mercado Pago](https://www.mercadopago.com.mx) y entra a [Tus integraciones](https://www.mercadopago.com.mx/developers/panel/app) → **Crear aplicación** (tipo *Pagos online*, producto *Checkout Pro*).
+2. Copia el **Access Token** de *Credenciales de prueba* (empieza con `TEST-`).
+3. En Netlify: *Site configuration → Environment variables* → agrega `MP_ACCESS_TOKEN` con ese valor y vuelve a publicar.
+4. Prueba una compra con las [tarjetas de prueba](https://www.mercadopago.com.mx/developers/es/docs/checkout-pro/additional-content/your-integrations/test/cards).
+5. Cuando funcione, cambia `MP_ACCESS_TOKEN` por el Access Token de *Credenciales de producción* (empieza con `APP_USR-`).
+
+En `localhost` o `127.0.0.1` la descarga sigue libre para probar diseños. La tienda en GitHub Pages no tiene funciones, así que ahí ya no se puede descargar: los clientes deben comprar en el sitio de Netlify.
+
 ## Pendiente
-- **Cobro con Mercado Pago.** Para que nadie descargue sin pagar hace falta un servidor pequeño que confirme el pago (por ejemplo, una función en Netlify o Vercel). GitHub Pages solo sirve páginas estáticas.
 - Los dibujos son originales. No uses personajes con marca (Disney, Sanrio, Pokémon, Studio Ghibli…) en tarjetas que se venden.

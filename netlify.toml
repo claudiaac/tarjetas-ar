@@ -17,3 +17,8 @@
   for = "/*"
   [headers.values]
     Permissions-Policy = "camera=(self)"
+
+# Funciones del servidor para cobrar con Mercado Pago (netlify/functions).
+# Necesitan la variable MP_ACCESS_TOKEN en Site configuration → Environment variables.
+[functions]
+  directory = "netlify/functions"
