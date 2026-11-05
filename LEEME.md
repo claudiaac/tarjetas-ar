@@ -53,7 +53,7 @@ Para activarlo:
 En `localhost` o `127.0.0.1` la descarga sigue libre para probar diseños. La tienda en GitHub Pages no tiene funciones, así que ahí ya no se puede descargar: los clientes deben comprar en el sitio de Netlify.
 
 ## Panel de administración
-En **`/admin/`** (por ejemplo `https://<tu-sitio>.netlify.app/admin/`) está el panel de FiatCraftHaus, al estilo del Shop Manager de Etsy:
+En **`/admin/`** (por ejemplo `https://<tu-sitio>.netlify.app/admin/`) está el panel de FiatCraftHouse, al estilo del Shop Manager de Etsy:
 
 - **Inicio:** tareas principales (pedidos pagados hoy, pagos pendientes de OXXO o SPEI, mensajes sin atender, sorpresas abiertas hoy) y estadísticas de hoy, 7 o 30 días: vistas, visitas, pedidos e ingresos (lo cobrado y lo que te queda después de la comisión de Mercado Pago), con una gráfica por día.
 - **Actividad reciente:** ventas, mensajes y visitas, lo más nuevo arriba, con filtros Todo, Compras, Mensajes y Visitas.
@@ -64,7 +64,7 @@ El panel no aparece en ningún menú y los buscadores no lo indexan, pero lo que
 
 | Archivo | Para qué sirve |
 |---|---|
-| `admin/index.html` | El panel. El logo es `admin/logo-fiatcrafthaus.svg` (vector, fondo transparente; también hay `.png`) |
+| `admin/index.html` | El panel. El logo es `admin/logo-fiatcrafthouse.svg` (vector, fondo transparente; también hay `.png`) |
 | `netlify/functions/admin.mjs` | Revisa la contraseña y junta visitas, mensajes y pedidos de Mercado Pago |
 | `netlify/functions/visita.mjs` | Suma una visita por día (tienda o sorpresa). No guarda IP ni cookies |
 | `netlify/functions/contacto.mjs` | Guarda los mensajes del formulario de contacto |
