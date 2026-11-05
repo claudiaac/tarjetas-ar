@@ -23,7 +23,7 @@ export const DISENOS = [
     fuente: 'Baloo 2', peso: 800, confeti: ['#FF7FA3', '#FFD166', '#7FD4F5', '#B69CFF', '#8EDB9C'],
   },
   {
-    id: 'kawaii-el', tipo: 'kawaii', nombre: 'Pastelito kawaii para él',
+    id: 'kawaii-azul', tipo: 'kawaii', nombre: 'Pastelito kawaii azul',
     globos: ['🎈', '🎈', '🎁', '🎈', '⭐', '🎈', '🎉', '🎈'], // un regalo en lugar del corazón
     descripcion: 'El cupcake con carita en azul marino, gris y verde, con chispas, estrellas y rayos.',
     fondo: '#E6EEF5', tinta: '#1F3A5F', suave: '#3F6A8A',
