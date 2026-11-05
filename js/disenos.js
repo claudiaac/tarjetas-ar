@@ -66,7 +66,9 @@ export const DISENOS = [
   {
     id: 'geek-oscuro', tipo: 'geek', nombre: 'Laptop binaria (oscura)',
     lluvia: '#39FF14', // color de los ceros y unos que caen estilo Matrix alrededor de la laptop
-    descifrar: ['Happy Birthday'], // la sorpresa traduce el binario de la pantalla
+    descifrar: ['Happy Birthday', 'Salmo 20:5'], // la sorpresa traduce el binario de la pantalla
+    // el Salmo solo aparece en la sorpresa, no en la tarjeta impresa
+    versiculo: 'Nosotros nos alegraremos en tu salvación, y alzaremos pendón en el nombre de nuestro Dios; conceda Jehová todas tus peticiones.',
     descripcion: 'Una laptop que dice "Happy Birthday" en código binario, sobre fondo negro.',
     fondo: '#000000', tinta: '#FFFFFF', suave: '#B5B5B5',
     // contorno del título de la sorpresa: blanco sobre letra blanca rellenaba los huecos de la "m"
