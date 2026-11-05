@@ -2,7 +2,7 @@
 // y arma el PDF carta horizontal para imprimir y doblar.
 // `datos` = { nombre, mensaje, de, url, inv } — `inv` solo existe en las invitaciones.
 import { fechaTexto, horaTexto } from './invitacion.js';
-import { textos } from './idioma.js';
+import { textos, dibujo } from './idioma.js';
 
 export const ANCHO = 1476, ALTO = 2067;
 const ESCALA_FUENTE = { 'Press Start 2P': 0.5, 'Great Vibes': 1.2, 'Amatic SC': 1.3 };
@@ -79,7 +79,7 @@ function rectRedondo(ctx, x, y, w, h, r) {
 export async function dibujarFrente(canvas, d, { nombre, inv, lang }) {
   const T = textos(lang);
   await cargarFuente(d);
-  const img = await cargarImagen(`disenos/${d.id}.png`);
+  const img = await cargarImagen(`disenos/${dibujo(d, lang)}.png`);
   canvas.width = ANCHO;
   canvas.height = ALTO;
   const ctx = canvas.getContext('2d');
