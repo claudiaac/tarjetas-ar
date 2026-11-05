@@ -23,6 +23,13 @@ export const DISENOS = [
     fuente: 'Baloo 2', peso: 800, confeti: ['#FF7FA3', '#FFD166', '#7FD4F5', '#B69CFF', '#8EDB9C'],
   },
   {
+    id: 'kawaii-azul', tipo: 'kawaii', nombre: 'Pastelito kawaii azul',
+    globos: ['🎈', '🎈', '🎁', '🎈', '⭐', '🎈', '🎉', '🎈'], // un regalo en lugar del corazón
+    descripcion: 'El cupcake con carita en azul marino, gris y verde, con chispas, estrellas y rayos.',
+    fondo: '#E6EEF5', tinta: '#1F3A5F', suave: '#3F6A8A',
+    fuente: 'Baloo 2', peso: 800, confeti: ['#1F3A5F', '#2E9C8F', '#4CAF6E', '#FFD166', '#3FA7D6'],
+  },
+  {
     id: 'acuarela', tipo: 'acuarela', nombre: 'Picnic en la colina',
     descripcion: 'Paisaje tipo anime en acuarela: nubes, casita y un pastel bajo el árbol.',
     fondo: '#F7EFE3', tinta: '#3D5A80', suave: '#6F8BA8',

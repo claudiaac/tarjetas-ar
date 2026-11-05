@@ -91,7 +91,8 @@ export function crearFiesta(diseno, nombre, texto) {
   pastel.textContent = '🎂';
   el.appendChild(pastel);
 
-  ['🎈', '🎈', '💖', '🎈', '⭐', '🎈', '🎉', '🎈'].forEach((g, i) => {
+  // un diseño puede cambiar lo que sube flotando con `globos: [...]` (por ejemplo, sin corazón)
+  (diseno.globos || ['🎈', '🎈', '💖', '🎈', '⭐', '🎈', '🎉', '🎈']).forEach((g, i) => {
     const b = document.createElement('div');
     b.className = 'globo';
     b.textContent = g;
