@@ -110,6 +110,9 @@ const TEXTOS = {
     errorCamara: 'No se pudo abrir la cámara. Revisa que diste permiso, o ve la tarjeta sin cámara 👇',
     eventoCalendario: (n) => `Fiesta de ${n || 'cumpleaños'} 🎉`,
     mensajeConfirmar: (n) => `¡Hola! Confirmo que voy a la fiesta de ${n || 'cumpleaños'} 🎉`,
+    enviando: 'Enviando…',
+    enviado: '¡Gracias! Recibimos tu mensaje y te respondemos pronto 💌',
+    errorEnviar: 'No se pudo enviar. Intenta de nuevo en un momento 🙏',
   },
   en: {
     locale: 'en-US',
@@ -174,6 +177,9 @@ const TEXTOS = {
     errorCamara: 'We couldn’t open the camera. Check that you allowed it, or watch the card without the camera 👇',
     eventoCalendario: (n) => (n ? `${n}’s party 🎉` : 'Birthday party 🎉'),
     mensajeConfirmar: (n) => `Hi! I’m coming to ${n ? `${n}’s party` : 'the birthday party'} 🎉`,
+    enviando: 'Sending…',
+    enviado: 'Thank you! We got your message and will reply soon 💌',
+    errorEnviar: 'We couldn’t send it. Please try again in a moment 🙏',
   },
 };
 
@@ -229,5 +235,13 @@ export const TIENDA_EN = {
   demo: '👀 See the surprise',
   'nota-copias': '🖨️ Print as many copies as you need from the same PDF: they all share the same QR code.',
   'nota-pago': '💳 Pay with Mercado Pago (card, OXXO or balance), then come back to download your PDF.',
+  'contacto-titulo': '💬 Questions? Write to us',
+  'contacto-ayuda': 'Tell us what you need and we’ll reply by email or WhatsApp.',
+  'l-c-nombre': 'Your name',
+  'l-c-contacto': 'Email or WhatsApp',
+  'ph-c-contacto': 'E.g. ana@email.com or +1 555 123 4567',
+  'l-c-mensaje': 'Message',
+  'ph-c-mensaje': 'E.g. Can I change the date after buying?',
+  'c-enviar': 'Send message',
   pie: 'Print on matte paper at 100%. The surprise works in Chrome (Android) and Safari (iPhone).',
 };

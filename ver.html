@@ -108,8 +108,10 @@
     import { crearFiesta, reiniciar, crearCancion } from './js/fiesta.js';
     import { deParametros, fechaTexto, horaTexto, ligaMapa, ligaCalendario, ligaConfirmar } from './js/invitacion.js';
     import { textos } from './js/idioma.js';
+    import { contarVisita } from './js/visitas.js';
 
     const params = new URLSearchParams(location.search);
+    if (location.hash !== '#demo') contarVisita('sorpresa'); // el "Ver la sorpresa" de la tienda no cuenta como QR escaneado
     // la sorpresa sale en el idioma en que se compró la tarjeta (lang=en en el QR)
     const lang = params.get('lang') === 'en' ? 'en' : 'es';
     const T = textos(lang);

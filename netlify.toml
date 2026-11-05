@@ -22,3 +22,12 @@
 # Necesitan la variable MP_ACCESS_TOKEN en Site configuration → Environment variables.
 [functions]
   directory = "netlify/functions"
+
+# Panel de administración (admin/): que los buscadores no lo muestren y que nadie lo guarde en caché.
+# La protección de verdad está en netlify/functions/admin.mjs, que pide la contraseña ADMIN_PASSWORD.
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-store"
+    Referrer-Policy = "no-referrer"

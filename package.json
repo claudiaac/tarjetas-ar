@@ -1,0 +1,9 @@
+{
+  "name": "tarjetas-ar",
+  "private": true,
+  "type": "module",
+  "description": "Las funciones de Netlify usan @netlify/blobs para guardar visitas y mensajes. El sitio no se compila.",
+  "dependencies": {
+    "@netlify/blobs": "^10.7.13"
+  }
+}

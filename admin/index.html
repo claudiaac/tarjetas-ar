@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Panel · FiatCraftHouse</title>
+  <link rel="icon" href="logo-fiatcrafthouse.svg" type="image/svg+xml">
+  <style>
+    :root {
+      --fondo: #FAF9F6; --caja: #FFFFFF; --texto: #222222; --suave: #595959; --borde: #DDDAD3;
+      --acento: #C2457A; --acento-suave: #FBEFF4; --ok: #1E7A46; --ok-suave: #E8F4EC; --aviso: #8A5A00; --aviso-suave: #FFF4DB;
+      --malo: #B3261E; --barra: #E7A4BF; --barra-2: #C2457A;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--fondo); color: var(--texto); font: 16px/1.45 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+    a { color: inherit; }
+    .envoltura { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+    h1, h2 { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; }
+    h2 { font-size: 24px; margin: 36px 0 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    button, select, input { font: inherit; color: inherit; }
+    .oculto { display: none !important; }
+
+    /* Encabezado */
+    .cabeza { display: flex; align-items: center; gap: 16px; padding: 28px 0 18px; }
+    .cabeza img { width: 84px; height: 84px; object-fit: contain; padding: 8px; border-radius: 8px; background: #fff; box-shadow: 0 0 0 1px var(--borde); flex: none; }
+    .cabeza h1 { margin: 0; font-size: 30px; line-height: 1.1; }
+    .cabeza .sub { color: var(--suave); font-size: 14px; display: flex; flex-wrap: wrap; gap: 4px 0; margin-top: 4px; }
+    .cabeza .sub span + span::before { content: ''; border-left: 1px solid var(--borde); margin: 0 10px; }
+    .cabeza .salir { margin-left: auto; align-self: flex-start; border: 1px solid var(--texto); background: none; border-radius: 999px; padding: 6px 16px; font-weight: 600; cursor: pointer; font-size: 14px; }
+
+    .pestanas { display: flex; gap: 24px; border-bottom: 1px solid var(--borde); overflow-x: auto; }
+    .pestanas button { border: 0; background: none; padding: 10px 0; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; }
+    .pestanas button[aria-selected="true"] { border-color: var(--texto); font-weight: 600; }
+    .pestanas .cuenta { display: inline-block; min-width: 20px; padding: 0 6px; border-radius: 999px; background: var(--acento); color: #fff; font-size: 12px; font-weight: 700; text-align: center; margin-left: 4px; }
+
+    /* Tareas principales */
+    .tareas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .tarea { background: var(--caja); border: 1px solid var(--borde); border-radius: 10px; padding: 18px; text-align: left; cursor: pointer; display: block; width: 100%; }
+    .tarea:hover { border-color: var(--texto); }
+    .tarea strong { display: flex; align-items: center; gap: 10px; font-size: 16px; margin-bottom: 6px; }
+    .tarea strong i { font-style: normal; display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: #EFEDE8; font-size: 14px; }
+    .tarea p { margin: 2px 0 0 38px; color: var(--suave); font-size: 14px; }
+    .tarea p b { color: var(--texto); }
+    .nota { color: var(--suave); font-size: 13px; margin: 10px 0 0; }
+
+    /* Estadísticas */
+    .caja { background: var(--caja); border: 1px solid var(--borde); border-radius: 10px; padding: 18px; }
+    .intervalo { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; margin-bottom: 18px; }
+    .intervalo select { border: 1px solid var(--borde); border-radius: 6px; padding: 4px 8px; background: #fff; font-weight: 400; }
+    .cifras { display: grid; grid-template-columns: repeat(4, 1fr); }
+    .cifra { padding: 0 16px; border-left: 1px solid var(--borde); }
+    .cifra:first-child { border-left: 0; padding-left: 0; }
+    .cifra span { font-weight: 600; font-size: 15px; }
+    .cifra b { display: block; font-size: 30px; line-height: 1.2; margin: 4px 0 2px; font-variant-numeric: tabular-nums; }
+    .cifra small { color: var(--suave); font-size: 13px; display: block; }
+    .grafica { margin-top: 22px; }
+    .grafica svg { width: 100%; height: 160px; display: block; overflow: visible; }
+    .grafica .ejes { display: flex; justify-content: space-between; color: var(--suave); font-size: 12px; margin-top: 4px; }
+    .leyenda { display: flex; gap: 16px; font-size: 13px; color: var(--suave); margin-top: 8px; }
+    .leyenda i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+
+    /* Listas */
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { text-align: left; color: var(--suave); font-weight: 600; font-size: 13px; padding: 8px 10px; border-bottom: 1px solid var(--borde); }
+    td { padding: 12px 10px; border-bottom: 1px solid #EFEDE8; vertical-align: top; }
+    td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    th.num { text-align: right; }
+    .etiqueta { display: inline-block; border-radius: 999px; padding: 1px 10px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+    .etiqueta.ok { background: var(--ok-suave); color: var(--ok); }
+    .etiqueta.espera { background: var(--aviso-suave); color: var(--aviso); }
+    .etiqueta.no { background: #F3F2EF; color: var(--suave); }
+    .vacio { color: var(--suave); text-align: center; padding: 28px 10px; }
+    .filtros { display: flex; gap: 8px; flex-wrap: wrap; }
+    .filtros button { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; border: 2px solid transparent; background: #EFEDE8; border-radius: 999px; padding: 6px 16px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .filtros button[aria-pressed="true"] { background: #fff; border-color: var(--texto); }
+    .filtros.grandes { margin: 22px 0 18px; }
+
+    .actividad { list-style: none; margin: 0; padding: 0; }
+    .actividad li { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid #EFEDE8; }
+    .actividad li > i { font-style: normal; flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: #EFEDE8; font-size: 18px; }
+    .actividad li.compra > i { background: var(--ok-suave); }
+    .actividad li.mensaje-act > i { background: var(--acento-suave); }
+    .actividad .que { flex: 1; min-width: 0; }
+    .actividad .que b { font-weight: 600; }
+    .actividad .que small { display: block; color: var(--suave); font-size: 13px; overflow-wrap: anywhere; }
+    .actividad .lado { text-align: right; flex: none; }
+    .actividad .cuando { display: block; color: var(--suave); font-size: 13px; white-space: nowrap; }
+    .actividad .monto { display: block; font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+    @media (max-width: 760px) { .actividad li { gap: 10px; } .actividad li > i { width: 34px; height: 34px; font-size: 16px; } .actividad .cuando { font-size: 12px; } }
+
+    .mensaje { background: var(--caja); border: 1px solid var(--borde); border-radius: 10px; padding: 16px 18px; margin-bottom: 12px; }
+    .mensaje.nuevo { border-left: 4px solid var(--acento); }
+    .mensaje header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+    .mensaje header b { font-size: 16px; }
+    .mensaje header a { color: var(--acento); font-size: 14px; word-break: break-all; }
+    .mensaje header time { color: var(--suave); font-size: 13px; margin-left: auto; }
+    .mensaje p { margin: 8px 0 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .mensaje .acciones { display: flex; gap: 8px; flex-wrap: wrap; }
+    .mensaje .acciones button, .mensaje .acciones a { border: 1px solid var(--borde); background: #fff; border-radius: 999px; padding: 4px 14px; font-size: 14px; cursor: pointer; text-decoration: none; color: var(--texto); }
+    .mensaje .acciones .principal { background: var(--texto); border-color: var(--texto); color: #fff; }
+
+    .alerta { background: var(--aviso-suave); color: var(--aviso); border-radius: 8px; padding: 10px 14px; font-size: 14px; margin-top: 14px; }
+
+    /* Entrada */
+    .entrada { min-height: 100vh; display: grid; place-items: center; padding: 16px; }
+    .entrada form { background: var(--caja); border: 1px solid var(--borde); border-radius: 14px; padding: 32px 28px; width: 100%; max-width: 380px; text-align: center; }
+    .entrada img { width: 200px; height: auto; display: block; margin: 0 auto 4px; }
+    .entrada h1 { font-size: 26px; margin: 12px 0 4px; }
+    .entrada p { color: var(--suave); margin: 0 0 20px; font-size: 14px; }
+    .entrada input { width: 100%; border: 1px solid var(--borde); border-radius: 8px; padding: 10px 12px; font-size: 16px; margin-bottom: 12px; }
+    .entrada button { width: 100%; border: 0; border-radius: 999px; background: var(--texto); color: #fff; padding: 10px; font-weight: 600; cursor: pointer; }
+    .entrada button:disabled { opacity: .6; cursor: wait; }
+    .entrada .error { color: var(--malo); font-size: 14px; min-height: 20px; margin: 10px 0 0; }
+
+    .pie { color: var(--suave); font-size: 13px; padding: 40px 0; }
+
+    @media (max-width: 760px) {
+      .tareas { grid-template-columns: 1fr; }
+      .cifras { grid-template-columns: 1fr 1fr; row-gap: 18px; }
+      .cifra:nth-child(3) { border-left: 0; padding-left: 0; }
+      .cabeza h1 { font-size: 24px; }
+      .cabeza img { width: 64px; height: 64px; padding: 6px; }
+      .ocultar-movil { display: none; }
+      .cabeza .sub { flex-direction: column; }
+      .cabeza .sub span + span::before { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Entrada con contraseña. Esta página no tiene datos: los pide a la función admin, que exige la contraseña. -->
+  <div class="entrada" id="entrada">
+    <form id="form-entrada">
+      <img src="logo-fiatcrafthouse.svg" alt="FiatCraftHouse">
+      <p>Panel de administración de Tarjetas Sorpresa</p>
+      <input id="clave" type="password" autocomplete="current-password" placeholder="Contraseña" aria-label="Contraseña" required>
+      <button id="entrar">Entrar</button>
+      <p class="error" id="error-entrada" role="alert"></p>
+    </form>
+  </div>
+
+  <div id="panel" class="oculto">
+    <div class="envoltura">
+      <div class="cabeza">
+        <img src="logo-fiatcrafthouse.svg" alt="">
+        <div>
+          <h1>Hola, FiatCraftHouse</h1>
+          <div class="sub"><span id="sub-ventas"></span><span id="sub-hoy"></span><span><a href="/" target="_blank" rel="noopener">Ver la tienda ↗</a></span></div>
+        </div>
+        <button class="salir" id="salir">Salir</button>
+      </div>
+
+      <nav class="pestanas" role="tablist">
+        <button role="tab" data-vista="inicio" aria-selected="true">Inicio</button>
+        <button role="tab" data-vista="actividad" aria-selected="false">Actividad reciente</button>
+        <button role="tab" data-vista="pedidos" aria-selected="false">Pedidos</button>
+        <button role="tab" data-vista="mensajes" aria-selected="false">Mensajes <span class="cuenta oculto" id="cuenta-mensajes"></span></button>
+      </nav>
+
+      <!-- Inicio -->
+      <section data-vista="inicio">
+        <h2>Tareas principales</h2>
+        <div class="tareas">
+          <button class="tarea" data-ir="pedidos">
+            <strong><i>🧾</i> Pedidos →</strong>
+            <p id="t-pedidos-hoy"></p>
+            <p id="t-pendientes"></p>
+          </button>
+          <button class="tarea" data-ir="mensajes">
+            <strong><i>💬</i> Mensajes →</strong>
+            <p id="t-mensajes"></p>
+            <p id="t-mensajes-hoy"></p>
+          </button>
+          <button class="tarea" data-ir="inicio" data-bajar="estadisticas">
+            <strong><i>🎈</i> Sorpresas</strong>
+            <p id="t-sorpresas"></p>
+            <p>Cada vez que alguien escanea el QR de una tarjeta</p>
+          </button>
+        </div>
+        <p class="nota">Las tareas principales muestran la actividad de hoy y de los últimos 30 días.</p>
+
+        <h2 id="estadisticas">Estadísticas</h2>
+        <div class="caja">
+          <label class="intervalo">Intervalo de fechas
+            <select id="intervalo">
+              <option value="1">Hoy</option>
+              <option value="7" selected>Últimos 7 días</option>
+              <option value="30">Últimos 30 días</option>
+            </select>
+          </label>
+          <div class="cifras">
+            <div class="cifra"><span>Total de vistas</span><b id="e-vistas">0</b><small id="e-vistas-det"></small></div>
+            <div class="cifra"><span>Visitas</span><b id="e-visitas">0</b><small>personas distintas por día</small></div>
+            <div class="cifra"><span>Pedidos</span><b id="e-pedidos">0</b><small id="e-conversion"></small></div>
+            <div class="cifra"><span>Ingresos</span><b id="e-ingresos">MX$0</b><small id="e-neto"></small></div>
+          </div>
+          <div class="grafica" aria-label="Vistas por día">
+            <svg id="grafica" preserveAspectRatio="none"></svg>
+            <div class="ejes"><span id="eje-ini"></span><span id="eje-fin"></span></div>
+            <div class="leyenda"><span><i style="background:var(--barra)"></i>Tienda</span><span><i style="background:var(--barra-2)"></i>Sorpresas (QR)</span></div>
+          </div>
+          <p class="alerta oculto" id="alerta-pedidos"></p>
+        </div>
+      </section>
+
+      <!-- Actividad reciente: compras, mensajes y visitas de los últimos 30 días, lo más nuevo arriba -->
+      <section data-vista="actividad" class="oculto">
+        <div class="filtros grandes" id="filtro-actividad">
+          <button aria-pressed="true" data-f="todo">Todo</button>
+          <button aria-pressed="false" data-f="compra">Compras</button>
+          <button aria-pressed="false" data-f="mensaje">Mensajes</button>
+          <button aria-pressed="false" data-f="visita">Visitas</button>
+        </div>
+        <ul class="actividad" id="lista-actividad"></ul>
+      </section>
+
+      <!-- Pedidos -->
+      <section data-vista="pedidos" class="oculto">
+        <h2>Pedidos <div class="filtros" id="filtro-pedidos">
+          <button aria-pressed="true" data-f="todos">Todos</button>
+          <button aria-pressed="false" data-f="ok">Pagados</button>
+          <button aria-pressed="false" data-f="espera">Pendientes</button>
+        </div></h2>
+        <div class="caja" style="padding:0;overflow-x:auto">
+          <table>
+            <thead><tr><th>Fecha</th><th>Tarjeta</th><th class="ocultar-movil">Pago</th><th>Estado</th><th class="num">Total</th><th class="num ocultar-movil">Te queda</th></tr></thead>
+            <tbody id="lista-pedidos"></tbody>
+          </table>
+        </div>
+        <p class="nota">Pedidos de Mercado Pago de los últimos 30 días. "Te queda" es lo que recibes después de la comisión de Mercado Pago.</p>
+      </section>
+
+      <!-- Mensajes -->
+      <section data-vista="mensajes" class="oculto">
+        <h2>Mensajes <div class="filtros" id="filtro-mensajes">
+          <button aria-pressed="true" data-f="pendientes">Sin atender</button>
+          <button aria-pressed="false" data-f="atendidos">Atendidos</button>
+        </div></h2>
+        <div id="lista-mensajes"></div>
+        <p class="nota">Llegan del formulario "¿Dudas? Escríbenos" al final de la tienda.</p>
+      </section>
+
+      <p class="pie">Solo tú puedes ver esta página. <span id="actualizado"></span></p>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const API = '/.netlify/functions/admin';
+    const CLAVE = 'clave-admin';
+    let datos = null;
+    const filtro = { pedidos: 'todos', mensajes: 'pendientes', actividad: 'todo' };
+
+    // Este navegador es de la dueña: sus visitas no se cuentan en la tienda (js/visitas.js)
+    try { localStorage.setItem('soy-admin', '1'); } catch { /* modo privado */ }
+
+    const clave = () => { try { return sessionStorage.getItem(CLAVE) || ''; } catch { return ''; } };
+    const guardarClave = (c) => { try { c ? sessionStorage.setItem(CLAVE, c) : sessionStorage.removeItem(CLAVE); } catch { /* sin almacenamiento */ } };
+    const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const dinero = (n) => { const x = Number(n || 0), d = Number.isInteger(x) ? 0 : 2; return 'MX$' + x.toLocaleString('es-MX', { minimumFractionDigits: d, maximumFractionDigits: d }); };
+    const numero = (n) => Number(n || 0).toLocaleString('es-MX');
+    const cuenta = (n, uno, varios) => `<b>${numero(n)}</b> ${n === 1 ? uno : varios}`;
+    const fechaHora = (iso) => new Date(iso).toLocaleString('es-MX', { timeZone: 'America/Mexico_City', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
+    // En la actividad: "11:42 a.m." si fue hoy, "5 nov" si no
+    const cuando = (iso) => {
+      const dia = new Date(iso).toLocaleDateString('en-CA', { timeZone: 'America/Mexico_City' });
+      return dia === datos.hoy ? new Date(iso).toLocaleTimeString('es-MX', { timeZone: 'America/Mexico_City', hour: 'numeric', minute: '2-digit' }) : diaCorto(dia);
+    };
+    const diaCorto = (d) => new Date(d + 'T12:00:00').toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
+
+    const ESTADOS = {
+      approved: ['ok', 'Pagado'], authorized: ['espera', 'Autorizado'], pending: ['espera', 'Pendiente'], in_process: ['espera', 'En revisión'],
+      in_mediation: ['espera', 'En disputa'], rejected: ['no', 'Rechazado'], cancelled: ['no', 'Cancelado'], refunded: ['no', 'Devuelto'], charged_back: ['no', 'Contracargo'],
+    };
+    const MEDIOS = { credit_card: 'Tarjeta de crédito', debit_card: 'Tarjeta de débito', ticket: 'OXXO', bank_transfer: 'SPEI', atm: 'Cajero', account_money: 'Saldo MP', prepaid_card: 'Tarjeta prepago' };
+    const estadoDe = (p) => ESTADOS[p.estado] || ['no', p.estado];
+    const pagado = (p) => p.estado === 'approved';
+    const pendiente = (p) => ['pending', 'in_process', 'authorized'].includes(p.estado);
+
+    async function pedir(opciones = {}) {
+      const r = await fetch(API, { ...opciones, headers: { Authorization: 'Bearer ' + clave(), 'Content-Type': 'application/json' } });
+      if (r.status === 401) { const e = new Error((await r.json()).error); e.salir = true; throw e; }
+      if (!r.ok) throw new Error('El servidor respondió ' + r.status);
+      return r.json();
+    }
+
+    async function cargar() {
+      try {
+        datos = await pedir();
+        $('entrada').classList.add('oculto');
+        $('panel').classList.remove('oculto');
+        pintar();
+      } catch (e) {
+        if (e.salir) guardarClave('');
+        mostrarEntrada(e.message);
+      }
+    }
+
+    function mostrarEntrada(error = '') {
+      $('panel').classList.add('oculto');
+      $('entrada').classList.remove('oculto');
+      $('error-entrada').textContent = error;
+      $('entrar').disabled = false;
+      $('clave').focus();
+    }
+
+    $('form-entrada').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      $('entrar').disabled = true;
+      $('error-entrada').textContent = '';
+      guardarClave($('clave').value);
+      $('clave').value = '';
+      await cargar();
+    });
+    $('salir').addEventListener('click', () => { guardarClave(''); datos = null; mostrarEntrada(); });
+
+    // Pestañas
+    function verVista(v, bajar) {
+      document.querySelectorAll('[role="tab"]').forEach((b) => b.setAttribute('aria-selected', b.dataset.vista === v));
+      document.querySelectorAll('section[data-vista]').forEach((s) => s.classList.toggle('oculto', s.dataset.vista !== v));
+      if (bajar) $(bajar).scrollIntoView({ behavior: 'smooth' });
+    }
+    document.querySelector('.pestanas').addEventListener('click', (e) => { const b = e.target.closest('[role="tab"]'); if (b) verVista(b.dataset.vista); });
+    document.querySelectorAll('[data-ir]').forEach((b) => b.addEventListener('click', () => verVista(b.dataset.ir, b.dataset.bajar)));
+    $('intervalo').addEventListener('change', pintarEstadisticas);
+    const PINTAR = { pedidos: () => pintarPedidos(), mensajes: () => pintarMensajes(), actividad: () => pintarActividad() };
+    for (const tipo of Object.keys(PINTAR)) {
+      $('filtro-' + tipo).addEventListener('click', (e) => {
+        const b = e.target.closest('button');
+        if (!b) return;
+        filtro[tipo] = b.dataset.f;
+        $('filtro-' + tipo).querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', x === b));
+        PINTAR[tipo]();
+      });
+    }
+
+    function pintar() {
+      const { hoy, pedidos, mensajes, visitas } = datos;
+      const pagadosHoy = pedidos.filter((p) => pagado(p) && p.dia === hoy);
+      const sinAtender = mensajes.filter((m) => !m.atendido);
+      const visitasHoy = visitas.find((v) => v.dia === hoy) || {};
+      $('sub-ventas').textContent = `${numero(pedidos.filter(pagado).length)} ventas en 30 días`;
+      $('sub-hoy').textContent = `Hoy: ${dinero(pagadosHoy.reduce((s, p) => s + p.monto, 0))}`;
+      $('t-pedidos-hoy').innerHTML = cuenta(pagadosHoy.length, 'pedido pagado hoy', 'pedidos pagados hoy');
+      $('t-pendientes').innerHTML = cuenta(pedidos.filter(pendiente).length, 'pago pendiente (OXXO o SPEI)', 'pagos pendientes (OXXO o SPEI)');
+      $('t-mensajes').innerHTML = cuenta(sinAtender.length, 'mensaje sin atender', 'mensajes sin atender');
+      const recibidosHoy = mensajes.filter((m) => m.fecha && new Date(m.fecha).toLocaleDateString('en-CA', { timeZone: 'America/Mexico_City' }) === hoy).length;
+      $('t-mensajes-hoy').innerHTML = cuenta(recibidosHoy, 'recibido hoy', 'recibidos hoy');
+      $('t-sorpresas').innerHTML = cuenta(visitasHoy.sorpresa || 0, 'sorpresa abierta hoy', 'sorpresas abiertas hoy');
+      $('cuenta-mensajes').textContent = sinAtender.length;
+      $('cuenta-mensajes').classList.toggle('oculto', !sinAtender.length);
+      $('alerta-pedidos').textContent = datos.errorPedidos ? `No se pudieron leer los pedidos: ${datos.errorPedidos}.` : '';
+      $('alerta-pedidos').classList.toggle('oculto', !datos.errorPedidos);
+      $('actualizado').textContent = 'Actualizado a las ' + new Date().toLocaleTimeString('es-MX', { hour: 'numeric', minute: '2-digit' });
+      pintarEstadisticas();
+      pintarPedidos();
+      pintarMensajes();
+      pintarActividad();
+    }
+
+    // Actividad reciente: cada compra y mensaje es un renglón; las visitas, un resumen por día
+    function pintarActividad() {
+      const eventos = [];
+      for (const p of datos.pedidos) {
+        if (!pagado(p) && !pendiente(p)) continue;
+        eventos.push({ tipo: 'compra', fecha: p.aprobado || p.fecha, clase: 'compra', icono: pagado(p) ? '🛍️' : '⏳',
+          que: `<b>${pagado(p) ? 'Nueva venta' : 'Pago pendiente'}</b><small style="color:var(--texto);font-size:15px">${esc(p.descripcion)}</small><small>${esc(MEDIOS[p.medio] || p.medio || '')}${p.correo ? ' · ' + esc(p.correo) : ''}</small>`,
+          monto: dinero(p.monto) });
+      }
+      for (const m of datos.mensajes) {
+        eventos.push({ tipo: 'mensaje', fecha: m.fecha, clase: 'mensaje-act', icono: '💬',
+          que: `<b>${esc(m.nombre)}</b> te escribió${m.atendido ? '' : ' · <span class="etiqueta espera">Sin atender</span>'}<small>${esc(m.mensaje.length > 120 ? m.mensaje.slice(0, 120) + '…' : m.mensaje)}</small>` });
+      }
+      for (const v of datos.visitas) {
+        if (!v.tienda && !v.sorpresa) continue;
+        const partes = [v.tienda && `${numero(v.tienda)} ${v.tienda === 1 ? 'vista' : 'vistas'} en la tienda`, v.sorpresa && `${numero(v.sorpresa)} ${v.sorpresa === 1 ? 'sorpresa abierta' : 'sorpresas abiertas'}`].filter(Boolean);
+        eventos.push({ tipo: 'visita', fecha: v.dia + 'T23:59:59-06:00', dia: v.dia, clase: '', icono: '👀',
+          que: `<b>${numero(v.visitantes)} ${v.visitantes === 1 ? 'persona visitó' : 'personas visitaron'}</b> el sitio<small>${partes.join(' · ')}</small>` });
+      }
+      const lista = eventos.filter((e) => filtro.actividad === 'todo' || e.tipo === filtro.actividad).sort((a, b) => new Date(b.fecha) - new Date(a.fecha)).slice(0, 150);
+      $('lista-actividad').innerHTML = lista.length ? lista.map((e) =>
+        `<li class="${e.clase}"><i>${e.icono}</i><div class="que">${e.que}</div><div class="lado">${e.monto ? `<span class="monto">${e.monto}</span>` : ''}` +
+        `<span class="cuando">${e.dia ? (e.dia === datos.hoy ? 'Hoy' : diaCorto(e.dia)) : esc(cuando(e.fecha))}</span></div></li>`).join('')
+        : '<li class="vacio" style="display:block">Todavía no hay actividad en los últimos 30 días.</li>';
+    }
+
+    function pintarEstadisticas() {
+      const n = Number($('intervalo').value);
+      const dias = datos.dias.slice(-n);
+      const v = datos.visitas.filter((x) => dias.includes(x.dia));
+      const ped = datos.pedidos.filter((p) => pagado(p) && dias.includes(p.dia));
+      const tienda = v.reduce((s, x) => s + x.tienda, 0), sorpresa = v.reduce((s, x) => s + x.sorpresa, 0);
+      const visitantes = v.reduce((s, x) => s + x.visitantes, 0);
+      const ingresos = ped.reduce((s, p) => s + p.monto, 0);
+      const neto = ped.reduce((s, p) => s + (p.neto ?? p.monto), 0);
+      $('e-vistas').textContent = numero(tienda + sorpresa);
+      $('e-vistas-det').textContent = `${numero(tienda)} en la tienda · ${numero(sorpresa)} sorpresas`;
+      $('e-visitas').textContent = numero(visitantes);
+      $('e-pedidos').textContent = numero(ped.length);
+      $('e-conversion').textContent = visitantes ? `${(ped.length / visitantes * 100).toLocaleString('es-MX', { maximumFractionDigits: 1 })} % de las visitas compran` : '—';
+      $('e-ingresos').textContent = dinero(ingresos);
+      $('e-neto').textContent = `Te quedan ${dinero(neto)} después de comisión`;
+
+      // Gráfica de barras: tienda abajo, sorpresas arriba
+      const W = 600, H = 160, max = Math.max(1, ...v.map((x) => x.tienda + x.sorpresa));
+      const ancho = W / v.length, hueco = Math.min(6, ancho * 0.25);
+      $('grafica').setAttribute('viewBox', `0 0 ${W} ${H}`);
+      $('grafica').innerHTML = `<line x1="0" x2="${W}" y1="${H}" y2="${H}" stroke="#DDDAD3" vector-effect="non-scaling-stroke"/>` + v.map((x, i) => {
+        const ht = (x.tienda / max) * (H - 4), hs = (x.sorpresa / max) * (H - 4), xi = i * ancho + hueco / 2, w = ancho - hueco;
+        return `<g><title>${diaCorto(x.dia)}: ${x.tienda} en la tienda, ${x.sorpresa} sorpresas</title>` +
+          `<rect x="${xi}" y="${H - ht}" width="${w}" height="${ht}" fill="var(--barra)"/>` +
+          `<rect x="${xi}" y="${H - ht - hs}" width="${w}" height="${hs}" fill="var(--barra-2)"/></g>`;
+      }).join('');
+      $('eje-ini').textContent = diaCorto(dias[0]);
+      $('eje-fin').textContent = n === 1 ? '' : diaCorto(dias[dias.length - 1]);
+    }
+
+    function pintarPedidos() {
+      const lista = datos.pedidos.filter((p) => filtro.pedidos === 'todos' || estadoDe(p)[0] === filtro.pedidos);
+      $('lista-pedidos').innerHTML = lista.length ? lista.map((p) => {
+        const [clase, texto] = estadoDe(p);
+        return `<tr><td>${esc(fechaHora(p.fecha))}</td><td>${esc(p.descripcion)}${p.correo ? `<br><small style="color:var(--suave)">${esc(p.correo)}</small>` : ''}</td>` +
+          `<td class="ocultar-movil">${esc(MEDIOS[p.medio] || p.medio || '')}</td><td><span class="etiqueta ${clase}">${esc(texto)}</span></td>` +
+          `<td class="num">${dinero(p.monto)}</td><td class="num ocultar-movil">${p.neto != null && pagado(p) ? dinero(p.neto) : '—'}</td></tr>`;
+      }).join('') : `<tr><td colspan="6" class="vacio">No hay pedidos ${filtro.pedidos === 'todos' ? 'en los últimos 30 días' : 'con ese estado'}.</td></tr>`;
+    }
+
+    function pintarMensajes() {
+      const lista = datos.mensajes.filter((m) => (filtro.mensajes === 'pendientes') !== !!m.atendido);
+      $('lista-mensajes').innerHTML = lista.length ? lista.map((m) => {
+        const contacto = m.contacto || '';
+        const correo = /@/.test(contacto), tel = contacto.replace(/[^\d+]/g, '');
+        const responder = correo ? `<a href="mailto:${esc(contacto)}?subject=${encodeURIComponent('Tarjetas Sorpresa')}">Responder por correo</a>`
+          : tel.replace(/\D/g, '').length >= 10 ? `<a href="https://wa.me/${esc(tel.replace(/\D/g, '').length === 10 ? '52' + tel.replace(/\D/g, '') : tel.replace(/\D/g, ''))}" target="_blank" rel="noopener">Responder por WhatsApp</a>` : '';
+        return `<article class="mensaje ${m.atendido ? '' : 'nuevo'}"><header><b>${esc(m.nombre)}</b><a>${esc(contacto)}</a><time>${esc(fechaHora(m.fecha))}${m.idioma === 'en' ? ' · inglés' : ''}</time></header>` +
+          `<p>${esc(m.mensaje)}</p><div class="acciones">${responder}` +
+          (m.atendido ? `<button data-accion="pendiente" data-id="${esc(m.id)}">Marcar sin atender</button><button data-accion="borrar" data-id="${esc(m.id)}">Borrar</button>`
+            : `<button class="principal" data-accion="atendido" data-id="${esc(m.id)}">Marcar como atendido</button>`) + '</div></article>';
+      }).join('') : `<div class="caja vacio">${filtro.mensajes === 'pendientes' ? '¡Todo al día! No hay mensajes sin atender.' : 'Todavía no hay mensajes atendidos.'}</div>`;
+    }
+
+    $('lista-mensajes').addEventListener('click', async (e) => {
+      const b = e.target.closest('button[data-accion]');
+      if (!b) return;
+      if (b.dataset.accion === 'borrar' && !confirm('¿Borrar este mensaje? No se puede deshacer.')) return;
+      b.disabled = true;
+      try {
+        await pedir({ method: 'POST', body: JSON.stringify({ accion: b.dataset.accion, id: b.dataset.id }) });
+        const m = datos.mensajes.find((x) => x.id === b.dataset.id);
+        if (b.dataset.accion === 'borrar') datos.mensajes = datos.mensajes.filter((x) => x !== m);
+        else m.atendido = b.dataset.accion === 'atendido';
+        pintar();
+      } catch (err) {
+        if (err.salir) { guardarClave(''); mostrarEntrada(err.message); return; }
+        alert('No se pudo guardar: ' + err.message);
+        b.disabled = false;
+      }
+    });
+
+    // Al volver a la pestaña, actualiza los números
+    document.addEventListener('visibilitychange', () => { if (!document.hidden && datos) cargar(); });
+
+    if (clave()) cargar(); else mostrarEntrada();
+  </script>
+</body>
+</html>

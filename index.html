@@ -89,11 +89,17 @@
     .boton.secundario { background: #fff; color: var(--acento-osc); border: 3px solid var(--acento); }
     .nota { color: var(--suave); font-size: 15px; margin: 14px 0 0; }
 
+    .contacto form { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; max-width: 760px; }
+    .contacto .ancho { grid-column: 1 / -1; }
+    .contacto textarea { min-height: 100px; }
+    .trampa { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
     footer { text-align: center; color: var(--suave); padding: 10px 16px 40px; font-size: 15px; }
 
     @media (max-width: 760px) {
       .personaliza { grid-template-columns: 1fr; }
       .productos { grid-template-columns: 1fr; }
+      .contacto form { grid-template-columns: 1fr; }
       section.paso { padding: 22px 16px; border-radius: 22px; }
       .rejilla { grid-template-columns: repeat(2, 1fr); gap: 12px; }
       .diseno strong { font-size: 16px; }
@@ -208,6 +214,18 @@
       <p class="nota" id="aviso" role="status"></p>
       <p class="nota" id="error" role="alert"></p>
     </section>
+
+    <section class="paso contacto" id="contacto">
+      <h2 data-t="contacto-titulo">💬 ¿Dudas? Escríbenos</h2>
+      <p class="ayuda" data-t="contacto-ayuda">Cuéntanos qué necesitas y te respondemos por correo o WhatsApp.</p>
+      <form id="form-contacto">
+        <div class="campo"><label for="k-nombre" data-t="l-c-nombre">Tu nombre</label><input id="k-nombre" maxlength="60" required autocomplete="name"></div>
+        <div class="campo"><label for="k-contacto" data-t="l-c-contacto">Correo o WhatsApp</label><input id="k-contacto" maxlength="80" required placeholder="Ej. ana@correo.com o 55 1234 5678" data-t-ph="ph-c-contacto"></div>
+        <div class="campo ancho"><label for="k-mensaje" data-t="l-c-mensaje">Mensaje</label><textarea id="k-mensaje" maxlength="1000" required placeholder="Ej. ¿Puedo cambiar la fecha después de comprar?" data-t-ph="ph-c-mensaje"></textarea></div>
+        <div class="trampa" aria-hidden="true"><input id="k-sitio" tabindex="-1" autocomplete="off"></div>
+        <div class="ancho"><button class="boton principal" id="k-enviar" data-t="c-enviar">Enviar mensaje</button><p class="nota" id="k-aviso" role="status"></p></div>
+      </form>
+    </section>
   </main>
 
   <footer data-t="pie">Imprime en papel mate al 100 %. La sorpresa funciona en Chrome (Android) y Safari (iPhone).</footer>
@@ -217,6 +235,7 @@
     import { dibujarFrente, dibujarReverso, descargarPDF } from './js/tarjeta.js';
     import { aParametros } from './js/invitacion.js';
     import { IDIOMAS, idiomaInicial, guardarIdioma, textos, nombreDiseno, nombreTipo, TIENDA_EN } from './js/idioma.js';
+    import { contarVisita } from './js/visitas.js';
 
     document.getElementById('fuentes').href = FUENTES_URL;
     const $ = (id) => document.getElementById(id);
@@ -474,6 +493,29 @@
     };
     $('fecha').min = hoy();
 
+    // Formulario de contacto: llega a "Mensajes" del panel de administración (admin/)
+    $('form-contacto').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const b = $('k-enviar'), aviso = $('k-aviso');
+      b.disabled = true;
+      aviso.textContent = T().enviando;
+      try {
+        const r = await fetch('/.netlify/functions/contacto', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nombre: $('k-nombre').value, contacto: $('k-contacto').value, mensaje: $('k-mensaje').value, sitio: $('k-sitio').value, idioma: estado.lang }),
+        });
+        if (!r.ok) throw new Error('contacto ' + r.status);
+        $('form-contacto').reset();
+        aviso.textContent = T().enviado;
+      } catch (err) {
+        console.error(err);
+        aviso.textContent = T().errorEnviar;
+      } finally {
+        b.disabled = false;
+      }
+    });
+
+    contarVisita('tienda');
     aplicarIdioma(estado.lang);
     pintarTipos();
     pintarRejilla();

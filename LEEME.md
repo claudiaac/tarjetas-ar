@@ -52,5 +52,30 @@ Para activarlo:
 
 En `localhost` o `127.0.0.1` la descarga sigue libre para probar diseños. La tienda en GitHub Pages no tiene funciones, así que ahí ya no se puede descargar: los clientes deben comprar en el sitio de Netlify.
 
+## Panel de administración
+En **`/admin/`** (por ejemplo `https://<tu-sitio>.netlify.app/admin/`) está el panel de FiatCraftHouse, al estilo del Shop Manager de Etsy:
+
+- **Inicio:** tareas principales (pedidos pagados hoy, pagos pendientes de OXXO o SPEI, mensajes sin atender, sorpresas abiertas hoy) y estadísticas de hoy, 7 o 30 días: vistas, visitas, pedidos e ingresos (lo cobrado y lo que te queda después de la comisión de Mercado Pago), con una gráfica por día.
+- **Actividad reciente:** ventas, mensajes y visitas, lo más nuevo arriba, con filtros Todo, Compras, Mensajes y Visitas.
+- **Pedidos:** los pagos de Mercado Pago de los últimos 30 días, con su estado.
+- **Mensajes:** lo que llega del formulario *¿Dudas? Escríbenos* al final de la tienda. Se responden por correo o WhatsApp y se marcan como atendidos.
+
+El panel no aparece en ningún menú y los buscadores no lo indexan, pero lo que de verdad lo protege es la contraseña: la página no trae datos, se los pide a `netlify/functions/admin.mjs` y esa función solo contesta con la contraseña correcta.
+
+| Archivo | Para qué sirve |
+|---|---|
+| `admin/index.html` | El panel. El logo es `admin/logo-fiatcrafthouse.svg` (vector, fondo transparente; también hay `.png`) |
+| `netlify/functions/admin.mjs` | Revisa la contraseña y junta visitas, mensajes y pedidos de Mercado Pago |
+| `netlify/functions/visita.mjs` | Suma una visita por día (tienda o sorpresa). No guarda IP ni cookies |
+| `netlify/functions/contacto.mjs` | Guarda los mensajes del formulario de contacto |
+| `js/visitas.js` | Avisa de la visita desde `index.html` y `ver.html` |
+
+Visitas y mensajes se guardan en **Netlify Blobs**, que es gratis y no hay que activar. Para entrar al panel:
+1. En Netlify: *Site configuration → Environment variables* → agrega `ADMIN_PASSWORD` con una contraseña larga (mínimo 10 caracteres; mejor una frase de 4 o 5 palabras) y vuelve a publicar.
+2. Abre `/admin/` y escribe la contraseña. Se olvida al cerrar la pestaña.
+3. Los pedidos usan el mismo `MP_ACCESS_TOKEN` del cobro.
+
+Las visitas no se cuentan en tu compu (`localhost`), ni en el navegador donde abriste el panel, ni las de robots. "Ver la sorpresa" desde la tienda (`#demo`) tampoco cuenta como sorpresa abierta.
+
 ## Pendiente
 - Los dibujos son originales. No uses personajes con marca (Disney, Sanrio, Pokémon, Studio Ghibli…) en tarjetas que se venden.
